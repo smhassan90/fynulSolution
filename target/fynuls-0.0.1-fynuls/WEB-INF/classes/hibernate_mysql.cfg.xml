@@ -1,0 +1,76 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <property name = "hibernate.dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+
+        <property name = "hibernate.connection.driver_class">
+            com.mysql.cj.jdbc.Driver
+        </property>
+
+        <!-- Assume test is the database name -->
+
+        <property name = "hibernate.connection.url">
+            jdbc:mysql://192.168.0.51:3306/dbfynuls
+        </property>
+
+        <property name = "hibernate.connection.username">
+            saleuser
+        </property>
+
+        <property name = "hibernate.connection.password">
+            psw123
+        </property>
+
+        <mapping class="com.fynuls.entity.login.User" />
+        <mapping class="com.fynuls.entity.login.LoginStatus" />
+        <mapping class="com.fynuls.utils.IDMANAGER"/>
+        <mapping class="com.fynuls.entity.sale.Customer" />
+        <mapping class="com.fynuls.entity.sale.DepotStaff" />
+        <mapping class="com.fynuls.entity.sale.LeaveEntry" />
+        <mapping class="com.fynuls.entity.sale.Order" />
+        <mapping class="com.fynuls.entity.sale.ProductOrder" />
+        <mapping class="com.fynuls.entity.sale.SKUGroup" />
+        <mapping class="com.fynuls.entity.sale.Status" />
+        <mapping class="com.fynuls.entity.sale.Town" />
+        <mapping class="com.fynuls.entity.sale.TownCustomer" />
+        <mapping class="com.fynuls.entity.sale.TownDepot" />
+        <mapping class="com.fynuls.entity.sale.TownStaff" />
+        <mapping class="com.fynuls.entity.sale.UnapprovedSDCustomer" />
+        <mapping class="com.fynuls.entity.sale.WorkWith" />
+
+        <mapping class="com.fynuls.entity.base.Channel" />
+        <mapping class="com.fynuls.entity.base.Department" />
+        <mapping class="com.fynuls.entity.base.Depot" />
+        <mapping class="com.fynuls.entity.base.Designation" />
+        <mapping class="com.fynuls.entity.base.District" />
+        <mapping class="com.fynuls.entity.base.Donor" />
+        <mapping class="com.fynuls.entity.base.Employee" />
+        <mapping class="com.fynuls.entity.base.MNPChannelMapping" />
+        <mapping class="com.fynuls.entity.base.PRDGroupOn" />
+        <mapping class="com.fynuls.entity.base.TerritoryMaster" />
+        <mapping class="com.fynuls.entity.base.TehsilMaster" />
+        <mapping class="com.fynuls.entity.base.RegionMaster" />
+        <mapping class="com.fynuls.entity.base.Zone" />
+        <mapping class="com.fynuls.entity.base.ProvinceMaster" />
+        <mapping class="com.fynuls.entity.base.TeamDepartment" />
+        <mapping class="com.fynuls.entity.base.TeamRegion" />
+        <mapping class="com.fynuls.entity.base.ProviderTehsil" />
+        <mapping class="com.fynuls.entity.base.Providers" />
+        <mapping class="com.fynuls.entity.base.EmployeePJP" />
+        <mapping class="com.fynuls.entity.base.TerritoryEmployeeMapping" />
+        <mapping class="com.fynuls.entity.base.EmployeeIDPositionIDMapping" />
+        <mapping class="com.fynuls.entity.base.EmployeePositionTeam" />
+        <mapping class="com.fynuls.entity.base.EmployeePositionTeamRegion" />
+        <mapping class="com.fynuls.entity.base.EmployeeZoneMapping" />
+        <mapping class="com.fynuls.entity.base.EmployeeIDPositionIDMapping" />
+        <mapping class="com.fynuls.entity.base.DistrictProvince" />
+        <mapping class="com.fynuls.entity.base.DistrictRegionMapping" />
+        <mapping class="com.fynuls.entity.base.EmployeeDepot" />
+        <mapping class="com.fynuls.entity.base.DistrictTehsil" />
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="employee-producer:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="fynuls-0.0.1-fynuls.war">
+      <element id="artifact" artifact-name="employee-producer:war exploded" />
+    </root>
+  </artifact>
+</component>
