@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author Syed Muhammad Hassan
@@ -21,6 +22,8 @@ public class TerritoryEmployeeMapping {
 
     @Column(name="SHARING")
     private String SHARING;
+    @Column(name="UPDATE_DATE")
+    private Date updateDate;
 
     public String getTERRITORY_CODE() {
         return TERRITORY_CODE;
@@ -44,5 +47,13 @@ public class TerritoryEmployeeMapping {
 
     public void setSHARING(String SHARING) {
         this.SHARING = SHARING;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

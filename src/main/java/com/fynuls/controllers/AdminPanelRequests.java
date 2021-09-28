@@ -4,7 +4,6 @@ import com.fynuls.controllers.greensales.Codes;
 import com.fynuls.dal.AddDeleteResponse;
 import com.fynuls.dal.DropDownResponse;
 import com.fynuls.dal.KeyValue;
-import com.fynuls.entity.base.Channel;
 import com.fynuls.utils.HibernateUtil;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Controller;
@@ -43,32 +42,12 @@ public class AdminPanelRequests {
     }
 
     @CrossOrigin(origins = "*" )
-    @RequestMapping(value = "/addChannel", method = RequestMethod.GET, params = {"id","name"})
-    @ResponseBody
-    public String addChannel(String id, String name){
-        AddDeleteResponse addDeleteResponse = new AddDeleteResponse();
-
-        Channel channel = new Channel();
-        channel.setID(id);
-        channel.setNAME(name);
-
-        addDeleteResponse.setTableName("Channel");
-        if(HibernateUtil.saveOrUpdate(channel)){
-            addDeleteResponse.setStatus(Codes.ALL_OK);
-        }else {
-            addDeleteResponse.setStatus(Codes.SOMETHING_WENT_WRONG);
-        }
-
-        return new Gson().toJson(addDeleteResponse);
-    }
-
-    @CrossOrigin(origins = "*" )
     @RequestMapping(value = "/getAdminDropDownData", method = RequestMethod.GET, params = {"tableName","column1", "column2"})
     @ResponseBody
     public String getAdminDropDownData(String tableName, String column1, String column2){
         DropDownResponse dropDownResponse = new DropDownResponse();
 
-        String query = "SELECT "+column1+" AS key, "+column2+" AS value FROM " +tableName + " order by " + column2;
+        String query = "SELECT "+column1+" AS key, "+column2+" AS value FROM " +tableName + " order by " + column1;
 
         List<KeyValue> keyValueList = new ArrayList<>();
         KeyValue keyValue = new KeyValue();

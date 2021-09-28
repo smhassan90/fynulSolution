@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author Syed Muhammad Hassan
@@ -17,7 +18,8 @@ public class EmployeeTeamRegionMapping {
     private String POSITION_ID;
     @Column(name="TEAMREGION_ID")
     private int TEAMREGION_ID;
-
+    @Column(name="UPDATE_DATE")
+    private Date updateDate;
     public String getPOSITION_ID() {
         return POSITION_ID;
     }
@@ -32,5 +34,13 @@ public class EmployeeTeamRegionMapping {
 
     public void setTEAMREGION_ID(int TEAMREGION_ID) {
         this.TEAMREGION_ID = TEAMREGION_ID;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

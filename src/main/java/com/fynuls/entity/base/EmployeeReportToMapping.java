@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author Syed Muhammad Hassan
@@ -17,6 +18,8 @@ public class EmployeeReportToMapping {
     private String POSITION_ID;
     @Column(name="REPORTTO_ID")
     private String REPORTTO_ID;
+    @Column(name="UPDATE_DATE")
+    private Date updateDate;
 
     public String getPOSITION_ID() {
         return POSITION_ID;
@@ -32,5 +35,13 @@ public class EmployeeReportToMapping {
 
     public void setREPORTTO_ID(String REPORTTO_ID) {
         this.REPORTTO_ID = REPORTTO_ID;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

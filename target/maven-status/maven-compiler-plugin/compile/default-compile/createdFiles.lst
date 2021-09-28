@@ -34,6 +34,7 @@ com\fynuls\entity\base\TehsilMaster.class
 com\fynuls\entity\login\LoginStatus.class
 com\fynuls\entity\base\TeamRegion.class
 com\fynuls\controllers\DBCheck.class
+com\fynuls\dal\GeneralResponse.class
 com\fynuls\entity\base\ProviderTehsil.class
 com\fynuls\entity\sale\UnapprovedSDCustomer.class
 com\fynuls\entity\base\TehsilSNDPOP.class
@@ -57,6 +58,7 @@ com\fynuls\entity\sale\DepotStaff.class
 com\fynuls\controllers\TestController.class
 com\fynuls\entity\base\Channel.class
 com\fynuls\entity\base\EmployeeReportToMapping.class
+com\fynuls\controllers\AddBtnControllers.class
 com\fynuls\entity\base\Designation.class
 com\fynuls\entity\sale\Town.class
 com\fynuls\dao\IStaffDatabaseDAO.class
@@ -72,6 +74,7 @@ com\fynuls\entity\base\EmployeeDepot.class
 com\fynuls\dal\SyncObjectSS.class
 com\fynuls\entity\base\DistrictRegionMapping.class
 com\fynuls\dal\Dashboard.class
+com\fynuls\dal\ResponseBtnAdd.class
 com\fynuls\controllers\greensales\Sync.class
 com\fynuls\entity\sale\Depot.class
 com\fynuls\entity\base\EmployeePositionTeamRegion.class

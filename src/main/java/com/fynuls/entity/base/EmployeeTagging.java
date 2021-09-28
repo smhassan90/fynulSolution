@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author Syed Muhammad Hassan
@@ -19,6 +20,8 @@ public class EmployeeTagging {
     private int DESIGNATION_ID;
     @Column(name="TAGGED_TO")
     private String TAGGED_TO;
+    @Column(name="UPDATE_DATE")
+    private Date updateDate;
 
     public String getPOSITION_ID() {
         return POSITION_ID;
@@ -42,5 +45,13 @@ public class EmployeeTagging {
 
     public void setTAGGED_TO(String TAGGED_TO) {
         this.TAGGED_TO = TAGGED_TO;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
