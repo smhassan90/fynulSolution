@@ -14,10 +14,10 @@ import java.util.Date;
 @Table(name="BASE_EMP_POSITION_TEAM")
 public class EmployeePositionTeam {
     @Id
-    @Column(name="TEAM_ID")
-    private int TEAM_ID;
     @Column(name="POSITION_ID")
     private String POSITION_ID;
+    @Column(name="TEAM_ID")
+    private int TEAM_ID;
     @Column(name="UPDATE_DATE")
     private Date updateDate;
 

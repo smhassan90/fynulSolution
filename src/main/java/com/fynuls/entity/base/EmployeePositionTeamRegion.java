@@ -14,18 +14,19 @@ import java.util.Date;
 @Table(name="BASE_EMP_POSITION_TEAMREGION")
 public class EmployeePositionTeamRegion {
     @Id
-    @Column(name="TEAMREGION_ID")
-    private int TEAMREGION_ID;
     @Column(name="POSITION_ID")
     private String POSITION_ID;
+    @Column(name="TEAMREGION_ID")
+    private String TEAMREGION_ID;
+
     @Column(name="UPDATE_DATE")
     private Date updateDate;
 
-    public int getTEAMREGION_ID() {
+    public String getTEAMREGION_ID() {
         return TEAMREGION_ID;
     }
 
-    public void setTEAMREGION_ID(int TEAMREGION_ID) {
+    public void setTEAMREGION_ID(String TEAMREGION_ID) {
         this.TEAMREGION_ID = TEAMREGION_ID;
     }
 

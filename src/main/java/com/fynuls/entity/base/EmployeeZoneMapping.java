@@ -17,7 +17,7 @@ public class EmployeeZoneMapping {
     @Column(name="POSITION_ID")
     private String POSITION_ID;
     @Column(name="ZONE_ID")
-    private int ZONE_ID;
+    private String ZONE_ID;
     @Column(name="UPDATE_DATE")
     private Date updateDate;
 
@@ -29,11 +29,11 @@ public class EmployeeZoneMapping {
         this.POSITION_ID = POSITION_ID;
     }
 
-    public int getZONE_ID() {
+    public String getZONE_ID() {
         return ZONE_ID;
     }
 
-    public void setZONE_ID(int ZONE_ID) {
+    public void setZONE_ID(String ZONE_ID) {
         this.ZONE_ID = ZONE_ID;
     }
 

@@ -1,10 +1,12 @@
 package com.fynuls.dal;
 
+import com.fynuls.entity.base.Employee;
 import com.fynuls.entity.login.User;
 
 public class LoginResponse {
     String token;
-    User user;
+    Employee employee;
+    String positionCode;
     String statusCode;
 
     public String getToken() {
@@ -15,13 +17,6 @@ public class LoginResponse {
         this.token = token;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public String getStatusCode() {
         return statusCode;
@@ -29,5 +24,21 @@ public class LoginResponse {
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public String getPositionCode() {
+        return positionCode;
+    }
+
+    public void setPositionCode(String positionCode) {
+        this.positionCode = positionCode;
     }
 }

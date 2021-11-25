@@ -16,25 +16,25 @@ import java.util.Date;
 public class ProviderTehsil {
     @Id
     @Column(name="PROVIDERCODE")
-    private int PROVIDERCODE;
+    private String PROVIDERCODE;
     @Column(name="TEHSIL_ID")
-    private int TEHSIL_ID;
+    private String TEHSIL_ID;
     @Column(name="UPDATE_DATE")
     private Date updateDate;
 
-    public int getPROVIDERCODE() {
+    public String getPROVIDERCODE() {
         return PROVIDERCODE;
     }
 
-    public void setPROVIDERCODE(int PROVIDERCODE) {
+    public void setPROVIDERCODE(String PROVIDERCODE) {
         this.PROVIDERCODE = PROVIDERCODE;
     }
 
-    public int getTEHSIL_ID() {
+    public String getTEHSIL_ID() {
         return TEHSIL_ID;
     }
 
-    public void setTEHSIL_ID(int TEHSIL_ID) {
+    public void setTEHSIL_ID(String TEHSIL_ID) {
         this.TEHSIL_ID = TEHSIL_ID;
     }
 

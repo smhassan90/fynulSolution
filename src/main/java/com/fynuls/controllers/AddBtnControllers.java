@@ -1,9 +1,7 @@
 package com.fynuls.controllers;
 
 import com.fynuls.controllers.greensales.Codes;
-import com.fynuls.dal.AddDeleteResponse;
 import com.fynuls.dal.GeneralResponse;
-import com.fynuls.entity.base.Channel;
 import com.fynuls.utils.HibernateUtil;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Controller;

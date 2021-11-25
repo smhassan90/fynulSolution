@@ -14,6 +14,8 @@ import java.util.Date;
 @Table(name="BASE_EMP_TAGGING")
 public class EmployeeTagging {
     @Id
+    @Column(name="ID")
+    private int ID;
     @Column(name="POSITION_ID")
     private String POSITION_ID;
     @Column(name="DESIGNATION_ID")
@@ -22,6 +24,14 @@ public class EmployeeTagging {
     private String TAGGED_TO;
     @Column(name="UPDATE_DATE")
     private Date updateDate;
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 
     public String getPOSITION_ID() {
         return POSITION_ID;

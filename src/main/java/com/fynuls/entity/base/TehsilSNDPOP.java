@@ -17,7 +17,7 @@ public class TehsilSNDPOP {
     @Column(name="SNDPOP_ID")
     private String SNDPOP_ID;
     @Column(name="TEHSIL_ID")
-    private int TEHSIL_ID;
+    private String TEHSIL_ID;
     @Column(name="UPDATE_DATE")
     private Date updateDate;
 
@@ -29,11 +29,11 @@ public class TehsilSNDPOP {
         this.SNDPOP_ID = SNDPOP_ID;
     }
 
-    public int getTEHSIL_ID() {
+    public String getTEHSIL_ID() {
         return TEHSIL_ID;
     }
 
-    public void setTEHSIL_ID(int TEHSIL_ID) {
+    public void setTEHSIL_ID(String TEHSIL_ID) {
         this.TEHSIL_ID = TEHSIL_ID;
     }
 

@@ -10,9 +10,6 @@ import javax.persistence.Table;
 @Table(name="LOGINSTATUS")
 public class LoginStatus {
     @Id
-    @Column(name="ID")
-    private int id;
-
     @Column(name="USERNAME")
     private String username;
 
@@ -25,14 +22,8 @@ public class LoginStatus {
     @Column(name="TOKEN")
     private String token;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column(name="POSITION_CODE")
+    private String POSITION_CODE;
 
     public String getUsername() {
         return username;
@@ -64,5 +55,13 @@ public class LoginStatus {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getPOSITION_CODE() {
+        return POSITION_CODE;
+    }
+
+    public void setPOSITION_CODE(String POSITION_CODE) {
+        this.POSITION_CODE = POSITION_CODE;
     }
 }

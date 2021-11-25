@@ -9,11 +9,11 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HibernateUtil {
     private static SessionFactory sessionFactory = null;
+    private static SessionFactory sessionFactoryOracle = null;
 
     final static Logger LOG = Logger.getLogger(HibernateUtil.class);
 
@@ -29,13 +29,27 @@ public class HibernateUtil {
         return sessionFactory;
     }
 
+    public static SessionFactory getSessionFactoryNew(){
+        if(sessionFactoryOracle == null){
+            try{
+                sessionFactoryOracle = new Configuration().configure("hibernate_oracle.cfg.xml").buildSessionFactory();
+            }catch(Exception e){
+                LOG.error(e);
+            }
+
+        }
+        return sessionFactoryOracle;
+    }
+
     public static boolean saveOrUpdate(Object obj){
         Session session = null;
         Transaction tx =null;
         boolean isSuccessful = false;
         try {
             session = getSessionFactory().openSession();
+            session.flush();
             tx = session.beginTransaction();
+
             session.saveOrUpdate(obj);
             tx.commit();
             isSuccessful = true;
@@ -53,6 +67,23 @@ public class HibernateUtil {
         boolean isSuccessful = false;
         try {
             session = getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.save(obj);
+            tx.commit();
+            isSuccessful = true;
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.close();
+        }
+        return isSuccessful;
+    }
+    public static boolean saveNew(Object obj){
+        Session session = null;
+        Transaction tx =null;
+        boolean isSuccessful = false;
+        try {
+            session = getSessionFactoryNew().openSession();
             tx = session.beginTransaction();
             session.save(obj);
             tx.commit();
@@ -83,12 +114,12 @@ public class HibernateUtil {
         }
         return objects;
     }
-    public static ArrayList<Object> getDBObjectsFromSQLQueryClass(String query, Class cls){
+    public static ArrayList<Object> getDBObjectsFromSQLQueryClassOracle(String query, Class cls){
         Session session = null;
         ArrayList<Object> objects = new ArrayList<>();
         try {
 
-            session = getSessionFactory()
+            session = getSessionFactoryNew()
                     .openSession();
             objects = (ArrayList<Object>) session.createSQLQuery(query).addEntity(cls).list();
         }catch(Exception e){
@@ -115,12 +146,44 @@ public class HibernateUtil {
         return objects;
     }
 
+    public static ArrayList<Object> getDBObjectsFromSQLQueryOracle(String query){
+        Session session = null;
+        ArrayList<Object> objects = new ArrayList<>();
+        try {
+
+            session = getSessionFactoryNew()
+                    .openSession();
+            objects = (ArrayList<Object>) session.createSQLQuery(query).list();
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.close();
+        }
+        return objects;
+    }
+
     public static Object getDBObjects(String query){
         Session session = null;
         Object objects = null;
         try {
 
             session = getSessionFactory()
+                    .openSession();
+            objects = session.createQuery(query).list();
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.clear();
+            session.close();
+        }
+        return objects;
+    }
+    public static Object getDBObjectsOracle(String query){
+        Session session = null;
+        Object objects = null;
+        try {
+
+            session = getSessionFactoryNew()
                     .openSession();
             objects = session.createQuery(query).list();
         }catch(Exception e){
@@ -165,9 +228,9 @@ public class HibernateUtil {
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             Query query = session.createSQLQuery(queryString);
-            Object cell = query.uniqueResult();
-            if(cell!=null){
-                result = cell.toString();
+            List<Object> cell = (List<Object>) query.list();
+            if(cell!=null && cell.size()>0){
+                result = cell.get(0).toString();
             }
 
         }catch(Exception e){
@@ -209,13 +272,13 @@ public class HibernateUtil {
         }
     }
 
-    public static boolean saveOrUpdateList(List<? extends Object> objs){
+    public static boolean saveOrUpdateListOracle(List<? extends Object> objs){
         Session session = null;
         Transaction tx =null;
         boolean isSuccessful = false;
         try {
 
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = HibernateUtil.getSessionFactoryNew().openSession();
             tx = session.beginTransaction();
             for (Object obj : objs){
 
@@ -231,14 +294,36 @@ public class HibernateUtil {
         }
         return isSuccessful;
     }
-
-    public static boolean executeQuery(String query){
+    public static boolean saveOrUpdateListMySQL(List<? extends Object> objs){
         Session session = null;
         Transaction tx =null;
         boolean isSuccessful = false;
         try {
 
             session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            for (Object obj : objs){
+
+                session.save(obj);
+            }
+
+            tx.commit();
+            isSuccessful = true;
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.close();
+        }
+        return isSuccessful;
+    }
+
+    public static boolean executeQueryOracle(String query){
+        Session session = null;
+        Transaction tx =null;
+        boolean isSuccessful = false;
+        try {
+
+            session = HibernateUtil.getSessionFactoryNew().openSession();
             tx = session.beginTransaction();
             int s= session.createSQLQuery(query).executeUpdate();
 

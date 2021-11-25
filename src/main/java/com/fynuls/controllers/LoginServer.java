@@ -26,10 +26,8 @@ public class LoginServer {
             String token = generateToken(user.getUserName());
 
             loginResponse.setToken(token);
-            loginResponse.setUser(user);
             loginResponse.setStatusCode(Codes.ALL_OK);
         }else{
-            loginResponse.setUser(null);
             loginResponse.setToken("");
             loginResponse.setStatusCode(Codes.INVALID_CREDENTIALS);
         }

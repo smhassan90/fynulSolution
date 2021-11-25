@@ -197,7 +197,7 @@ public class SyncDAO {
                         isSuccessful = HibernateUtil.saveOrUpdate(tempOrder);
                     }
                     if(isSuccessful) {
-                        isSuccessful = HibernateUtil.saveOrUpdateList(packet.getProductOrders());
+                        isSuccessful = HibernateUtil.saveOrUpdateListMySQL(packet.getProductOrders());
                     }
                 }
             }
@@ -214,7 +214,7 @@ public class SyncDAO {
                 }
             }
             if(isSuccessful){
-                isSuccessful = HibernateUtil.saveOrUpdateList(unapprovedSDCustomersToSave);
+                isSuccessful = HibernateUtil.saveOrUpdateListMySQL(unapprovedSDCustomersToSave);
             }
 
             List<LeaveEntry> leaveEntries = syncObject.getLeaveEntries();
@@ -228,7 +228,7 @@ public class SyncDAO {
             }
 
             if(isSuccessful){
-                HibernateUtil.saveOrUpdateList(leaveEntriesToSave);
+                HibernateUtil.saveOrUpdateListMySQL(leaveEntriesToSave);
             }
 
             if(isSuccessful){
