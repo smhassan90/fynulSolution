@@ -46,6 +46,7 @@ com\fynuls\dal\BarChartData.class
 com\fynuls\entity\base\DistrictRegionMapping.class
 com\fynuls\dal\Dashboard.class
 com\fynuls\dal\ResponseBtnAdd.class
+com\fynuls\entity\SaleDetail.class
 com\fynuls\entity\sale\Depot.class
 com\fynuls\entity\base\Employee.class
 com\fynuls\controllers\greensales\Performance.class

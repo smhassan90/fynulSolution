@@ -9,4 +9,6 @@ public interface Codes {
     public static final String INVALID_TOKEN = "300";
     public static final String INVALID_CREDENTIALS = "404";
     public static final int FYNULS_APP_CODE = 2;
+    public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
 }

@@ -11,7 +11,6 @@
         <property name = "hibernate.connection.driver_class">
             com.mysql.cj.jdbc.Driver
         </property>
-        <property name='validationQuery'>SELECT 1</property>
         <!-- Assume test is the database name -->
 
         <property name = "hibernate.connection.url">
@@ -25,15 +24,9 @@
         <property name = "hibernate.connection.password">
             psw123
         </property>
-        <property name="hibernate.c3p0.validationQuery">SELECT 1</property>
-        <property name="hibernate.c3p0.maxIdle">5</property>
-        <property name="hibernate.c3p0.maxActive">20</property>
-        <property name="hibernate.c3p0.initialSize">5</property>
-        <property name="hibernate.c3p0.timeBetweenEvictionRunsMillis">10000</property>
-        <property name="hibernate.c3p0.testWhileIdle">true</property>
-        <property name="hibernate.c3p0.preferredTestQuery">SELECT 1</property>
-        <property name="hibernate.c3p0.autoCommitOnClose">true</property>
-        <property name="hibernate.c3p0.testConnectionOnCheckout">true</property>
+        <property name="hibernate.validationQuery">SELECT 1</property>
+        <property name="hibernate.validationInterval">6000</property>
+        <property name="hibernate.testOnBorrow">true</property>
 
 
         <mapping class="com.fynuls.entity.login.User" />
@@ -88,6 +81,7 @@
         <mapping class="com.fynuls.entity.base.DepotSectionToPosition" />
         <mapping class="com.fynuls.entity.base.DepotTerritoryToPosition" />
         <mapping class="com.fynuls.entity.base.EmployeeTagging" />
+        <mapping class="com.fynuls.entity.SaleDetailTemp" />
 
     </session-factory>
 

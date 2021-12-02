@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -129,7 +130,7 @@ public class Performance {
                 "WHERE 1=1 and " + whereClause+
                 "GROUP BY sdt.groupon";
 
-        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQueryOracle(query);
+        ArrayList<Object> objs = null;//HibernateUtil.getDBObjectsFromSQLQueryOracle(query);
         if(objs!=null){
             for(Object obj : objs){
                 Object[] temp = (Object[]) obj;
@@ -143,7 +144,8 @@ public class Performance {
             }
         }
 
-        return new Gson().toJson(productPerformances);
+       // return new Gson().toJson(productPerformances);
+        return null;
     }
 
     @CrossOrigin(origins = "*" )
@@ -151,7 +153,7 @@ public class Performance {
     @ResponseBody
     public String getReportingMonths(String token){
     
-        DropDownResponse dropDownResponse = new DropDownResponse();
+;        DropDownResponse dropDownResponse = new DropDownResponse();
 
         KeyValue keyValue = new KeyValue();
         List<KeyValue> keyValueList = new ArrayList<>();
@@ -198,7 +200,7 @@ public class Performance {
         KeyValue keyValue = new KeyValue();
         List<KeyValue> keyValueList = new ArrayList<>();
         try {
-            ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQueryOracle(query);
+            ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
             if(objs!=null && objs.size()>0){
                 KeyValue keyValueTemp = new KeyValue();
                 keyValueTemp.setKey("");
@@ -228,23 +230,24 @@ public class Performance {
         String whereClause = getWhereClause(token);
         String query = "";
 
+        int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+        String reportingMonth = Codes.monthNames[month-1] + ","+ Calendar.getInstance().get(Calendar.YEAR);
 
         if(type.equals("YTD_SALE")){
-            query = "select to_char(sum(tp_sale_value), '999,999,999,999') as \"YTD TP Sale Value\" from sale_detail_temp where "+whereClause+" reportingmonth in\n" +
+            query = "select  sum(tp_sale_value) as \"YTD TP Sale Value\" from sale_detail_temp where "+whereClause+" reportingmonth in " +
                     "('July,2021','August,2021','September,2021','October,2021','November,2021','December,2021','January,2022','February,2022','March,2022','April,2022','May,2022','June,2022')";
         }else if(type.equals("MTD_PERC")){
-            query = "select CONCAT(round(sum(sdt.tp_sale_value)/sum(tgt.target)*100,2),'%') as \"MTD Achievement\" from sale_detail_temp sdt\n" +
-                    "inner join targets tgt \n" +
-                    "on sdt.position_code = tgt.position_id\n" +
-                    "where "+whereClause+" sdt.reportingmonth='August,2021'";
-        }else if(type.equals("YTD_CYP")){
-            query = "select to_char(sum(CYP), '999,999,999,999') as \"YTD CYP\" from sale_detail_temp where reportingmonth in\n" +
-                    "('July,2021','August,2021','September,2021','October,2021','November,2021','December,2021','January,2022','February,2022','March,2022','April,2022','May,2022','June,2022')";
+            query = "select CONCAT(round(sum(sdt.NET_QTY)/sum(tgt.target)*100,2),'%') as \"MTD Achievement\" from sale_detail_temp sdt\n" +
+                    "inner join base_target tgt  " +
+                    "on sdt.position_code = tgt.position_id " +
+                    "where "+whereClause+" sdt.reportingmonth='"+reportingMonth+"'";
+        }else if(type.equals("UCC")){
+            query = "SELECT  count(count(*)) FROM SALE_DETAIL_TEMP WHERE REPORTINGMONTH= '"+reportingMonth+"' " +
+                    "GROUP BY concat(concat(cust_number,'#'),cust_name) having SUM(tp_sale_value)>0 order by SUM(tp_sale_value)";
         }
 
-        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQueryOracle(query);
+        ArrayList<Object> objs = null;//HibernateUtil.getDBObjectsFromSQLQuery(query);
         CardData cardData = new CardData();
-
 
         if(objs!=null && objs.size()>0){
             for (Object obj : objs) {
@@ -258,7 +261,8 @@ public class Performance {
             }
         }
 
-        return new Gson().toJson(cardData);
+       // return new Gson().toJson(cardData);
+        return null;
     }
 
     List<String> getPartnersArray(String token){
@@ -336,11 +340,11 @@ public class Performance {
         String whereClause = "";
         whereClause = getWhereClause(token);
 
-        String query = "select to_char(transaction_date, 'MON-YY'), reportingmonth as \"Month\", groupon as \"Group\", sum(tp_sale_value) as \"Net Value\" from sale_detail_temp\n" +
+        String query = "select DATE_FORMAT(TRANSACTION_DATE, '%M-%y'), reportingmonth as \"Month\", groupon as \"Group\", sum(tp_sale_value) as \"Net Value\" from sale_detail_temp\n" +
                 "where "+whereClause+"  reportingmonth IN ('July,2021','August,2021','September,2021','October,2021','November,2021','December,2021','January,2022','February,2022','March,2022','April,2022','May,2022','June,2022')\n" +
-                "group by groupon, reportingmonth,to_char(transaction_date, 'MON-YY') ORDER BY to_char(transaction_date, 'MON-YY') DESC";
+                "group by groupon, reportingmonth,DATE_FORMAT(TRANSACTION_DATE, '%M-%y') ORDER BY DATE_FORMAT(TRANSACTION_DATE, '%M-%y') DESC";
 
-        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQueryOracle(query);
+        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
         List<String> labels = new ArrayList<>();
         List<String> months = new ArrayList<>();
         BarChartData barChartData = new BarChartData();

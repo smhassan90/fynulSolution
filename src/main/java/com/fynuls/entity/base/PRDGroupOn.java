@@ -14,12 +14,19 @@ import java.util.Date;
 @Table(name="BASE_PRD_GRP_ON")
 public class PRDGroupOn {
     @Id
+    @Column(name="PRD_NO")
+    private String PRD_NO;
+
     @Column(name="PRD_NAME")
     private String PRD_NAME;
     @Column(name="PRD_CAT")
     private String PRD_CAT;
     @Column(name="GRP")
     private String GRP;
+    @Column(name="Price")
+    private double Price;
+    @Column(name="PRD_SIZE")
+    private String PRD_SIZE;
     @Column(name="PRD_GRP")
     private String PRD_GRP;
     @Column(name="GROUP_ON")
@@ -93,5 +100,29 @@ public class PRDGroupOn {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getPRD_NO() {
+        return PRD_NO;
+    }
+
+    public void setPRD_NO(String PRD_NO) {
+        this.PRD_NO = PRD_NO;
+    }
+
+    public double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(double price) {
+        Price = price;
+    }
+
+    public String getPRD_SIZE() {
+        return PRD_SIZE;
+    }
+
+    public void setPRD_SIZE(String PRD_SIZE) {
+        this.PRD_SIZE = PRD_SIZE;
     }
 }

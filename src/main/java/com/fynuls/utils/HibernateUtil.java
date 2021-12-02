@@ -56,7 +56,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return isSuccessful;
     }
@@ -74,7 +74,24 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
+        }
+        return isSuccessful;
+    }
+    public static boolean saveOracle(Object obj){
+        Session session = null;
+        Transaction tx =null;
+        boolean isSuccessful = false;
+        try {
+            session = getSessionFactoryNew().openSession();
+            tx = session.beginTransaction();
+            session.save(obj);
+            tx.commit();
+            isSuccessful = true;
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.clear();session.close();
         }
         return isSuccessful;
     }
@@ -91,7 +108,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return isSuccessful;
     }
@@ -110,7 +127,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return objects;
     }
@@ -125,7 +142,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return objects;
     }
@@ -141,7 +158,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return objects;
     }
@@ -157,7 +174,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return objects;
     }
@@ -174,7 +191,7 @@ public class HibernateUtil {
             LOG.error(e);
         }finally {
             session.clear();
-            session.close();
+            session.clear();session.close();
         }
         return objects;
     }
@@ -189,7 +206,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return objects;
     }
@@ -213,7 +230,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally{
-            session.close();
+            session.clear();session.close();
         }
 
         return (int) count;
@@ -236,7 +253,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally{
-            session.close();
+            session.clear();session.close();
         }
 
         return result;
@@ -268,7 +285,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally{
-            session.close();
+            session.clear();session.close();
         }
     }
 
@@ -290,7 +307,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return isSuccessful;
     }
@@ -312,7 +329,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return isSuccessful;
     }
@@ -332,7 +349,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return isSuccessful;
     }
@@ -348,7 +365,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return objects;
     }
@@ -374,7 +391,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.close();
+            session.clear();session.close();
         }
         return isSuccessful;
     }

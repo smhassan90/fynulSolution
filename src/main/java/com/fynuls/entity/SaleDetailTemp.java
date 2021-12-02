@@ -15,6 +15,8 @@ import java.util.Date;
 @Table(name="SALE_DETAIL_TEMP")
 public class SaleDetailTemp implements Cloneable{
     @Id
+    @Column(name="ID")
+    private int id;
     @Column(name="HUID")
     private double HUID;
     @Column(name="SUID")
@@ -150,6 +152,17 @@ public class SaleDetailTemp implements Cloneable{
 
     @Column(name="MNP_COMMISSION")
     private double MNP_COMMISSION;
+
+    @Column(name="REPORTINGMONTH")
+    private String REPORTINGMONTH;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public double getHUID() {
         return HUID;
@@ -673,5 +686,13 @@ public class SaleDetailTemp implements Cloneable{
 
     public void setMNP_COMMISSION(double MNP_COMMISSION) {
         this.MNP_COMMISSION = MNP_COMMISSION;
+    }
+
+    public String getREPORTINGMONTH() {
+        return REPORTINGMONTH;
+    }
+
+    public void setREPORTINGMONTH(String REPORTINGMONTH) {
+        this.REPORTINGMONTH = REPORTINGMONTH;
     }
 }
