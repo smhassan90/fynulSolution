@@ -13,10 +13,14 @@ import java.util.Date;
 @Entity
 @Table(name="BASE_TERRITORY_EMP_MAPPING")
 public class TerritoryEmployeeMapping {
+    @Id
+    @Column(name="ID")
+    private int ID;
+
 
     @Column(name="TERRITORY_CODE")
     private String TERRITORY_CODE;
-    @Id
+
     @Column(name="EMP_ID")
     private String EMP_ID;
 
@@ -24,6 +28,14 @@ public class TerritoryEmployeeMapping {
     private String SHARING;
     @Column(name="UPDATE_DATE")
     private Date updateDate;
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 
     public String getTERRITORY_CODE() {
         return TERRITORY_CODE;

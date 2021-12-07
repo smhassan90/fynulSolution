@@ -226,12 +226,25 @@ public class Performance {
     @RequestMapping(value = "/getCardData", method = RequestMethod.GET,params={"token", "type"})
     @ResponseBody
     private String getCardData(String token, String type){
-
+/*
+YTD_SALE_VALUE
+YTD_SALE_TP
+YTD_SALE_UNIT
+YTD_SALE_UCC
+MTD_SALE_VALUE
+MTD_SALE_TP
+MTD_SALE_UNIT
+MTD_SALE_UCC
+ */
         String whereClause = getWhereClause(token);
         String query = "";
 
         int month = Calendar.getInstance().get(Calendar.MONTH)+1;
         String reportingMonth = Codes.monthNames[month-1] + ","+ Calendar.getInstance().get(Calendar.YEAR);
+
+        if(type.equals("YTD_SALE_VALUE")){
+            query = "SELECT ";
+        }
 
         if(type.equals("YTD_SALE")){
             query = "select  sum(tp_sale_value) as \"YTD TP Sale Value\" from sale_detail_temp where "+whereClause+" reportingmonth in " +
@@ -342,7 +355,7 @@ public class Performance {
 
         String query = "select DATE_FORMAT(TRANSACTION_DATE, '%M-%y'), reportingmonth as \"Month\", groupon as \"Group\", sum(tp_sale_value) as \"Net Value\" from sale_detail_temp\n" +
                 "where "+whereClause+"  reportingmonth IN ('July,2021','August,2021','September,2021','October,2021','November,2021','December,2021','January,2022','February,2022','March,2022','April,2022','May,2022','June,2022')\n" +
-                "group by groupon, reportingmonth,DATE_FORMAT(TRANSACTION_DATE, '%M-%y') ORDER BY DATE_FORMAT(TRANSACTION_DATE, '%M-%y') DESC";
+                "group by groupon, reportingmonth,DATE_FORMAT(TRANSACTION_DATE, '%M-%y') ORDER BY TRANSACTION_DATE DESC";
 
         ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
         List<String> labels = new ArrayList<>();
