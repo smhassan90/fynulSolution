@@ -121,7 +121,7 @@ public class StaffDAO implements IStaffDatabaseDAO {
 
 
         try{
-            loginStatusList = (List<LoginStatus>) HibernateUtil.getDBObjects("FROM LoginStatus WHERE token ='"+token+"' and status=1");
+            loginStatusList = (List<LoginStatus>) HibernateUtil.getDBObjects("from LoginStatus where token ='"+token+"' and status=1");
         }catch (Exception e){
             LOG.error(e);
         }

@@ -14,19 +14,21 @@
         <!-- Assume test is the database name -->
 
         <property name = "hibernate.connection.url">
-            jdbc:mysql://192.168.0.51:3306/dbfynuls?autoReconnect=true&amp;tcpKeepAlive=true
+            jdbc:mysql://192.168.0.51:3306/dbfynuls
         </property>
 
         <property name = "hibernate.connection.username">
-            saleuser
+            myuser
         </property>
 
         <property name = "hibernate.connection.password">
-            psw123
+            password123
         </property>
-        <property name="hibernate.validationQuery">SELECT 1</property>
-        <property name="hibernate.validationInterval">6000</property>
-        <property name="hibernate.testOnBorrow">true</property>
+        <property name="default_schema">dbfynuls</property>
+        <!-- Shows SQL instructions in shell when you run your program and do any CRUD operation into the DB -->
+        <property name="show_sql">true</property>
+        <!-- Updates DB schema on startup -->
+        <property name="hbm2ddl.auto">update</property>
 
 
         <mapping class="com.fynuls.entity.login.User" />
@@ -81,8 +83,11 @@
         <mapping class="com.fynuls.entity.base.DepotSectionToPosition" />
         <mapping class="com.fynuls.entity.base.DepotTerritoryToPosition" />
         <mapping class="com.fynuls.entity.base.EmployeeTagging" />
+        <mapping class="com.fynuls.entity.base.EmployeeCustomer" />
         <mapping class="com.fynuls.entity.SaleDetailTemp" />
 
     </session-factory>
+
+
 
 </hibernate-configuration>
