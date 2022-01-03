@@ -1,6 +1,11 @@
 package com.fynuls.controllers.greensales;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public interface Codes {
+    public static final DecimalFormat df = new DecimalFormat("##,###,###.00");
     public static final String ALL_OK = "200";
     public static final String NOT_FOUND = "404";
     public static final String SOMETHING_WENT_WRONG = "502";
@@ -9,6 +14,7 @@ public interface Codes {
     public static final String INVALID_TOKEN = "300";
     public static final String INVALID_CREDENTIALS = "404";
     public static final int FYNULS_APP_CODE = 2;
+    public static NumberFormat nf = NumberFormat.getInstance();
     public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 }

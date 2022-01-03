@@ -20,7 +20,7 @@ public class EmployeeCustomer {
     @Column(name="POSITION_CODE")
     private String POSITION_CODE;
     @Column(name="CUSTOMER_CODE")
-    private int CUSTOMER_CODE;
+    private String CUSTOMER_CODE;
     @Column(name="UPDATE_DATE")
     private Date updateDate;
 
@@ -40,11 +40,11 @@ public class EmployeeCustomer {
         this.POSITION_CODE = POSITION_CODE;
     }
 
-    public int getCUSTOMER_CODE() {
+    public String getCUSTOMER_CODE() {
         return CUSTOMER_CODE;
     }
 
-    public void setCUSTOMER_CODE(int CUSTOMER_CODE) {
+    public void setCUSTOMER_CODE(String CUSTOMER_CODE) {
         this.CUSTOMER_CODE = CUSTOMER_CODE;
     }
 

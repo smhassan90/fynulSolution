@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.FileWriter;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,12 +36,13 @@ public class SalesDistribution {
 
         List<SDMonthlyFinalData> sdMonthlyFinalDataList = new ArrayList<>();
         //  sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjects("from SDMonthlyFinalData where TRANSACTION_DATE like '%-JUL-21'");
-        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where (transaction_date like '%-JUL-21%' OR \n" +
-                "transaction_date like '%-AUG-21%'  OR \n" +
-                "transaction_date like '%-SEP-21%'  OR \n" +
-                "transaction_date like '%-NOV-21%'  OR \n" +
-                "transaction_date like '%-OCT-21%') order by transaction_date DESC");
- //       sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
+//        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where (transaction_date like '%-JUL-21%' OR \n" +
+//                "transaction_date like '%-AUG-21%'  OR \n" +
+//                "transaction_date like '%-SEP-21%'  OR \n" +
+//                "transaction_date like '%-NOV-21%'  OR \n" +
+//                "transaction_date like '%-DEC-21%'  OR \n" +
+//                "transaction_date like '%-OCT-21%') order by transaction_date DESC");
+        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where HUID="+huid);
         Calendar cal = Calendar.getInstance();
         String reportingMonth ="";
@@ -284,9 +284,7 @@ public class SalesDistribution {
 
                 String whereInClause = getTaggedToWhereClause(taggedTo, "POSITION_ID");
 
-
                 int count = Integer.valueOf(getSingleString("SELECT count(*) FROM BASE_EMP_TAGGING where " + whereInClause + " tagged_to = '" + sdMonthlyFinalData.getPROVIDER_CODE() + "'"));
-
 
                 if (count > 1) {
                     taggedTo = new ArrayList<>();
@@ -322,11 +320,18 @@ public class SalesDistribution {
                                 sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("sathi"))) {
                             taggedTo = new ArrayList<>();
                             taggedTo.add("-FMCG01-");
-                            employeeCustomers = getPositionCodeFromEmployeeCustomerMapping(saleDetail,  taggedTo);
+
                         }else if(sdMonthlyFinalData.getPRD_NAME()!=null && (sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("touch"))){
                             taggedTo = new ArrayList<>();
                             taggedTo.add("-FMCG02-");
                         }
+                        employeeCustomers = getPositionCodeFromEmployeeCustomerMapping(saleDetail,  taggedTo);
+                        if(employeeCustomers!=null && employeeCustomers.size()==1){
+                            POSITION_ID = employeeCustomers.get(0).getPOSITION_CODE();
+                        }
+                    }else if (employeeCustomers.size()==1){
+                        POSITION_ID = employeeCustomers.get(0).getPOSITION_CODE();
+
                     }
                 }else{
                     remarks += "Employee Customers mapping not found in direct sales";
@@ -383,6 +388,7 @@ public class SalesDistribution {
                 }
             }
         }
+
         if(!POSITION_ID.equals("")){
             saleDetail.setPOSITION_CODE(POSITION_ID);
         }
@@ -398,7 +404,7 @@ public class SalesDistribution {
             whereClause = getTaggedToWhereClause(taggedTo,"POSITION_CODE");
 
         }
-        query = "from EmployeeCustomer where "+whereClause+" CUSTOMER_CODE='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME()+"'";
+        query = "from EmployeeCustomer where "+whereClause+" LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().toLowerCase()+"'";
 
         employeeCustomers = (List<EmployeeCustomer>) HibernateUtil.getDBObjects(query);
         return employeeCustomers;

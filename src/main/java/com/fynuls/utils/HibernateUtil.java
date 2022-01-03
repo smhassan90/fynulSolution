@@ -191,7 +191,7 @@ public class HibernateUtil {
             LOG.error(e);
         }finally {
             session.clear();
-            session.clear();session.close();
+            session.close();
         }
         return objects;
     }

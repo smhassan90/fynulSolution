@@ -4,6 +4,7 @@ import com.fynuls.dal.*;
 import com.fynuls.entity.base.Employee;
 import com.fynuls.entity.base.EmployeeIDPositionIDMapping;
 import com.fynuls.entity.base.EmployeeReportToMapping;
+import com.fynuls.entity.base.MTDYTDPERFORMANCE;
 import com.fynuls.entity.login.LoginStatus;
 import com.fynuls.utils.HibernateUtil;
 import com.google.gson.Gson;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -106,31 +110,36 @@ public class Performance {
         ProductPerformance productPerformance = new ProductPerformance();
         String tempMonth="AUG-21";
         String whereClause="";
+
         if(!month.equals("")){
-            whereClause += " sdt.reportingmonth = '"+month+"'\n";
+            whereClause += " reportingMonth = '"+month+"'\n";
         }
+
         if(!position_code.equals("")){
             if(!whereClause.equals("")){
                 whereClause +=" and ";
             }
-            whereClause += " sdt.position_code = '"+position_code+"' ";
+            whereClause += " position_code = '"+position_code+"' ";
+        }else{
+            if(!whereClause.equals("")){
+                whereClause +=" and ";
+            }
+            whereClause += getWhereClause(token);
         }
         if(!products.equals("")){
             if(!whereClause.equals("")){
                 whereClause +=" and ";
             }
-            whereClause += " sdt.groupon = '"+products+"' ";
+            whereClause += " groupon = '"+products+"' ";
         }
         if(whereClause.equals("")){
             whereClause = " 1=1 ";
         }
 
-        String query = "SELECT sdt.groupon, SUM(sdt.TP_SALE_VALUE), SUM(t.target), ROUND((SUM(sdt.TP_SALE_VALUE)/SUM( t.target))*100,2)  FROM SALE_DETAIL_TEMP  SDT\n" +
-                "INNER JOIN targets T ON t.position_id = sdt.position_code AND t.group_on_id = sdt.groupon\n" +
-                "WHERE 1=1 and " + whereClause+
-                "GROUP BY sdt.groupon";
+        String query = "SELECT *  FROM PERFORMANCE " +
+                "WHERE "+ whereClause+" and 1=1";
 
-        ArrayList<Object> objs = null;//HibernateUtil.getDBObjectsFromSQLQueryOracle(query);
+        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
         if(objs!=null){
             for(Object obj : objs){
                 Object[] temp = (Object[]) obj;
@@ -223,6 +232,65 @@ public class Performance {
     }
 
     @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/getAverageAndRequiredMonthly", method = RequestMethod.GET,params={"token", "type"})
+    @ResponseBody
+    private String getAverageAndRequiredMonthly(String token, String type){
+        String status = "";
+        String whereClause = getWhereClause(token);
+        String query = "select SUM(Current_month_average), SUM(required_month_average) FROM performance WHERE " + whereClause;
+
+        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
+        AverageMonthly averageMonthly = new AverageMonthly();
+        String averageMonthlyAchieved = "0";
+        String averageMonthlyRequired = "0";
+        if(objs!=null && objs.size()>0){
+            for (Object obj : objs) {
+                Object[] objects = (Object[]) obj;
+                if(objects!= null && objects.length>0) {
+                    averageMonthlyAchieved = currencyFormat(new BigDecimal(objects[0].toString()));
+                    averageMonthlyRequired = currencyFormat(new BigDecimal(objects[1].toString()));
+
+                    status=Codes.ALL_OK;
+                }
+            }
+        }
+        averageMonthly.setAchieved(averageMonthlyAchieved);
+        averageMonthly.setRequired(averageMonthlyRequired);
+        averageMonthly.setStatus(status);
+
+        return new Gson().toJson(averageMonthly);
+    }
+
+    @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/getUCC", method = RequestMethod.GET,params={"token", "type"})
+    @ResponseBody
+    private String getUCC(String token, String type){
+        String status = "";
+        String whereClause = getWhereClause(token);
+        String whereMonth = getWhereMonthClause(type);
+        String query = "select sum(IS_UCC) AS 'UCC' from ( SELECT CUST_NUMBER, CASE WHEN SUM(E_QTY) > 0 THEN 1 ELSE 0 END AS 'IS_UCC' FROM sale_detail_temp WHERE " +
+                whereClause + " and transaction_date " + whereMonth +
+                " GROUP BY CUST_NUMBER ) src";
+
+        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
+        SingleCard singleCard = new SingleCard();
+        String number = "";
+        if(objs!=null && objs.size()>0){
+            for (Object obj : objs) {
+                    number = currencyFormat(new BigDecimal(obj==null?"0":obj.toString()));
+                    status=Codes.ALL_OK;
+
+
+            }
+        }
+        singleCard.setNumber(number);
+        singleCard.setStatus(status);
+        singleCard.setText(type);
+
+        return new Gson().toJson(singleCard);
+    }
+
+    @CrossOrigin(origins = "*" )
     @RequestMapping(value = "/getCardData", method = RequestMethod.GET,params={"token", "type"})
     @ResponseBody
     private String getCardData(String token, String type){
@@ -236,50 +304,91 @@ MTD_SALE_TP
 MTD_SALE_UNIT
 MTD_SALE_UCC
  */
+/*
+Type : YTD
+TYPE : MTD
+ */
+        String condition = "";
+
+        if(type.equals("YTD")){
+            condition = " between '2021-07-01' and '2022-06-30' ";
+        }else if(type.equals("MTD")){
+            condition = " like '2021-12-%' ";
+        }
+
         String whereClause = getWhereClause(token);
-        String query = "";
+        String whereMonth = getWhereMonthClause(type);
+        String query = "SELECT SUM(E_QTY) AS E_QTY, "+
+                "SUM(`TP_SALE_VALUE`) as TP_SALE_VALUE FROM `SALE_DETAIL_TEMP` " +
+                "WHERE "+whereClause + " and transaction_date "+condition ;
 
-        int month = Calendar.getInstance().get(Calendar.MONTH)+1;
-        String reportingMonth = Codes.monthNames[month-1] + ","+ Calendar.getInstance().get(Calendar.YEAR);
+        String targetQuery = "SELECT ROUND(SUM(TARGET),2) AS 'TARGET_E_QTY', ROUND(SUM(`TGT_TP_VALUE`),2) AS 'TARGET_TP_VALUE', ROUND(SUM(`TGT_NET_VALUE`),2) AS 'TARGET_NET_VALUE', ROUND(SUM(`TGT_DIST_COMM`),2) AS 'MNP_COMMISSION' FROM `BASE_TARGET`  WHERE month "+condition+" and "+whereClause;
+        ArrayList<Object> objsTarget = HibernateUtil.getDBObjectsFromSQLQuery(targetQuery);
+        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
+        CardDataYear cardDataYear = new CardDataYear();
 
-        if(type.equals("YTD_SALE_VALUE")){
-            query = "SELECT ";
-        }
+        double E_QTY = 0;
+        double TARGET_E_QTY = 0;
+        double TP_SALE_VALUE = 0;
+        double TARGET_TP_VALUE = 0;
+        String status = Codes.SOMETHING_WENT_WRONG;
 
-        if(type.equals("YTD_SALE")){
-            query = "select  sum(tp_sale_value) as \"YTD TP Sale Value\" from sale_detail_temp where "+whereClause+" reportingmonth in " +
-                    "('July,2021','August,2021','September,2021','October,2021','November,2021','December,2021','January,2022','February,2022','March,2022','April,2022','May,2022','June,2022')";
-        }else if(type.equals("MTD_PERC")){
-            query = "select CONCAT(round(sum(sdt.NET_QTY)/sum(tgt.target)*100,2),'%') as \"MTD Achievement\" from sale_detail_temp sdt\n" +
-                    "inner join base_target tgt  " +
-                    "on sdt.position_code = tgt.position_id " +
-                    "where "+whereClause+" sdt.reportingmonth='"+reportingMonth+"'";
-        }else if(type.equals("UCC")){
-            query = "SELECT  count(count(*)) FROM SALE_DETAIL_TEMP WHERE REPORTINGMONTH= '"+reportingMonth+"' " +
-                    "GROUP BY concat(concat(cust_number,'#'),cust_name) having SUM(tp_sale_value)>0 order by SUM(tp_sale_value)";
-        }
+        if(objsTarget!=null && objsTarget.size()>0){
+            for (Object target : objsTarget) {
 
-        ArrayList<Object> objs = null;//HibernateUtil.getDBObjectsFromSQLQuery(query);
-        CardData cardData = new CardData();
+                Object[] objects = (Object[]) target;
+                if(objects!= null && objects.length>0){
+                    TARGET_E_QTY = Double.valueOf(objects[0]==null?"0":objects[0].toString());
+                    TARGET_TP_VALUE = Double.valueOf(objects[1]==null?"0":objects[1].toString());
+                    status=Codes.ALL_OK;
 
-        if(objs!=null && objs.size()>0){
-            for (Object obj : objs) {
-                cardData.setStatus(Codes.ALL_OK);
-                if(obj==null){
-                    cardData.setNumber("0");
-                }else{
-                    cardData.setNumber(obj.toString());
                 }
-
             }
         }
 
-       // return new Gson().toJson(cardData);
-        return null;
+        if(objs!=null && objs.size()>0){
+            for (Object obj : objs) {
+
+                Object[] objects = (Object[]) obj;
+                if(objects!= null && objects.length>0){
+                    E_QTY = Double.valueOf(objects[0]==null?"0":objects[0].toString());
+                    TP_SALE_VALUE = Double.valueOf(objects[1]==null?"0":objects[1].toString());
+                    status=Codes.ALL_OK;
+
+                }
+            }
+        }
+        cardDataYear.setAchTPValue(Codes.df.format(TP_SALE_VALUE));
+        cardDataYear.setTargetTPValue(Codes.df.format(TARGET_TP_VALUE));
+        cardDataYear.setTPValuePerc(Codes.df.format((TP_SALE_VALUE/TARGET_TP_VALUE)*100));
+
+        cardDataYear.setAchUnit(Codes.df.format(E_QTY));
+        cardDataYear.setTargetUnit(Codes.df.format(TARGET_E_QTY));
+        cardDataYear.setUnitPerc(Codes.df.format((E_QTY/TARGET_E_QTY)*100));
+        cardDataYear.setStatus(status);
+
+        return new Gson().toJson(cardDataYear);
     }
 
-    List<String> getPartnersArray(String token){
-        List<String> partners = new ArrayList<>();
+    private String getWhereMonthClause(String type) {
+        int month = Calendar.getInstance().get(Calendar.MONTH)+1;
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        String query = " ";
+        if(type.equals("MTD")){
+            query = "  like '"+year+"-"+month+"%'";
+        }else if(type.equals("YTD")){
+            query = "  between '2021-07-01' and '2022-06-30'";
+        }
+        return query;
+    }
+
+    public static String currencyFormat(BigDecimal n) {
+
+        return Codes.nf.format(n);
+    }
+
+    ArrayList<String> getPartnersArray(String token){
+        ArrayList<String> partners = new ArrayList<>();
         LoginStatus loginStatus = getLoginStatus(token);
         String username = "";
         if(loginStatus!=null){
@@ -303,6 +412,8 @@ MTD_SALE_UCC
         return partners;
     }
 
+
+
     /*
     This will return the where clause with position code of partners
      */
@@ -320,7 +431,7 @@ MTD_SALE_UCC
                 whereClause += "'"+ str+"'";
                 isFirst = false;
             }
-            whereClause += ") and ";
+            whereClause += ") ";
         }
         return whereClause;
     }
@@ -354,7 +465,7 @@ MTD_SALE_UCC
         whereClause = getWhereClause(token);
 
         String query = "select DATE_FORMAT(TRANSACTION_DATE, '%M-%y'), reportingmonth as \"Month\", groupon as \"Group\", sum(tp_sale_value) as \"Net Value\" from sale_detail_temp\n" +
-                "where "+whereClause+"  reportingmonth IN ('July,2021','August,2021','September,2021','October,2021','November,2021','December,2021','January,2022','February,2022','March,2022','April,2022','May,2022','June,2022')\n" +
+                "where "+whereClause+" and reportingmonth IN ('July,2021','August,2021','September,2021','October,2021','November,2021','December,2021','January,2022','February,2022','March,2022','April,2022','May,2022','June,2022')\n" +
                 "group by groupon, reportingmonth,DATE_FORMAT(TRANSACTION_DATE, '%M-%y') ORDER BY TRANSACTION_DATE DESC";
 
         ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
@@ -412,6 +523,138 @@ MTD_SALE_UCC
         barChartData.setLabels(labels);
 
         return new Gson().toJson(barChartData);
+    }
+
+    @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/getBIO", method = RequestMethod.GET,params={"token"})
+    @ResponseBody
+    private String getBIO(String token){
+        LoginStatus loginStatus = getLoginStatus(token);
+        String username = "";
+        Employee employee = new Employee();
+        String bio = "";
+        if(loginStatus!=null){
+            username = loginStatus.getUsername();
+            employee = getEmployee(username);
+            if(employee!=null){
+                bio = employee.getID() + " | " + employee.getNAME() + " | " +employee.getBASE();
+            }
+        }
+        return bio;
+    }
+
+    private Employee getEmployee(String username) {
+        Employee emp = new Employee();
+        List<Employee> employees = (List<Employee>) HibernateUtil.getDBObjects("from Employee where id='"+username+"'");
+        if(employees!=null && employees.size()>0){
+            emp = employees.get(0);
+        }
+
+        return emp;
+    }
+
+    @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/getSPOProgress", method = RequestMethod.GET,params={"token"})
+    @ResponseBody
+    private String getSPOProgress(String token){
+        String where = getWhereClause(token);
+
+        String mtdQuery = "";
+        String ytdQuery = "";
+
+        String targetMTD = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 2) as 'TARGET_NET_VALUE', e.name FROM `base_target` t INNER JOIN base_empid_positionid_mapping ep ON ep.POSITION_ID = t.POSITION_CODE INNER JOIN base_employee e on e.ID = ep.EMPLOYEE_ID  WHERE "+where+" and MONTH='2021-12-01' group by POSITION_CODE";
+        String achMTD = "SELECT POSITION_CODE, ROUND(SUM(NET_SALE_VALUE), 2) FROM SALE_DETAIL_TEMP WHERE "+where+" and transaction_date like '2021-12%' group by POSITION_CODE";
+        ArrayList<Object> objTargetMTD= HibernateUtil.getDBObjectsFromSQLQuery(targetMTD);
+        ArrayList<Object> objAchMTD= HibernateUtil.getDBObjectsFromSQLQuery(achMTD);
+
+        String targetYTD = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 2) as 'TARGET_NET_VALUE' FROM `base_target` WHERE "+where+" and MONTH between '2021-07-01' and '2021-12-01' group by POSITION_CODE";
+        String achYTD = "SELECT POSITION_CODE, ROUND(SUM(NET_SALE_VALUE), 2) FROM SALE_DETAIL_TEMP WHERE "+where+" and transaction_date between '2021-07-01' and '2021-12-31' group by POSITION_CODE";
+        ArrayList<Object> objTargetYTD= HibernateUtil.getDBObjectsFromSQLQuery(targetYTD);
+        ArrayList<Object> objAchYTD= HibernateUtil.getDBObjectsFromSQLQuery(achYTD);
+
+        String FYTarget = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 2) as 'TARGET_NET_VALUE' FROM `base_target` WHERE "+where+" and MONTH between '2021-07-01' and '2022-06-30' group by POSITION_CODE";
+        ArrayList<Object> objFYTarget= HibernateUtil.getDBObjectsFromSQLQuery(FYTarget);
+
+
+        List<String> partners = getPartnersArray(token);
+        SPOProgress spoProgress = new SPOProgress();
+        List<SPOProgress> spoProgressList = new ArrayList<>();
+
+
+        if(partners!=null){
+            for (String partner : partners){
+                double achM = 0;
+                double targetM = 0;
+                double targetY = 0;
+                double achY = 0;
+                double targetFY = 0;
+                String name = "";
+                spoProgress = new SPOProgress();
+                spoProgress.setName(getName(partner, objTargetMTD));
+                targetM = getNumberAgainstPartner(partner, objTargetMTD);
+                achM = getNumberAgainstPartner(partner, objAchMTD);
+
+                targetY = getNumberAgainstPartner(partner, objTargetYTD);
+                achY = getNumberAgainstPartner(partner, objAchMTD);
+
+                targetFY = getNumberAgainstPartner(partner, objFYTarget);
+
+                spoProgress.setMtdTarget(Codes.df.format(targetM));
+                spoProgress.setMtdAch(Codes.df.format(achM));
+                spoProgress.setYtdTarget(Codes.df.format(targetY));
+                spoProgress.setYtdAch(Codes.df.format(achY));
+                spoProgress.setMtdPerc(String.valueOf(Codes.df.format((achM/(targetM==0?1:targetM))*100)));
+                spoProgress.setYtdPerc(String.valueOf(Codes.df.format((achY/(targetY==0?1:targetY)*100))));
+                spoProgress.setFYTarget(String.valueOf(Codes.df.format(targetFY)));
+                spoProgress.setBalance(String.valueOf(Codes.df.format(targetFY-achY)));
+
+
+                spoProgressList.add(spoProgress);
+            }
+
+        }
+
+
+
+        return new Gson().toJson(spoProgressList);
+    }
+
+    private String getName(String position_code, ArrayList<Object> objTargetMTD) {
+        String name = "";
+        if(objTargetMTD!=null){
+            for (Object mtd : objTargetMTD){
+                Object[] mtdArray = (Object[]) mtd;
+                if(mtdArray!=null){
+                    if(!position_code.equals(mtdArray[0]==null?"":mtdArray[0].toString())){
+                        continue;
+                    }else{
+                        name = mtdArray[2].toString();
+                        break;
+                    }
+                }
+
+            }
+        }
+        return name;
+    }
+
+    private double getNumberAgainstPartner(String partner, ArrayList<Object> objTargetMTD) {
+        double number = 0;
+        if(objTargetMTD!=null){
+            for (Object mtd : objTargetMTD){
+                Object[] mtdArray = (Object[]) mtd;
+                if(mtdArray!=null){
+                    if(!partner.equals(mtdArray[0].toString())){
+                        continue;
+                    }else{
+                        number = Double.valueOf(mtdArray[1]==null?"0":mtdArray[1].toString());
+
+                    }
+                }
+
+            }
+        }
+        return number;
     }
 
 }

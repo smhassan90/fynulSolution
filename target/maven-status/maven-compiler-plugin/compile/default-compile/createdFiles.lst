@@ -2,7 +2,6 @@ com\fynuls\entity\base\TerritoryEmployeeMapping.class
 com\fynuls\dao\GSSDashboardDAO.class
 com\fynuls\entity\base\EmployeeZoneMapping.class
 com\fynuls\dal\Packet.class
-com\fynuls\dal\CardData.class
 com\fynuls\controllers\greensales\Login.class
 com\fynuls\dal\OrderSummary.class
 com\fynuls\entity\base\DistrictProvince.class
@@ -36,6 +35,8 @@ com\fynuls\entity\base\Channel.class
 com\fynuls\entity\base\Designation.class
 com\fynuls\entity\sale\Town.class
 com\fynuls\dao\IStaffDatabaseDAO.class
+com\fynuls\dal\AverageMonthly.class
+com\fynuls\dal\SingleCard.class
 com\fynuls\entity\sale\ProductOrder.class
 com\fynuls\entity\base\EmployeeIDPositionIDMapping.class
 com\fynuls\entity\base\TeamDepartment.class
@@ -53,6 +54,7 @@ com\fynuls\controllers\greensales\Performance.class
 com\fynuls\dal\ActualSaleData.class
 com\fynuls\entity\SDMonthlyFinalData.class
 com\fynuls\controllers\LoginServer.class
+com\fynuls\dal\CardDataYear.class
 com\fynuls\dal\DropDownResponse.class
 com\fynuls\entity\base\Providers.class
 com\fynuls\dal\Dataset.class
@@ -72,6 +74,7 @@ com\fynuls\controllers\DBCheck.class
 com\fynuls\dal\GeneralResponse.class
 com\fynuls\entity\base\ProviderTehsil.class
 com\fynuls\entity\base\TehsilSNDPOP.class
+com\fynuls\entity\base\EmployeeCustomer.class
 com\fynuls\entity\login\User.class
 com\fynuls\entity\base\District.class
 com\fynuls\entity\sale\SKUGroup.class
@@ -85,11 +88,13 @@ com\fynuls\controllers\AddBtnControllers.class
 com\fynuls\entity\base\EmployeePositionTeam.class
 com\fynuls\controllers\greensales\SalesDistribution.class
 com\fynuls\entity\base\EmployeePJP.class
+com\fynuls\dal\SPOProgress.class
 com\fynuls\utils\LogToFile.class
 com\fynuls\dal\KeyValue.class
 com\fynuls\entity\base\DistrictTehsil.class
 com\fynuls\dal\ProductPerformance.class
 com\fynuls\entity\base\DepotTerritoryToPosition.class
+com\fynuls\entity\base\MTDYTDPERFORMANCE.class
 com\fynuls\dal\CompleteEmployee.class
 com\fynuls\controllers\greensales\Sync.class
 com\fynuls\entity\base\EmployeePositionTeamRegion.class
