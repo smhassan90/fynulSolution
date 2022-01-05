@@ -85,7 +85,6 @@
         <mapping class="com.fynuls.entity.base.EmployeeTagging" />
         <mapping class="com.fynuls.entity.base.EmployeeCustomer" />
         <mapping class="com.fynuls.entity.SaleDetailTemp" />
-        <mapping class="com.fynuls.entity.base.MTDYTDPERFORMANCE" />
 
     </session-factory>
 

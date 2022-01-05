@@ -94,7 +94,6 @@ com\fynuls\dal\KeyValue.class
 com\fynuls\entity\base\DistrictTehsil.class
 com\fynuls\dal\ProductPerformance.class
 com\fynuls\entity\base\DepotTerritoryToPosition.class
-com\fynuls\entity\base\MTDYTDPERFORMANCE.class
 com\fynuls\dal\CompleteEmployee.class
 com\fynuls\controllers\greensales\Sync.class
 com\fynuls\entity\base\EmployeePositionTeamRegion.class

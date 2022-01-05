@@ -2,41 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b97868ee-8a81-4389-a884-a0d12a529b2e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/dal/AverageMonthly.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/dal/SPOProgress.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/dal/SingleCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/MTDYTDPERFORMANCE.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/employee_producer_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/employee_producer_war_exploded.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/employee-producer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/employee-producer.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Codes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Codes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/MissingData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/MissingData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/dal/CardData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/dal/CardDataYear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/EmployeeCustomer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/EmployeeCustomer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/dal/SPOProgress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/dal/SPOProgress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/MTDYTDPERFORMANCE.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate_mysql.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hibernate_mysql.cfg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/Codes.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/Codes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/MissingData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/MissingData.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/Performance.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/Performance.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/Performance.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/SalesDistribution.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fynuls/controllers/greensales/SalesDistribution.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/dal/CardData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/dao/StaffDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fynuls/dao/StaffDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/dal/SPOProgress.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fynuls/dal/SPOProgress.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/entity/base/MTDYTDPERFORMANCE.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/fynuls/utils/HibernateUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/fynuls/utils/HibernateUtil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/hibernate_mysql.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/hibernate_mysql.cfg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls.war" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls.war" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls.war.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls.war.original" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/controllers/greensales/Codes.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/controllers/greensales/Codes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/controllers/greensales/MissingData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/controllers/greensales/MissingData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls.war" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls.war.original" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/controllers/greensales/Performance.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/controllers/greensales/Performance.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/controllers/greensales/SalesDistribution.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/controllers/greensales/SalesDistribution.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/dal/CardData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/dao/StaffDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/dao/StaffDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/dal/SPOProgress.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/dal/SPOProgress.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/entity/base/MTDYTDPERFORMANCE.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/utils/HibernateUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/com/fynuls/utils/HibernateUtil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/hibernate_mysql.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/classes/hibernate_mysql.cfg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/fynuls-0.0.1-fynuls/WEB-INF/lib/mysql-connector-java-8.0.25.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
@@ -56,32 +42,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1666">
-              <caret line="564" column="129" selection-start-line="564" selection-start-column="129" selection-end-line="564" selection-end-column="129" />
+            <state relative-caret-position="-405">
+              <caret line="326" column="42" selection-start-line="326" selection-start-column="37" selection-end-line="326" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Codes.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.3.RELEASE/spring-web-4.3.3.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="138" selection-start-line="138" selection-end-line="138" />
             </state>
           </provider>
         </entry>
@@ -100,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="162" selection-start-line="162" selection-end-line="162" />
+            <state relative-caret-position="731">
+              <caret line="73" column="50" lean-forward="true" selection-start-line="73" selection-start-column="50" selection-end-line="73" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -113,27 +81,63 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/login/LoginStatus.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/PRDGroupOn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="9" column="24" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="24" />
+            <state relative-caret-position="153">
+              <caret line="13" column="28" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/SDMonthlyFinalData.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="212">
+              <caret line="278" selection-start-line="278" selection-end-line="278" />
               <folding>
-                <element signature="e#546#547#0" expanded="true" />
-                <element signature="e#577#578#0" expanded="true" />
+                <element signature="e#6023#6024#0" expanded="true" />
+                <element signature="e#6051#6052#0" expanded="true" />
+                <element signature="e#6161#6162#0" expanded="true" />
+                <element signature="e#6191#6192#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/dal/AverageMonthly.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/MissingData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+            <state relative-caret-position="1496">
+              <caret line="102" column="17" selection-start-line="102" selection-start-column="17" selection-end-line="102" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/LoginServerAttempt.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="867">
+              <caret line="68" column="61" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/hibernate_mysql.cfg.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1581">
+              <caret line="93" selection-start-line="93" selection-end-line="93" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2703">
+              <caret line="168" column="22" selection-start-line="168" selection-start-column="22" selection-end-line="168" selection-end-column="22" />
               <folding>
-                <element signature="e#508#509#0" expanded="true" />
-                <element signature="e#552#553#0" expanded="true" />
-                <element signature="e#588#589#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -159,17 +163,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getDBOb</find>
-      <find>mysql</find>
-      <find>getSessionFactory</find>
-      <find>employeeC</find>
-      <find>CUSTO</find>
-      <find>SNDPOP</find>
-      <find>Remarks</find>
-      <find>getMissingData</find>
-      <find>getLoginStatus</find>
-      <find>Employee</find>
-      <find>getEmployee</find>
       <find>bio</find>
       <find>getProductPerformance</find>
       <find>getPartners</find>
@@ -188,7 +181,18 @@
       <find>getWhereMonthClause</find>
       <find>Codes.</find>
       <find>getWhereClause</find>
+      <find>Perform</find>
+      <find>MTDYTDPERFORMANCE</find>
+      <find>reportingmonth IN ('July,2021','August,2021','Se</find>
+      <find>July</find>
+      <find>loginServerAttempt</find>
+      <find>class</find>
+      <find>getDBObjectsFromSQLQueryClass</find>
       <find>getName</find>
+      <find>objAchMTD</find>
+      <find>getSPOProgressProductWise</find>
+      <find>getGroupOns</find>
+      <find>ROUND</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -239,15 +243,15 @@
         <option value="$PROJECT_DIR$/src/main/java/com/fynuls/dal/CardDataYear.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/fynuls/dal/SingleCard.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/fynuls/dal/AverageMonthly.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/MissingData.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/fynuls/dal/MTDYTDPERFORMANCE.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/hibernate_mysql.cfg.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/MTDYTDPERFORMANCE.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/fynuls/dal/SPOProgress.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Codes.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/hibernate_mysql.cfg.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/fynuls/dal/SPOProgress.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java" />
       </list>
     </option>
   </component>
@@ -275,8 +279,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -416,6 +418,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -427,7 +431,7 @@
     <property name="RequestMappingsPanelWidth2" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1641245425905" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1641392934302" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../portal" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -578,11 +582,13 @@
       <workItem from="1641143407428" duration="663000" />
       <workItem from="1641189246384" duration="16166000" />
       <workItem from="1641234840147" duration="10446000" />
+      <workItem from="1641279631216" duration="11486000" />
+      <workItem from="1641366549934" duration="12496000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="603318000" />
+    <option name="totallyTimeSpent" value="627300000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -595,7 +601,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989605" visible="true" weight="0.20604026" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -608,13 +613,13 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3286119" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.49731544" visible="true" weight="0.38668555" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.66040266" weight="0.44334278" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Spring" order="7" weight="0.3286119" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49798658" weight="0.3186969" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50201344" side_tool="true" weight="0.3186969" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.49731544" visible="true" weight="0.3186969" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.3395973" side_tool="true" weight="1.0" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.3286119" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.3286119" />
@@ -642,15 +647,9 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java</url>
-          <line>190</line>
+          <line>208</line>
           <properties />
           <option name="timeStamp" value="162" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java</url>
-          <line>509</line>
-          <properties />
-          <option name="timeStamp" value="177" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/dao/StaffDAO.java</url>
@@ -666,27 +665,51 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java</url>
-          <line>108</line>
+          <line>110</line>
           <properties />
           <option name="timeStamp" value="224" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java</url>
-          <line>141</line>
+          <line>143</line>
           <properties />
           <option name="timeStamp" value="229" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java</url>
-          <line>611</line>
+          <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/LoginServerAttempt.java</url>
+          <line>33</line>
           <properties />
-          <option name="timeStamp" value="239" />
+          <option name="timeStamp" value="246" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java</url>
-          <line>578</line>
+          <line>568</line>
           <properties />
-          <option name="timeStamp" value="242" />
+          <option name="timeStamp" value="249" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java</url>
+          <line>636</line>
+          <properties />
+          <option name="timeStamp" value="251" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java</url>
+          <line>650</line>
+          <properties />
+          <option name="timeStamp" value="252" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java</url>
+          <line>61</line>
+          <properties />
+          <option name="timeStamp" value="253" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java</url>
+          <line>83</line>
+          <properties />
+          <option name="timeStamp" value="254" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -695,61 +718,66 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
-        <watch expression="spoProgress.getMtdAch()" language="JAVA" />
-        <watch expression="spoProgress.getMtdAch()" language="JAVA" />
-        <watch expression="spoProgress.getMtdTarget()" language="JAVA" />
+        <watch expression="getName(partner, objTargetMTD)" language="JAVA" />
+        <watch expression="mtdArray[0]" language="JAVA" />
+        <watch expression="Double.valueOf(sdMonthlyFinalData.getNET_QTY())" language="JAVA" />
+        <watch expression="objTargetMTD" language="JAVA" />
+        <watch expression="objTargetMTD[0]" language="JAVA" />
+        <watch expression="objTargetMTD.get(0)" language="JAVA" />
+        <watch expression="objTargetMTD.get(0)[0].toString()" language="JAVA" />
+        <watch expression="&quot;where (transaction_date like '%-JUL-21%' OR \\n\&quot; +                 \&quot;transaction_date like '%-AUG-21%'  OR \\n\&quot; +                 \&quot;transaction_date like '%-SEP-21%'  OR \\n\&quot; +                 \&quot;transaction_date like '%-DEC-21%'  OR \\n\&quot; +                 \&quot;transaction_date like '%-NOV-21%'  OR \\n\&quot; +                 \&quot;transaction_date like '%-OCT-21%') and nature is not null order by transaction_date DESC&quot;" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
       <expression>
-        <expression-string>spoProgress.getMtdTarget()</expression-string>
+        <expression-string>&quot;where (transaction_date like '%-JUL-21%' OR \\n\&quot; +                 \&quot;transaction_date like '%-AUG-21%'  OR \\n\&quot; +                 \&quot;transaction_date like '%-SEP-21%'  OR \\n\&quot; +                 \&quot;transaction_date like '%-DEC-21%'  OR \\n\&quot; +                 \&quot;transaction_date like '%-NOV-21%'  OR \\n\&quot; +                 \&quot;transaction_date like '%-OCT-21%') and nature is not null order by transaction_date DESC&quot;</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>spoProgress.getMtdAch()</expression-string>
+        <expression-string>objTargetMTD.get(0)[0].toString()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>(spoProgress.getMtdAch()/spoProgress.getMtdTarget())*100</expression-string>
+        <expression-string>objTargetMTD.get(0)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>spoProgress.getMtdAch()/spoProgress.getMtdTarget()</expression-string>
+        <expression-string>objTargetMTD[0]</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mtd[12].toString().equals(partner)</expression-string>
+        <expression-string>objTargetMTD</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mtd[12]</expression-string>
+        <expression-string>Double.valueOf(sdMonthlyFinalData.getNET_QTY())</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mtd</expression-string>
+        <expression-string>mtdArray[0]</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>mtd.toString()</expression-string>
+        <expression-string>getName(partner, objTargetMTD)</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>whereClause</expression-string>
+        <expression-string>sessionFactory = new Configuration().configure(&quot;hibernate_mysql.cfg.xml&quot;).buildSessionFactory();</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>!month.equals(&quot;&quot;)</expression-string>
+        <expression-string>sessionFactory = Invalid expression : sessionFactory =</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -763,20 +791,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/login/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/dao/IStaffDatabaseDAO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/sale/SKUGroup.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -788,13 +802,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="128" selection-start-line="128" selection-end-line="128" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Sync.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
         </state>
       </provider>
     </entry>
@@ -994,13 +1001,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/SDMonthlyFinalData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3366">
-          <caret line="272" selection-start-line="272" selection-end-line="272" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="731">
@@ -1015,47 +1015,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/MissingData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1632">
-          <caret line="110" column="35" selection-start-line="110" selection-start-column="35" selection-end-line="110" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/dal/MTDYTDPERFORMANCE.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/resources/hibernate_mysql.cfg.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/MTDYTDPERFORMANCE.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Codes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1479">
-          <caret line="87" column="64" selection-start-line="87" selection-start-column="64" selection-end-line="87" selection-end-column="64" />
+        <state relative-caret-position="85">
+          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/MTDYTDPERFORMANCE.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.3.RELEASE/spring-web-4.3.3.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="16" column="30" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="45" column="50" selection-start-line="45" selection-start-column="50" selection-end-line="45" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/SaleDetailTemp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3247">
-          <caret line="231" selection-start-line="231" selection-end-line="231" />
-          <folding>
-            <element signature="e#5698#5699#0" expanded="true" />
-            <element signature="e#6009#6010#0" expanded="true" />
-            <element signature="e#6037#6038#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="2057">
+          <caret line="138" selection-start-line="138" selection-end-line="138" />
         </state>
       </provider>
     </entry>
@@ -1063,10 +1035,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="9" column="24" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="24" />
-          <folding>
-            <element signature="e#546#547#0" expanded="true" />
-            <element signature="e#577#578#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1082,6 +1050,63 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Sync.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/SaleDetailTemp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3247">
+          <caret line="231" selection-start-line="231" selection-end-line="231" />
+          <folding>
+            <element signature="e#5698#5699#0" expanded="true" />
+            <element signature="e#6009#6010#0" expanded="true" />
+            <element signature="e#6037#6038#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/MissingData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1496">
+          <caret line="102" column="17" selection-start-line="102" selection-start-column="17" selection-end-line="102" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/LoginServerAttempt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="68" column="61" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/hibernate_mysql.cfg.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1581">
+          <caret line="93" selection-start-line="93" selection-end-line="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2703">
+          <caret line="168" column="22" selection-start-line="168" selection-start-column="22" selection-end-line="168" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/dal/ActualSaleData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -1089,94 +1114,53 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.3.RELEASE/spring-web-4.3.3.RELEASE.jar!/org/springframework/web/method/support/InvocableHandlerMethod.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="138" selection-start-line="138" selection-end-line="138" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Codes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/dal/SPOProgress.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="85" column="16" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="16" />
+        <state relative-caret-position="114">
+          <caret line="30" column="16" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
           <folding>
-            <element signature="e#383#384#0" expanded="true" />
-            <element signature="e#410#411#0" expanded="true" />
-            <element signature="e#450#451#0" expanded="true" />
-            <element signature="e#482#483#0" expanded="true" />
-            <element signature="e#518#519#0" expanded="true" />
-            <element signature="e#550#551#0" expanded="true" />
-            <element signature="e#600#601#0" expanded="true" />
-            <element signature="e#642#643#0" expanded="true" />
-            <element signature="e#675#676#0" expanded="true" />
-            <element signature="e#704#705#0" expanded="true" />
-            <element signature="e#748#749#0" expanded="true" />
-            <element signature="e#784#785#0" expanded="true" />
-            <element signature="e#818#819#0" expanded="true" />
-            <element signature="e#848#849#0" expanded="true" />
-            <element signature="e#894#895#0" expanded="true" />
-            <element signature="e#932#933#0" expanded="true" />
-            <element signature="e#968#969#0" expanded="true" />
-            <element signature="e#1000#1001#0" expanded="true" />
-            <element signature="e#1050#1051#0" expanded="true" />
-            <element signature="e#1092#1093#0" expanded="true" />
-            <element signature="e#1125#1126#0" expanded="true" />
-            <element signature="e#1154#1155#0" expanded="true" />
-            <element signature="e#1198#1199#0" expanded="true" />
-            <element signature="e#1234#1235#0" expanded="true" />
-            <element signature="e#1268#1269#0" expanded="true" />
-            <element signature="e#1298#1299#0" expanded="true" />
-            <element signature="e#1344#1345#0" expanded="true" />
-            <element signature="e#1382#1383#0" expanded="true" />
-            <element signature="e#1417#1418#0" expanded="true" />
-            <element signature="e#1448#1449#0" expanded="true" />
-            <element signature="e#1496#1497#0" expanded="true" />
-            <element signature="e#1536#1537#0" expanded="true" />
-            <element signature="e#1570#1571#0" expanded="true" />
-            <element signature="e#1600#1601#0" expanded="true" />
-            <element signature="e#1646#1647#0" expanded="true" />
-            <element signature="e#1684#1685#0" expanded="true" />
-            <element signature="e#1714#1715#0" expanded="true" />
-            <element signature="e#1740#1741#0" expanded="true" />
-            <element signature="e#1778#1779#0" expanded="true" />
-            <element signature="e#1808#1809#0" expanded="true" />
-            <element signature="e#1838#1839#0" expanded="true" />
-            <element signature="e#1864#1865#0" expanded="true" />
-            <element signature="e#1902#1903#0" expanded="true" />
-            <element signature="e#1932#1933#0" expanded="true" />
+            <element signature="e#556#557#0" expanded="true" />
+            <element signature="e#592#593#0" expanded="true" />
+            <element signature="e#650#651#0" expanded="true" />
+            <element signature="e#700#701#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/PRDGroupOn.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/SDMonthlyFinalData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="20" column="28" selection-start-line="15" selection-start-column="4" selection-end-line="20" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/utils/HibernateUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="162" selection-start-line="162" selection-end-line="162" />
+        <state relative-caret-position="212">
+          <caret line="278" selection-start-line="278" selection-end-line="278" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#6023#6024#0" expanded="true" />
+            <element signature="e#6051#6052#0" expanded="true" />
+            <element signature="e#6161#6162#0" expanded="true" />
+            <element signature="e#6191#6192#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/Performance.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1666">
-          <caret line="564" column="129" selection-start-line="564" selection-start-column="129" selection-end-line="564" selection-end-column="129" />
+        <state relative-caret-position="-405">
+          <caret line="326" column="42" selection-start-line="326" selection-start-column="37" selection-end-line="326" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/entity/base/PRDGroupOn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="13" column="28" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/fynuls/controllers/greensales/SalesDistribution.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="73" column="50" lean-forward="true" selection-start-line="73" selection-start-column="50" selection-end-line="73" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

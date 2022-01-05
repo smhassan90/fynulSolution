@@ -18,6 +18,7 @@ public class HibernateUtil {
     final static Logger LOG = Logger.getLogger(HibernateUtil.class);
 
     public static SessionFactory getSessionFactory(){
+
         if(sessionFactory == null){
             try{
                 sessionFactory = new Configuration().configure("hibernate_mysql.cfg.xml").buildSessionFactory();
@@ -146,6 +147,23 @@ public class HibernateUtil {
         }
         return objects;
     }
+
+    public static ArrayList<Object> getDBObjectsFromSQLQueryClass(String query, Class cls){
+        Session session = null;
+        ArrayList<Object> objects = new ArrayList<>();
+        try {
+
+            session = getSessionFactory()
+                    .openSession();
+            objects = (ArrayList<Object>) session.createSQLQuery(query).addEntity(cls).list();
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.clear();session.close();
+        }
+        return objects;
+    }
+
 
     public static ArrayList<Object> getDBObjectsFromSQLQuery(String query){
         Session session = null;

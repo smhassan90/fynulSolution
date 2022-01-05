@@ -4,7 +4,6 @@ import com.fynuls.dal.*;
 import com.fynuls.entity.base.Employee;
 import com.fynuls.entity.base.EmployeeIDPositionIDMapping;
 import com.fynuls.entity.base.EmployeeReportToMapping;
-import com.fynuls.entity.base.MTDYTDPERFORMANCE;
 import com.fynuls.entity.login.LoginStatus;
 import com.fynuls.utils.HibernateUtil;
 import com.google.gson.Gson;
@@ -30,11 +29,14 @@ import java.util.List;
 public class Performance {
     private LoginStatus getLoginStatus(String token){
         LoginStatus loginStatus = null;
-        String query = "from LoginStatus where token='" + token + "'";
-        List<LoginStatus> loginStatusList = (List<LoginStatus>) HibernateUtil.getDBObjects(query);
+       // String query = "from LoginStatus where token='" + token + "'";
+        String query = "SELECT * FROM LOGINSTATUS WHERE TOKEN='" + token + "'";
+        ArrayList<Object> loginStatusList =  HibernateUtil.getDBObjectsFromSQLQueryClass(query, LoginStatus.class);
+
+
 
         if (loginStatusList != null && loginStatusList.size() > 0) {
-            loginStatus = loginStatusList.get(0);
+            loginStatus = (LoginStatus) loginStatusList.get(0);
         }
         return loginStatus;
     }
@@ -139,7 +141,7 @@ public class Performance {
         String query = "SELECT *  FROM PERFORMANCE " +
                 "WHERE "+ whereClause+" and 1=1";
 
-        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
+        ArrayList<Object> objs = null;//HibernateUtil.getDBObjectsFromSQLQuery(query);
         if(objs!=null){
             for(Object obj : objs){
                 Object[] temp = (Object[]) obj;
@@ -239,7 +241,7 @@ public class Performance {
         String whereClause = getWhereClause(token);
         String query = "select SUM(Current_month_average), SUM(required_month_average) FROM performance WHERE " + whereClause;
 
-        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
+        ArrayList<Object> objs = null;//HibernateUtil.getDBObjectsFromSQLQuery(query);
         AverageMonthly averageMonthly = new AverageMonthly();
         String averageMonthlyAchieved = "0";
         String averageMonthlyRequired = "0";
@@ -322,7 +324,7 @@ TYPE : MTD
                 "SUM(`TP_SALE_VALUE`) as TP_SALE_VALUE FROM `SALE_DETAIL_TEMP` " +
                 "WHERE "+whereClause + " and transaction_date "+condition ;
 
-        String targetQuery = "SELECT ROUND(SUM(TARGET),2) AS 'TARGET_E_QTY', ROUND(SUM(`TGT_TP_VALUE`),2) AS 'TARGET_TP_VALUE', ROUND(SUM(`TGT_NET_VALUE`),2) AS 'TARGET_NET_VALUE', ROUND(SUM(`TGT_DIST_COMM`),2) AS 'MNP_COMMISSION' FROM `BASE_TARGET`  WHERE month "+condition+" and "+whereClause;
+        String targetQuery = "SELECT ROUND(SUM(TARGET),2) AS 'TARGET_E_QTY', ROUND(SUM(`TGT_TP_VALUE`),0) AS 'TARGET_TP_VALUE', ROUND(SUM(`TGT_NET_VALUE`),0) AS 'TARGET_NET_VALUE', ROUND(SUM(`TGT_DIST_COMM`),0) AS 'MNP_COMMISSION' FROM `BASE_TARGET`  WHERE month "+condition+" and "+whereClause;
         ArrayList<Object> objsTarget = HibernateUtil.getDBObjectsFromSQLQuery(targetQuery);
         ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
         CardDataYear cardDataYear = new CardDataYear();
@@ -465,7 +467,7 @@ TYPE : MTD
         whereClause = getWhereClause(token);
 
         String query = "select DATE_FORMAT(TRANSACTION_DATE, '%M-%y'), reportingmonth as \"Month\", groupon as \"Group\", sum(tp_sale_value) as \"Net Value\" from sale_detail_temp\n" +
-                "where "+whereClause+" and reportingmonth IN ('July,2021','August,2021','September,2021','October,2021','November,2021','December,2021','January,2022','February,2022','March,2022','April,2022','May,2022','June,2022')\n" +
+                "where "+whereClause+" and transaction_date between '2021-07-01' and '2022-06-30' \n" +
                 "group by groupon, reportingmonth,DATE_FORMAT(TRANSACTION_DATE, '%M-%y') ORDER BY TRANSACTION_DATE DESC";
 
         ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
@@ -562,17 +564,17 @@ TYPE : MTD
         String mtdQuery = "";
         String ytdQuery = "";
 
-        String targetMTD = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 2) as 'TARGET_NET_VALUE', e.name FROM `base_target` t INNER JOIN base_empid_positionid_mapping ep ON ep.POSITION_ID = t.POSITION_CODE INNER JOIN base_employee e on e.ID = ep.EMPLOYEE_ID  WHERE "+where+" and MONTH='2021-12-01' group by POSITION_CODE";
-        String achMTD = "SELECT POSITION_CODE, ROUND(SUM(NET_SALE_VALUE), 2) FROM SALE_DETAIL_TEMP WHERE "+where+" and transaction_date like '2021-12%' group by POSITION_CODE";
+        String targetMTD = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 0) as 'TARGET_NET_VALUE', e.name FROM `base_target` t INNER JOIN base_empid_positionid_mapping ep ON ep.POSITION_ID = t.POSITION_CODE INNER JOIN base_employee e on e.ID = ep.EMPLOYEE_ID  WHERE "+where+" and MONTH='2021-12-01' group by POSITION_CODE";
+        String achMTD = "SELECT POSITION_CODE, ROUND(SUM(NET_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE "+where+" and transaction_date like '2021-12%' group by POSITION_CODE";
         ArrayList<Object> objTargetMTD= HibernateUtil.getDBObjectsFromSQLQuery(targetMTD);
         ArrayList<Object> objAchMTD= HibernateUtil.getDBObjectsFromSQLQuery(achMTD);
 
-        String targetYTD = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 2) as 'TARGET_NET_VALUE' FROM `base_target` WHERE "+where+" and MONTH between '2021-07-01' and '2021-12-01' group by POSITION_CODE";
-        String achYTD = "SELECT POSITION_CODE, ROUND(SUM(NET_SALE_VALUE), 2) FROM SALE_DETAIL_TEMP WHERE "+where+" and transaction_date between '2021-07-01' and '2021-12-31' group by POSITION_CODE";
+        String targetYTD = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 0) as 'TARGET_NET_VALUE' FROM `base_target` WHERE "+where+" and MONTH between '2021-07-01' and '2021-12-01' group by POSITION_CODE";
+        String achYTD = "SELECT POSITION_CODE, ROUND(SUM(NET_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE "+where+" and transaction_date between '2021-07-01' and '2021-12-31' group by POSITION_CODE";
         ArrayList<Object> objTargetYTD= HibernateUtil.getDBObjectsFromSQLQuery(targetYTD);
         ArrayList<Object> objAchYTD= HibernateUtil.getDBObjectsFromSQLQuery(achYTD);
 
-        String FYTarget = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 2) as 'TARGET_NET_VALUE' FROM `base_target` WHERE "+where+" and MONTH between '2021-07-01' and '2022-06-30' group by POSITION_CODE";
+        String FYTarget = "SELECT POSITION_CODE, ROUND(SUM(TGT_NET_VALUE), 0) as 'TARGET_NET_VALUE' FROM `base_target` WHERE "+where+" and MONTH between '2021-07-01' and '2022-06-30' group by POSITION_CODE";
         ArrayList<Object> objFYTarget= HibernateUtil.getDBObjectsFromSQLQuery(FYTarget);
 
 
@@ -591,11 +593,12 @@ TYPE : MTD
                 String name = "";
                 spoProgress = new SPOProgress();
                 spoProgress.setName(getName(partner, objTargetMTD));
+                spoProgress.setPosition_code(partner);
                 targetM = getNumberAgainstPartner(partner, objTargetMTD);
                 achM = getNumberAgainstPartner(partner, objAchMTD);
 
                 targetY = getNumberAgainstPartner(partner, objTargetYTD);
-                achY = getNumberAgainstPartner(partner, objAchMTD);
+                achY = getNumberAgainstPartner(partner, objAchYTD);
 
                 targetFY = getNumberAgainstPartner(partner, objFYTarget);
 
@@ -617,6 +620,88 @@ TYPE : MTD
 
 
         return new Gson().toJson(spoProgressList);
+    }
+
+    @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/getSPOProgressProductWise", method = RequestMethod.GET,params={"token", "position_code"})
+    @ResponseBody
+    private String getSPOProgressProductWise(String token, String position_code){
+        String where = getWhereClause(token);
+
+        String mtdQuery = "";
+        String ytdQuery = "";
+
+        String targetMTD = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_NET_VALUE), 0) as 'TARGET_NET_VALUE', e.name FROM `base_target` t INNER JOIN base_empid_positionid_mapping ep ON ep.POSITION_ID = t.POSITION_CODE INNER JOIN base_employee e on e.ID = ep.EMPLOYEE_ID  WHERE position_code='"+position_code+"' and MONTH='2021-12-01' group by GROUP_ON_ID";
+        String achMTD = "SELECT GROUPON, ROUND(SUM(NET_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE position_code='"+position_code+"' and transaction_date like '2021-12%' group by GROUPON";
+        ArrayList<Object> objTargetMTD= HibernateUtil.getDBObjectsFromSQLQuery(targetMTD);
+        ArrayList<Object> objAchMTD= HibernateUtil.getDBObjectsFromSQLQuery(achMTD);
+
+        String targetYTD = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_NET_VALUE), 0) as 'TARGET_NET_VALUE' FROM `base_target` WHERE position_code='"+position_code+"' and MONTH between '2021-07-01' and '2021-12-01' group by GROUP_ON_ID";
+        String achYTD = "SELECT GROUPON, ROUND(SUM(NET_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE position_code='"+position_code+"' and transaction_date between '2021-07-01' and '2021-12-31' group by GROUPON";
+        ArrayList<Object> objTargetYTD= HibernateUtil.getDBObjectsFromSQLQuery(targetYTD);
+        ArrayList<Object> objAchYTD= HibernateUtil.getDBObjectsFromSQLQuery(achYTD);
+
+        String FYTarget = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_NET_VALUE), 0) as 'TARGET_NET_VALUE' FROM `base_target` WHERE position_code='"+position_code+"' and MONTH between '2021-07-01' and '2022-06-30' group by GROUP_ON_ID";
+        ArrayList<Object> objFYTarget= HibernateUtil.getDBObjectsFromSQLQuery(FYTarget);
+
+
+      //  List<String> partners = getPartnersArray(token);
+        List<String> groupOns = getGroupOns(objTargetYTD);
+
+        SPOProgress spoProgress = new SPOProgress();
+        List<SPOProgress> spoProgressList = new ArrayList<>();
+
+
+        if(groupOns!=null){
+            for (String groupon : groupOns){
+                double achM = 0;
+                double targetM = 0;
+                double targetY = 0;
+                double achY = 0;
+                double targetFY = 0;
+                String name = "";
+                spoProgress = new SPOProgress();
+                spoProgress.setName(groupon);
+                spoProgress.setPosition_code(groupon);
+                targetM = getNumberAgainstPartner(groupon, objTargetMTD);
+                achM = getNumberAgainstPartner(groupon, objAchMTD);
+
+                targetY = getNumberAgainstPartner(groupon, objTargetYTD);
+                achY = getNumberAgainstPartner(groupon, objAchYTD);
+
+                targetFY = getNumberAgainstPartner(groupon, objFYTarget);
+
+                spoProgress.setMtdTarget(Codes.df.format(targetM));
+                spoProgress.setMtdAch(Codes.df.format(achM));
+                spoProgress.setYtdTarget(Codes.df.format(targetY));
+                spoProgress.setYtdAch(Codes.df.format(achY));
+                spoProgress.setMtdPerc(String.valueOf(Codes.df.format((achM/(targetM==0?1:targetM))*100)));
+                spoProgress.setYtdPerc(String.valueOf(Codes.df.format((achY/(targetY==0?1:targetY)*100))));
+                spoProgress.setFYTarget(String.valueOf(Codes.df.format(targetFY)));
+                spoProgress.setBalance(String.valueOf(Codes.df.format(targetFY-achY)));
+
+
+                spoProgressList.add(spoProgress);
+            }
+
+        }
+
+
+
+        return new Gson().toJson(spoProgressList);
+    }
+
+    private List<String> getGroupOns(ArrayList<Object> objTargetYTD) {
+        List<String> groupOns = new ArrayList<>();
+        if(objTargetYTD!=null){
+            for(Object obj : objTargetYTD){
+                Object[] objs = (Object[]) obj;
+                if(objs!=null){
+                    groupOns.add(objs[0]==null?"":objs[0].toString());
+                }
+            }
+        }
+        return groupOns;
     }
 
     private String getName(String position_code, ArrayList<Object> objTargetMTD) {

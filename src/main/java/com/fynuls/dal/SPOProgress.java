@@ -2,6 +2,7 @@ package com.fynuls.dal;
 
 public class SPOProgress {
     private String name;
+    private String position_code;
     private String mtdTarget;
     private String mtdAch;
     private String mtdPerc;
@@ -21,6 +22,14 @@ public class SPOProgress {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPosition_code() {
+        return position_code;
+    }
+
+    public void setPosition_code(String position_code) {
+        this.position_code = position_code;
     }
 
     public String getMtdTarget() {

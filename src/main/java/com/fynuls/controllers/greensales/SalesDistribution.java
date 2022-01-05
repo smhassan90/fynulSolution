@@ -36,13 +36,13 @@ public class SalesDistribution {
 
         List<SDMonthlyFinalData> sdMonthlyFinalDataList = new ArrayList<>();
         //  sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjects("from SDMonthlyFinalData where TRANSACTION_DATE like '%-JUL-21'");
-//        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where (transaction_date like '%-JUL-21%' OR \n" +
-//                "transaction_date like '%-AUG-21%'  OR \n" +
-//                "transaction_date like '%-SEP-21%'  OR \n" +
-//                "transaction_date like '%-NOV-21%'  OR \n" +
-//                "transaction_date like '%-DEC-21%'  OR \n" +
-//                "transaction_date like '%-OCT-21%') order by transaction_date DESC");
-        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
+        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where (transaction_date like '%-JUL-21%' OR \n" +
+                "transaction_date like '%-AUG-21%'  OR \n" +
+                "transaction_date like '%-SEP-21%'  OR \n" +
+                "transaction_date like '%-DEC-21%'  OR \n" +
+                "transaction_date like '%-NOV-21%'  OR \n" +
+                "transaction_date like '%-OCT-21%') and nature is not null order by transaction_date DESC");
+//        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where HUID="+huid);
         Calendar cal = Calendar.getInstance();
         String reportingMonth ="";
@@ -71,7 +71,7 @@ public class SalesDistribution {
                         saleDetail.setSNDPOP(sdMonthlyFinalData.getSNDPOP());
                         saleDetail.setCUST_NUMBER(sdMonthlyFinalData.getCUST_NUMBER());
                         saleDetail.setCUST_NAME(sdMonthlyFinalData.getCUST_NAME());
-                        saleDetail.setADDRESS(sdMonthlyFinalData.getADDRESS());
+                        saleDetail.setADDRESS("");
                         saleDetail.setPROVIDER_CODE(sdMonthlyFinalData.getPROVIDER_CODE());
                         saleDetail.setLETTER(sdMonthlyFinalData.getLETTER());
                         saleDetail.setTERRITORY(sdMonthlyFinalData.getTERRITORY());
