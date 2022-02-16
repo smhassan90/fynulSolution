@@ -32,7 +32,7 @@ public class Login {
         JSONObject json = new JSONObject();
 
         IStaffDatabaseDAO gssStaffDAO = null;
-        if(staffType==Codes.FYNULS_APP_CODE){
+        if(staffType==Codes.FYNALS_APP_CODE){
             //request is coming from FMCG Sales team
             gssStaffDAO = new StaffDAO();
         }

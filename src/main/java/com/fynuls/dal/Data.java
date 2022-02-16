@@ -1,5 +1,7 @@
 package com.fynuls.dal;
 
+import com.fynuls.entity.base.PRDGroupOn;
+import com.fynuls.entity.base.Universe;
 import com.fynuls.entity.sale.*;
 
 import java.io.Serializable;
@@ -8,11 +10,11 @@ import java.util.List;
 public class Data implements Serializable {
     List<Depot> depots;
     List<Town> towns;
-    List<Customer> customers;
+    List<Universe> universeList;
     List<TownDepot> townDepots;
     List<TownCustomer> townCustomers;
     List<Status> statuses;
-    List<SKUGroup> skuGroup;
+    List<PRDGroupOn> prdGroupOns;
     List<WorkWith> workWiths;
     Dashboard dashboard;
 
@@ -32,12 +34,12 @@ public class Data implements Serializable {
         this.towns = towns;
     }
 
-    public List<Customer> getCustomers() {
-        return customers;
+    public List<Universe> getUniverseList() {
+        return universeList;
     }
 
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
+    public void setUniverseList(List<Universe> universeList) {
+        this.universeList = universeList;
     }
 
     public List<TownDepot> getTownDepots() {
@@ -64,12 +66,12 @@ public class Data implements Serializable {
         this.statuses = statuses;
     }
 
-    public List<SKUGroup> getSkuGroup() {
-        return skuGroup;
+    public List<PRDGroupOn> getPrdGroupOns() {
+        return prdGroupOns;
     }
 
-    public void setSkuGroup(List<SKUGroup> skuGroup) {
-        this.skuGroup = skuGroup;
+    public void setPrdGroupOns(List<PRDGroupOn> prdGroupOns) {
+        this.prdGroupOns = prdGroupOns;
     }
 
     public List<WorkWith> getWorkWiths() {

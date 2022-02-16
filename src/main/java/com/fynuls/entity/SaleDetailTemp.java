@@ -143,7 +143,6 @@ public class SaleDetailTemp implements Cloneable{
     private String GSM_REMARKS;
     @Column(name="E_QTY")
     private double E_QTY;
-
     @Column(name="TP_SALE_VALUE")
     private double TP_SALE_VALUE;
 

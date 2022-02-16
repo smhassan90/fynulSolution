@@ -36,13 +36,13 @@ public class SalesDistribution {
 
         List<SDMonthlyFinalData> sdMonthlyFinalDataList = new ArrayList<>();
         //  sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjects("from SDMonthlyFinalData where TRANSACTION_DATE like '%-JUL-21'");
-        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where (transaction_date like '%-JUL-21%' OR \n" +
-                "transaction_date like '%-AUG-21%'  OR \n" +
-                "transaction_date like '%-SEP-21%'  OR \n" +
-                "transaction_date like '%-DEC-21%'  OR \n" +
-                "transaction_date like '%-NOV-21%'  OR \n" +
-                "transaction_date like '%-OCT-21%') and nature is not null order by transaction_date DESC");
-//        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
+//        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where nature is not null and PROVIDER_CODE is null and (transaction_date like '%-JUL-21%' OR \n" +
+//                "transaction_date like '%-AUG-21%'  OR \n" +
+//                "transaction_date like '%-SEP-21%'  OR \n" +
+//                "transaction_date like '%-DEC-21%'  OR \n" +
+//                "transaction_date like '%-NOV-21%'  OR \n" +
+//                "transaction_date like '%-OCT-21%') order by transaction_date DESC");
+        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where HUID="+huid);
         Calendar cal = Calendar.getInstance();
         String reportingMonth ="";
@@ -71,7 +71,12 @@ public class SalesDistribution {
                         saleDetail.setSNDPOP(sdMonthlyFinalData.getSNDPOP());
                         saleDetail.setCUST_NUMBER(sdMonthlyFinalData.getCUST_NUMBER());
                         saleDetail.setCUST_NAME(sdMonthlyFinalData.getCUST_NAME());
-                        saleDetail.setADDRESS("");
+                        String cleanAddress = "";
+                        if(sdMonthlyFinalData.getADDRESS()!=null){
+                            cleanAddress = sdMonthlyFinalData.getADDRESS().replaceAll("\\P{Print}", "");
+                        }
+
+                        saleDetail.setADDRESS(cleanAddress);
                         saleDetail.setPROVIDER_CODE(sdMonthlyFinalData.getPROVIDER_CODE());
                         saleDetail.setLETTER(sdMonthlyFinalData.getLETTER());
                         saleDetail.setTERRITORY(sdMonthlyFinalData.getTERRITORY());
@@ -212,7 +217,8 @@ public class SalesDistribution {
 
                             if((sdMonthlyFinalData.getPRD_NAME()!=null &&  (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
                                     || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
-                                    || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN") ))
+                                    || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
+                                    || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")))
                                     || (saleDetail.getGRP()!=null && saleDetail.getGRP().equals("Nutraceutical"))){
                                 saleDetail = setPositionCodeNotMIOFromProviderCode(saleDetail, sdMonthlyFinalData);
                             }else{
@@ -228,7 +234,7 @@ public class SalesDistribution {
 
                         } catch (Exception e) {
                             //LOG.severe(e.getMessage());
-                            printLog("HUID:"+sdMonthlyFinalData.getHUID()+" exception:"+e.getMessage()+"\n");
+                            printLog("Address:"+sdMonthlyFinalData.getADDRESS()+" HUID:"+sdMonthlyFinalData.getHUID()+" exception:"+e.getMessage()+"\n");
                           //  printError(e, sdMonthlyFinalData.getHUID());
                         }
                     }
@@ -402,9 +408,8 @@ public class SalesDistribution {
         String whereClause = "";
         if(taggedTo!=null && taggedTo.size()>0){
             whereClause = getTaggedToWhereClause(taggedTo,"POSITION_CODE");
-
         }
-        query = "from EmployeeCustomer where "+whereClause+" LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().toLowerCase()+"'";
+        query = "from EmployeeCustomer where "+whereClause+" LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().replaceAll("\\s+","").toLowerCase()+saleDetail.getINVOICE_NO()+"'";
 
         employeeCustomers = (List<EmployeeCustomer>) HibernateUtil.getDBObjects(query);
         return employeeCustomers;
@@ -759,7 +764,8 @@ POSITION_ID
         String POSITION_ID = "";
         if(sdMonthlyFinalData.getPRD_NAME().contains("OEM")
                 || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
-                || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")){
+                || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
+                || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")){
             List<String> taggedTo = new ArrayList<>();
 
             if(sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {

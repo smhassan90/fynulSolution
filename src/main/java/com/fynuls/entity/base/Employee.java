@@ -27,6 +27,10 @@ public class Employee {
     private int DEPARTMENT_ID;
     @Column(name="UPDATE_DATE")
     private Date updateDate;
+    @Column(name="PWD")
+    private String PWD;
+    @Column(name="SAS_ID")
+    private String SAS_ID;
 
     public String getID() {
         return ID;
@@ -74,5 +78,21 @@ public class Employee {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getPWD() {
+        return PWD;
+    }
+
+    public void setPWD(String PWD) {
+        this.PWD = PWD;
+    }
+
+    public String getSAS_ID() {
+        return SAS_ID;
+    }
+
+    public void setSAS_ID(String SAS_ID) {
+        this.SAS_ID = SAS_ID;
     }
 }

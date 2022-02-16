@@ -3,6 +3,7 @@ package com.fynuls.dal;
 public class SPOProgress {
     private String name;
     private String position_code;
+    private String personName;
     private String mtdTarget;
     private String mtdAch;
     private String mtdPerc;
@@ -110,5 +111,13 @@ public class SPOProgress {
 
     public void setRMA(String RMA) {
         this.RMA = RMA;
+    }
+
+    public String getPersonName() {
+        return personName;
+    }
+
+    public void setPersonName(String personName) {
+        this.personName = personName;
     }
 }

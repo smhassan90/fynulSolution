@@ -1,6 +1,8 @@
 package com.fynuls.utils;
 
 import com.fynuls.controllers.greensales.Codes;
+import com.fynuls.entity.SaleDetail;
+import com.fynuls.entity.SaleDetailTemp;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -8,7 +10,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class HibernateUtil {
@@ -17,6 +22,11 @@ public class HibernateUtil {
 
     final static Logger LOG = Logger.getLogger(HibernateUtil.class);
 
+    public static int getFiscalYearStart() {
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        return (month >= Codes.FIRST_FISCAL_MONTH) ? year : year - 1;
+    }
     public static SessionFactory getSessionFactory(){
 
         if(sessionFactory == null){
@@ -48,7 +58,7 @@ public class HibernateUtil {
         boolean isSuccessful = false;
         try {
             session = getSessionFactory().openSession();
-            session.flush();
+
             tx = session.beginTransaction();
 
             session.saveOrUpdate(obj);
@@ -159,7 +169,9 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
-            session.clear();session.close();
+
+            session.clear();
+            session.close();
         }
         return objects;
     }
@@ -176,6 +188,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
+
             session.clear();session.close();
         }
         return objects;
@@ -192,6 +205,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
+
             session.clear();session.close();
         }
         return objects;
@@ -208,6 +222,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
+
             session.clear();
             session.close();
         }
@@ -224,6 +239,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally {
+
             session.clear();session.close();
         }
         return objects;
@@ -248,6 +264,7 @@ public class HibernateUtil {
         }catch(Exception e){
             LOG.error(e);
         }finally{
+
             session.clear();session.close();
         }
 
@@ -276,12 +293,34 @@ public class HibernateUtil {
 
         return result;
     }
+    /*
+    This method will return single cell on provided Query.
+     */
+    public static String getSingleStringOracle(String queryString){
+        Session session = null;
+        String result = "";
+        try{
+            session = HibernateUtil.getSessionFactoryNew().openSession();
+            Query query = session.createSQLQuery(queryString);
+            List<Object> cell = (List<Object>) query.list();
+            if(cell!=null && cell.size()>0){
+                result = cell.get(0).toString();
+            }
+
+        }catch(Exception e){
+            LOG.error(e);
+        }finally{
+            session.clear();session.close();
+        }
+
+        return result;
+    }
 
     public static long getNextBaseID(int appNumber){
         ArrayList<IDMANAGER> idManagers = (ArrayList<IDMANAGER>) getDBObjects("from IDMANAGER");
         IDMANAGER idManager = idManagers.get(0);
         long lastID = 0;
-        if(appNumber== Codes.FYNULS_APP_CODE){
+        if(appNumber== Codes.FYNALS_APP_CODE){
             lastID = idManager.getLastID()+50000;
             idManager.setLastID(lastID);
         }
@@ -321,6 +360,29 @@ public class HibernateUtil {
             }
 
             tx.commit();
+            isSuccessful = true;
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.clear();session.close();
+        }
+        return isSuccessful;
+    }
+
+    public static boolean temp(List<? extends Object> objs){
+        Session session = null;
+        Transaction tx =null;
+        boolean isSuccessful = false;
+        try {
+            session = HibernateUtil.getSessionFactoryNew().openSession();
+            tx = session.beginTransaction();
+            for (Object obj : objs){
+                Date tt = ((SaleDetailTemp) obj).getTRANSACTION_DATE();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                ((SaleDetailTemp) obj).setTRANSACTION_DATE(sdf.parse(sdf.format(new Date())));
+                session.saveOrUpdate(obj);
+                tx.commit();
+            }
             isSuccessful = true;
         }catch(Exception e){
             LOG.error(e);
@@ -410,6 +472,25 @@ public class HibernateUtil {
             LOG.error(e);
         }finally {
             session.clear();session.close();
+        }
+        return isSuccessful;
+    }
+    public static boolean executeQueryMySQL(String query){
+        Session session = null;
+        Transaction tx =null;
+        boolean isSuccessful = false;
+        try {
+
+            session = HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            int s= session.createSQLQuery(query).executeUpdate();
+
+            tx.commit();
+            isSuccessful = true;
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.close();
         }
         return isSuccessful;
     }

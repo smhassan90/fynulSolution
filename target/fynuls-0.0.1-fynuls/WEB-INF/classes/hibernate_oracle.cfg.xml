@@ -37,6 +37,9 @@
         <mapping class="com.fynuls.entity.SaleDetailTemp" />
         <mapping class="com.fynuls.entity.base.PRDGroupOn" />
         <mapping class="com.fynuls.entity.base.MissingMapping" />
+        <mapping class="com.fynuls.entity.base.Employee" />
+        <mapping class="com.fynuls.entity.SaleDetailTempIKON" />
+        <mapping class="com.fynuls.entity.base.Target" />
         <!--
         Base tables
         -->

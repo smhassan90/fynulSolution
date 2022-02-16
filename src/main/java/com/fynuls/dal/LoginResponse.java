@@ -7,6 +7,7 @@ public class LoginResponse {
     String token;
     Employee employee;
     String positionCode;
+    int designation_id;
     String statusCode;
 
     public String getToken() {
@@ -40,5 +41,13 @@ public class LoginResponse {
 
     public void setPositionCode(String positionCode) {
         this.positionCode = positionCode;
+    }
+
+    public int getDesignation_id() {
+        return designation_id;
+    }
+
+    public void setDesignation_id(int designation_id) {
+        this.designation_id = designation_id;
     }
 }

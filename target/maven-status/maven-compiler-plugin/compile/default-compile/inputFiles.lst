@@ -20,6 +20,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\DepotSectionToPo
 D:\workspace\fynulSolution\src\main\java\com\fynuls\utils\LogToFile.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\SDMonthlyFinalData.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\AddDeleteResponse.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\SaleDetailTempIKON.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\KeyValue.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\District.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\MissingData.java
@@ -28,6 +29,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\Department.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\EmployeeCustomer.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\SaleDetail.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\LoginServerAttempt.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\SectionShops.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\SKUGroup.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\EmployeePositionTeam.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\BarChartData.java
@@ -37,16 +39,20 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\Employee.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\Dashboard.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\ProductPerformance.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\SingleCard.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\Sales.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\EmployeeReportToMapping.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\TownStaff.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\TestIDManager.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\CompleteEmployee.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\EmployeePositionTeamRegion.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\Order.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\SalesDistributionCustom.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\SPOProgress.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\TestController.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\Target.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\Transfer.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\TerritoryMaster.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\Universe.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\TeamRegion.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\DropDownResponse.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\LoginResponse.java
@@ -65,6 +71,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\PRDGroupOn.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\DistrictTehsil.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\ProductOrder.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\SDStaff.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\UCCUniverseAchievement.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\DistrictProvince.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\LeaveEntry.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\TerritoryEmployeeMapping.java
@@ -78,6 +85,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\ResponseBtnAdd.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\AverageMonthly.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\RegionMaster.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\SalesDistribution.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\login\LoginLog.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\AdminPanelRequests.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\Performance.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\Depot.java
@@ -86,6 +94,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\WorkWith.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\Channel.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\Login.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\LoginServer.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\UCCDetail.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\TehsilSNDPOP.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\SpringBootHelloWorldApplication.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\DBCheck.java

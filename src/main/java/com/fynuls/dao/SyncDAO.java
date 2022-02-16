@@ -1,13 +1,18 @@
 package com.fynuls.dao;
 
 import com.fynuls.controllers.greensales.Codes;
+import com.fynuls.controllers.greensales.Performance;
 import com.fynuls.dal.Packet;
 import com.fynuls.dal.SyncObjectSS;
+import com.fynuls.entity.base.Employee;
+import com.fynuls.entity.base.PRDGroupOn;
+import com.fynuls.entity.base.Universe;
 import com.fynuls.entity.sale.*;
 import com.fynuls.utils.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.jdbc.Work;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,25 +26,14 @@ public class SyncDAO {
     final static Logger LOG = Logger.getLogger(SyncDAO.class);
 
     /*
-    Get all Staff
-     */
-    public List<SDStaff> getStaffs(){
-        String query =  "from SDStaff";
-        List<SDStaff> data = new ArrayList<SDStaff>();
-        data = (List<SDStaff>) HibernateUtil.getDBObjects(query);
-
-        return data;
-    }
-
-    /*
     Get  Staff
      */
     public String getStaffName(String code){
-        String query =  "from SDStaff WHERE staffCode='"+code+"'";
-        List<SDStaff> data = new ArrayList<>();
-        data = (List<SDStaff>) HibernateUtil.getDBObjects(query);
+        String query =  "from Employee WHERE ID='"+code+"'";
+        List<Employee> data = new ArrayList<>();
+        data = (List<Employee>) HibernateUtil.getDBObjects(query);
         if(data!=null && data.size()>0){
-            return data.get(0).getStaffName();
+            return data.get(0).getNAME();
         }else{
             return "";
         }
@@ -86,13 +80,14 @@ public class SyncDAO {
     }
 
     /*
-    Get cll customers tagged to person who is logging in.
+    Get cll customer Universe tagged to person who is logged in.
      */
-    public List<Customer> getCustomers(String code){
-        List<Customer> customers = new ArrayList<Customer>();
-
-        customers = (List<Customer>) HibernateUtil.getDBObjects("From Customer");
-        return customers;
+    public List<Universe> getUniverse(String token){
+        List<Universe> universeArrayList = new ArrayList<Universe>();
+        Performance performance = new Performance();
+        String where = performance.getWhereClause(token);
+        universeArrayList = (List<Universe>) HibernateUtil.getDBObjects("From Universe where "+where);
+        return universeArrayList;
     }
 
     /*
@@ -159,21 +154,27 @@ public class SyncDAO {
     /*
     Get SKU
      */
-    public List<SKUGroup> getSKUGroup(){
-        List<SKUGroup> skuGroup = new ArrayList<SKUGroup>();
-        skuGroup = (List<SKUGroup>) HibernateUtil.getDBObjects("From SKUGroup");
-        return skuGroup;
+    public List<PRDGroupOn> getSKUGroup(){
+        List<PRDGroupOn> prdGroupOns = new ArrayList<PRDGroupOn>();
+        prdGroupOns = (List<PRDGroupOn>) HibernateUtil.getDBObjects("From PRDGroupOn");
+        return prdGroupOns;
     }
 
     /*
     Get Work with (RSM/ASM)
      */
-    public List<WorkWith> getWorkWiths(){
+    public List<WorkWith> getWorkWiths(String token){
         List<WorkWith> workWiths = new ArrayList<WorkWith>();
-
-        String queryString="FROM WorkWith";
-
-        workWiths = (List<WorkWith>) HibernateUtil.getDBObjects(queryString);
+        WorkWith workWith = new WorkWith();
+        List<String> partners = new Performance().getPartnersArray(token);
+        if(partners!=null){
+            for(int i=0; i<partners.size(); i++){
+                workWith = new WorkWith();
+                workWith.setId(i+1);
+                workWith.setWorkWith(partners.get(i));
+                workWiths.add(workWith);
+            }
+        }
 
         return workWiths;
     }
@@ -182,6 +183,7 @@ public class SyncDAO {
     Insert the data coming from mobile.
      */
     public String insertData(SyncObjectSS syncObject, String staffCode) {
+
         String status="";
         String message="";
         boolean isSuccessful = true;

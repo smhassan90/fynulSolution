@@ -6,10 +6,13 @@ import com.fynuls.dal.SyncObjectSS;
 import com.fynuls.dao.GSSDashboardDAO;
 import com.fynuls.dao.StaffDAO;
 import com.fynuls.dao.SyncDAO;
+import com.fynuls.entity.base.PRDGroupOn;
+import com.fynuls.entity.base.Universe;
 import com.fynuls.entity.sale.Customer;
 import com.fynuls.entity.sale.SKUGroup;
 import com.fynuls.entity.sale.Status;
 import com.fynuls.entity.sale.WorkWith;
+import com.fynuls.utils.HibernateUtil;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -29,7 +32,7 @@ public class Sync {
         JSONObject response = new JSONObject();
         String staffCode = gssStaffDAO.isTokenValid(token);
         if(!"".equals(staffCode)){
-            return performSync(staffCode,data).toString();
+            return performSync(token,data).toString();
         }else{
             response.put("message", "Invalid Token, you might be logged in from another device");
             response.put("status", Codes.INVALID_TOKEN);
@@ -38,15 +41,15 @@ public class Sync {
         }
     }
 
-    public JSONObject performSync(String code, String data){
+    public JSONObject performSync(String token, String data){
         JSONObject response = new JSONObject();
         Data dataSync = new Data();
-        List<Customer> customers = null;
+        List<Universe> universeList = null;
         List<Status> statuses = null;
-        List<SKUGroup> skuGroup = null;
+        List<PRDGroupOn> skuGroup = null;
         List<WorkWith> workWiths = null;
         String staffName = "";
-
+        String staffCode = HibernateUtil.getSingleString("SELECT USERNAME FROM loginstatus WHERE token = '"+token+"'");
         String insertCode = "";
         SyncObjectSS syncObject =  new Gson().fromJson(data, SyncObjectSS.class);
         SyncDAO sync = new SyncDAO();
@@ -54,25 +57,25 @@ public class Sync {
             if(syncObject==null){
                 insertCode = Codes.ALL_OK;
             }else{
-                insertCode = sync.insertData(syncObject,code);
+                insertCode = sync.insertData(syncObject,staffCode);
             }
 
             Dashboard dashboard = new Dashboard();
             GSSDashboardDAO dashboardDAO = new GSSDashboardDAO();
 
-            String html = dashboardDAO.getDashboardHTML(code);
+            String html = dashboardDAO.getDashboardHTML(staffCode);
             dashboard.setId(1);
             dashboard.setHtml(html);
 
-            customers = sync.getCustomers(code);
+            universeList = sync.getUniverse(token);
             statuses = sync.getStatuses();
             skuGroup = sync.getSKUGroup();
-            workWiths = sync.getWorkWiths();
-            staffName = sync.getStaffName(code);
+            workWiths = sync.getWorkWiths(token);
+            staffName = sync.getStaffName(staffCode);
 
-            dataSync.setCustomers(customers);
+            dataSync.setUniverseList(universeList);
             dataSync.setStatuses(statuses);
-            dataSync.setSkuGroup(skuGroup);
+            dataSync.setPrdGroupOns(skuGroup);
             dataSync.setWorkWiths(workWiths);
             dataSync.setDashboard(dashboard);
 

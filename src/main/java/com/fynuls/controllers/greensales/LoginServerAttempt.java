@@ -4,6 +4,7 @@ package com.fynuls.controllers.greensales;
 import com.fynuls.dal.LoginResponse;
 import com.fynuls.entity.base.Employee;
 import com.fynuls.entity.base.EmployeeIDPositionIDMapping;
+import com.fynuls.entity.login.LoginLog;
 import com.fynuls.entity.login.LoginStatus;
 import com.fynuls.utils.HibernateUtil;
 import com.google.gson.Gson;
@@ -17,6 +18,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.CodeSource;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.List;
 
@@ -32,19 +34,7 @@ public class LoginServerAttempt {
     @ResponseBody
     public String loginServerAttempt(String username, String password){
         String secret = "secret";
-        /*
-        try {
-            byte[] cipherText = password.getBytes("UTF8");
-            SecretKey secKey = new SecretKeySpec(secret.getBytes(), "AES");
-            Cipher aesCipher = Cipher.getInstance("AES");
-            aesCipher.init(Cipher.DECRYPT_MODE, secKey);
-            byte[] bytePlainText = aesCipher.doFinal(cipherText);
-            String myDecryptedText = new String(bytePlainText);
-            int isasd = 0 ;
-        }catch(Exception ex){
-int ad=1;
-        }
-        */
+
         Employee employee = new Employee();
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setStatusCode(Codes.SOMETHING_WENT_WRONG);
@@ -72,6 +62,7 @@ int ad=1;
                     loginResponse.setToken(token);
                     loginResponse.setEmployee(employee);
                     loginResponse.setPositionCode(positionCode);
+                    loginResponse.setDesignation_id(employee.getDESIGNATION_ID());
                 }
             }else{
                 loginResponse.setStatusCode(Codes.INVALID_CREDENTIALS);
@@ -80,5 +71,26 @@ int ad=1;
             loginResponse.setStatusCode(Codes.SOMETHING_WENT_WRONG);
         }
         return new Gson().toJson(loginResponse);
+    }
+
+    @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/loginLog", method = RequestMethod.GET,params={"token"})
+    @ResponseBody
+    public boolean loginLog(String token){
+        String username = "";
+        ArrayList<LoginStatus> loginStatuses = (ArrayList<LoginStatus>) HibernateUtil.getDBObjects("from LoginStatus where token = '"+token+"'");
+        if(loginStatuses!=null){
+            if(loginStatuses.size()>0){
+                username = loginStatuses.get(0).getUsername();
+            }
+        }
+        LoginLog loginLog = new LoginLog();
+        if(!"".equals(token)){
+            loginLog.setTOKEN(token);
+            loginLog.setEMP_ID(username);
+            return HibernateUtil.save(loginLog);
+        }else{
+            return false;
+        }
     }
 }

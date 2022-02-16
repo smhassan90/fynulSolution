@@ -41,7 +41,7 @@ public class LoginOnly {
         JSONObject json = new JSONObject();
 
         IStaffDatabaseDAO staffDAO = null;
-        if(staffType==Codes.FYNULS_APP_CODE){
+        if(staffType==Codes.FYNALS_APP_CODE){
             //request is coming from Sales team
             staffDAO = new StaffDAO();
         }

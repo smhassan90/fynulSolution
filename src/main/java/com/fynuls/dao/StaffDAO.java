@@ -2,6 +2,7 @@ package com.fynuls.dao;
 
 import com.fynuls.controllers.greensales.Codes;
 import com.fynuls.controllers.greensales.Sync;
+import com.fynuls.entity.base.Employee;
 import com.fynuls.entity.login.LoginStatus;
 import com.fynuls.entity.login.User;
 import com.fynuls.utils.HibernateUtil;
@@ -15,17 +16,17 @@ public class StaffDAO implements IStaffDatabaseDAO {
     final static Logger LOG = Logger.getLogger(StaffDAO.class);
     public void insertRecord(String username, int status, String token) {
         LoginStatus loginStatus = new LoginStatus();
-        User user = new User();
+        Employee employee = new Employee();
 
-        List<User> users = (List<User>) HibernateUtil.getDBObjects("from User where username='"+username+"'");
+        List<Employee> employees = (List<Employee>) HibernateUtil.getDBObjects("from Employee where ID='"+username+"'");
 
-        if(users!=null && users.size()>0){
-            user =  users.get(0);
+        if(employees!=null && employees.size()>0){
+            employee =  employees.get(0);
         }
-        loginStatus.setUsername(user.getUserName());
+        loginStatus.setUsername(employee.getID());
         loginStatus.setStatus(status);
         loginStatus.setToken(token);
-        loginStatus.setType(Codes.FYNULS_APP_CODE);
+        loginStatus.setType(Codes.FYNALS_APP_CODE);
         if(loginStatus!=null){
             HibernateUtil.saveOrUpdate(loginStatus);
         }
@@ -50,7 +51,7 @@ public class StaffDAO implements IStaffDatabaseDAO {
             loginStatus.setStatus(status);
             loginStatus.setToken(token);
             loginStatus.setUsername(username);
-            loginStatus.setType(Codes.FYNULS_APP_CODE);
+            loginStatus.setType(Codes.FYNALS_APP_CODE);
             HibernateUtil.saveOrUpdate(loginStatus);
         }
 
@@ -76,11 +77,11 @@ public class StaffDAO implements IStaffDatabaseDAO {
     }
 
     public String isCorrect(String username, String password) {
-        Object obj = HibernateUtil.getDBObjects("from User where password='"+password+"' and username='"+username+"'");
-        List<User> users = (List<User>)obj;
+        Object obj = HibernateUtil.getDBObjects("from Employee where PWD='"+password+"' and ID='"+username+"'");
+        List<Employee> employees = (List<Employee>)obj;
 
-        if(users!=null && users.size()>0){
-            return users.get(0).getUserName();
+        if(employees!=null && employees.size()>0){
+            return employees.get(0).getID();
         }
         return "";
     }
@@ -92,7 +93,7 @@ public class StaffDAO implements IStaffDatabaseDAO {
 
     @Override
     public String getName(String code) {
-        String name = HibernateUtil.getSingleString("SELECT NAME FROM User where username='"+code+"'");
+        String name = HibernateUtil.getSingleString("SELECT NAME FROM BASE_EMPLOYEE where ID='"+code+"'");
         return name;
     }
 
