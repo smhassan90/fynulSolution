@@ -35,6 +35,10 @@ public class Target {
     private double TGT_DIST_COMM;
     @Column(name="TGT_NET_VALUE")
     private double TGT_NET_VALUE;
+    @Column(name="SAS_ID")
+    private String SAS_ID;
+    @Column(name="PRD_NO")
+    private String PRD_NO;
 
     public int getID() {
         return ID;
@@ -114,5 +118,21 @@ public class Target {
 
     public void setTGT_NET_VALUE(double TGT_NET_VALUE) {
         this.TGT_NET_VALUE = TGT_NET_VALUE;
+    }
+
+    public String getSAS_ID() {
+        return SAS_ID;
+    }
+
+    public void setSAS_ID(String SAS_ID) {
+        this.SAS_ID = SAS_ID;
+    }
+
+    public String getPRD_NO() {
+        return PRD_NO;
+    }
+
+    public void setPRD_NO(String PRD_NO) {
+        this.PRD_NO = PRD_NO;
     }
 }

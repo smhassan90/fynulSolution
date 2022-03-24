@@ -357,9 +357,9 @@ public class HibernateUtil {
             for (Object obj : objs){
 
                 session.saveOrUpdate(obj);
+                tx.commit();
             }
 
-            tx.commit();
             isSuccessful = true;
         }catch(Exception e){
             LOG.error(e);

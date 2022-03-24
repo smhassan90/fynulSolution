@@ -48,6 +48,7 @@ public class SalesDistribution {
         String reportingMonth ="";
         long startCurrentMilis = Calendar.getInstance().getTimeInMillis();
         int i =0;
+        String specialCharactersString = "!@#$%&*()'+,-./:;<=>?[]^_`{|}";
         if(sdMonthlyFinalDataList!=null && sdMonthlyFinalDataList.size()>0) {
             for (SDMonthlyFinalData sdMonthlyFinalData : sdMonthlyFinalDataList) {
                 cal.setTime(sdMonthlyFinalData.getTRANSACTION_DATE());
@@ -75,7 +76,6 @@ public class SalesDistribution {
                         if(sdMonthlyFinalData.getADDRESS()!=null){
                             cleanAddress = sdMonthlyFinalData.getADDRESS().replaceAll("\\P{Print}", "");
                         }
-
                         saleDetail.setADDRESS(cleanAddress);
                         saleDetail.setPROVIDER_CODE(sdMonthlyFinalData.getPROVIDER_CODE());
                         saleDetail.setLETTER(sdMonthlyFinalData.getLETTER());
@@ -235,7 +235,7 @@ public class SalesDistribution {
                         } catch (Exception e) {
                             //LOG.severe(e.getMessage());
                             printLog("Address:"+sdMonthlyFinalData.getADDRESS()+" HUID:"+sdMonthlyFinalData.getHUID()+" exception:"+e.getMessage()+"\n");
-                          //  printError(e, sdMonthlyFinalData.getHUID());
+                            //  printError(e, sdMonthlyFinalData.getHUID());
                         }
                     }
                 }
@@ -281,11 +281,11 @@ public class SalesDistribution {
             } else {
                 List<String> taggedTo = new ArrayList<>();
                 taggedTo.add("MIO");
-                taggedTo.add("HS-CHO");
-                taggedTo.add("IPC-CHO");
-                taggedTo.add("IPC-IPCO");
-                taggedTo.add("IPC-SIA");
-                taggedTo.add("-SP-");
+                taggedTo.add("SF-SSB");
+                taggedTo.add("-SF-SFE-");
+                taggedTo.add("-SF-SFSB-");
+                taggedTo.add("-SF-QAM-");
+                taggedTo.add("-SF-AM-");
                 taggedTo.add("UNMAP");
 
                 String whereInClause = getTaggedToWhereClause(taggedTo, "POSITION_ID");
@@ -673,9 +673,9 @@ public class SalesDistribution {
         saleDetail.setMNP_COMMISSION(roundOff(saleDetail.getMNP_COMMISSION()*percSharing));
         return saleDetail;
     }
-/*
-POSITION_ID
- */
+    /*
+    POSITION_ID
+     */
     private String getTaggedToWhereClause(List<String> taggedTo, String columnName){
         boolean isFirst = true;
         String where= "";
@@ -770,21 +770,17 @@ POSITION_ID
 
             if(sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
                 taggedTo = new ArrayList<>();
-                taggedTo.add("HS-CHO");
+                taggedTo.add("-SF-");
                 POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                if(POSITION_ID.equals("")){
-                    taggedTo = new ArrayList<>();
-                    taggedTo.add("IPC-CHO");
-                    taggedTo.add("IPC-IPCO");
-                    taggedTo.add("IPC-SIA");
-                    POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                }
+
             }
             if(POSITION_ID.equals("")){
                 taggedTo = new ArrayList<>();
-                taggedTo.add("IPC-CHO");
-                taggedTo.add("IPC-IPCO");
-                taggedTo.add("IPC-SIA");
+                taggedTo.add("SF-SSB");
+                taggedTo.add("-SF-SFE-");
+                taggedTo.add("-SF-SFSB-");
+                taggedTo.add("-SF-QAM-");
+                taggedTo.add("-SF-AM-");
                 POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
                 if(POSITION_ID.equals("")){
                     POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());
@@ -797,21 +793,18 @@ POSITION_ID
             List<String> taggedTo = new ArrayList<>();
 
             if(sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
-                taggedTo = new ArrayList<>();
-                taggedTo.add("IPC-CHO");
-                taggedTo.add("IPC-IPCO");
-                taggedTo.add("IPC-SIA");
+                taggedTo.add("SF-SSB");
+                taggedTo.add("-SF-SFE-");
+                taggedTo.add("-SF-SFSB-");
+                taggedTo.add("-SF-QAM-");
+                taggedTo.add("-SF-AM-");
 
                 POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                if(POSITION_ID.equals("")){
-                    taggedTo = new ArrayList<>();
-                    taggedTo.add("HS-CHO");
-                    POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                }
+
             }
             if(POSITION_ID.equals("")){
                 taggedTo = new ArrayList<>();
-                taggedTo.add("HS-CHO");
+                taggedTo.add("-SF-");
                 POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
                 if(POSITION_ID.equals("")){
                     POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());

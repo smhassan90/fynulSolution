@@ -101,7 +101,7 @@ public class Sales {
         return "Done";
     }
 
-
+/*
     private void sendEmail(String body){
         // Sender's email ID needs to be mentioned
         String from = "support.it@greenstar.org.pk";
@@ -163,6 +163,72 @@ public class Sales {
         }
         int ss = 9;
     }
+    */
+private void sendEmail(String body){
+
+    // Sender's email ID needs to be mentioned
+//        String from = "support.it@greenstar.org.pk";
+//        final String username = "support.it@greenstar.org.pk";//change accordingly
+    String from = "greenstarsocial.1@gmail.com";
+    final String password = "greenstarsocial123@";//change accordingly
+
+    // Assuming you are sending email through relay.jangosmtp.net
+    //final String host = "smtp.office365.com";
+    String host = "smtp.gmail.com";
+
+    Properties props = new Properties();
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.host", host);
+    props.put("mail.smtp.socketFactory.port", "465");
+    props.put("mail.smtp.socketFactory.class",
+            "javax.net.ssl.SSLSocketFactory");
+    //    props.put("mail.smtp.port", "587");
+    props.put("mail.smtp.port", "465");
+    InternetAddress[] ccAddress = new InternetAddress[2];
+
+    Session session = Session.getInstance(props,
+            new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    PasswordAuthentication pswAuth = new PasswordAuthentication(from, password);
+                    return pswAuth;
+                }
+            });
+
+    try {
+        ccAddress[0] = new InternetAddress("hasnain.ali@greenstar.org.pk");
+        ccAddress[1] = new InternetAddress("syedhassan@greenstar.org.pk");
+        // Create a default MimeMessage object.
+        Message message = new MimeMessage(session);
+
+        // Set From: header field of the header.
+        message.setFrom(new InternetAddress(from));
+
+        // Set To: header field of the header.
+
+        String toAddress = "shahzaibsattar@greenstar.org.pk";
+        message.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(toAddress));
+
+        message.setRecipients(Message.RecipientType.CC, ccAddress);
+        // Set Subject: header field
+        message.setSubject("Monthly Sales Report");
+
+        // put everything together
+//            message.setText(body);
+        message.setContent(body
+                , "text/html; charset=utf-8");
+        // Send message
+        // TO-DO: Uncomment this
+        Transport.send(message);
+
+    } catch (MessagingException e) {
+        int i = 0;
+    }catch(Exception ex){
+        int i =0;
+    }
+    int ss = 9;
+}
 
     private String getDestinationVID(String minDate, String maxDate){
 

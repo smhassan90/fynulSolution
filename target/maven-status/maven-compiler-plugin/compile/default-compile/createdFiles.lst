@@ -8,6 +8,7 @@ com\fynuls\entity\base\DistrictProvince.class
 com\fynuls\entity\base\Zone.class
 com\fynuls\entity\base\Depot.class
 com\fynuls\dao\ServerLogin.class
+com\fynuls\controllers\greensales\SalesReport.class
 com\fynuls\entity\base\MNPChannelMapping.class
 com\fynuls\utils\IDMANAGER.class
 com\fynuls\entity\base\Target.class
@@ -42,6 +43,7 @@ com\fynuls\dao\IStaffDatabaseDAO.class
 com\fynuls\dal\AverageMonthly.class
 com\fynuls\dal\SingleCard.class
 com\fynuls\entity\sale\ProductOrder.class
+com\fynuls\controllers\greensales\PerformanceExecutive.class
 com\fynuls\entity\base\EmployeeIDPositionIDMapping.class
 com\fynuls\entity\base\TeamDepartment.class
 com\fynuls\entity\base\EmployeeDepot.class
@@ -56,6 +58,7 @@ com\fynuls\entity\sale\Depot.class
 com\fynuls\entity\base\Employee.class
 com\fynuls\controllers\greensales\Performance.class
 com\fynuls\dal\ActualSaleData.class
+com\fynuls\dal\StrategyDAL.class
 com\fynuls\entity\SDMonthlyFinalData.class
 com\fynuls\controllers\LoginServer.class
 com\fynuls\dal\CardDataYear.class
@@ -85,6 +88,7 @@ com\fynuls\entity\base\EmployeeCustomer.class
 com\fynuls\entity\login\User.class
 com\fynuls\entity\base\District.class
 com\fynuls\entity\sale\SKUGroup.class
+com\fynuls\controllers\greensales\SalesReport$1.class
 com\fynuls\controllers\AdminPanelRequests.class
 com\fynuls\controllers\greensales\Transfer.class
 com\fynuls\controllers\greensales\Sales.class
@@ -93,6 +97,7 @@ com\fynuls\entity\sale\WorkWith.class
 com\fynuls\entity\sale\DepotStaff.class
 com\fynuls\dal\UCCDetail.class
 com\fynuls\entity\base\EmployeeReportToMapping.class
+com\fynuls\controllers\greensales\ActionPlan.class
 com\fynuls\controllers\AddBtnControllers.class
 com\fynuls\entity\base\EmployeePositionTeam.class
 com\fynuls\controllers\greensales\SalesDistribution.class
@@ -103,9 +108,12 @@ com\fynuls\dal\KeyValue.class
 com\fynuls\entity\base\DistrictTehsil.class
 com\fynuls\dal\ProductPerformance.class
 com\fynuls\entity\base\DepotTerritoryToPosition.class
+com\fynuls\utils\Common.class
 com\fynuls\entity\base\Universe.class
+com\fynuls\dal\InfoActionPlanDAL.class
 com\fynuls\dal\CompleteEmployee.class
 com\fynuls\controllers\greensales\Sync.class
 com\fynuls\entity\base\EmployeePositionTeamRegion.class
 com\fynuls\dao\StaffDAO.class
 com\fynuls\entity\sale\LeaveEntry.class
+com\fynuls\controllers\greensales\Strategy.class

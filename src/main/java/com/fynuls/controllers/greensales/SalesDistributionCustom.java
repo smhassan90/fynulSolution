@@ -36,15 +36,18 @@ public class SalesDistributionCustom {
 
         List<SDMonthlyFinalData> sdMonthlyFinalDataList = new ArrayList<>();
         //  sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjects("from SDMonthlyFinalData where TRANSACTION_DATE like '%-JUL-21'");
-        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where nature is not null and (transaction_date like '%-JUL-21%' OR \n" +
+        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where  (transaction_date like '%-JUL-21%' OR \n" +
                 "transaction_date like '%-AUG-21%'  OR \n" +
                 "transaction_date like '%-SEP-21%'  OR \n" +
                 "transaction_date like '%-DEC-21%'  OR \n" +
                 "transaction_date like '%-NOV-21%'  OR \n" +
                 "transaction_date like '%-JAN-22%'  OR \n" +
                 "transaction_date like '%-FEB-22%'  OR \n" +
+                "transaction_date like '%-MAR-22%'  OR \n" +
                 "transaction_date like '%-OCT-21%') order by transaction_date DESC");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
+//        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where nature is not null and transaction_date like '%FEB-22%'");
+
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where HUID="+huid);
         Calendar cal = Calendar.getInstance();
         String reportingMonth ="";
@@ -216,12 +219,18 @@ public class SalesDistributionCustom {
                             saleDetail.setGRP_CATEGORY(prdGroupOn.getPRD_CAT());
                             saleDetail.setPRODUCTGROUP(prdGroupOn.getPRD_GRP());
                             saleDetail.setPROVIDERCODE(sdMonthlyFinalData.getPROVIDER_CODE());
-
-                            if((sdMonthlyFinalData.getPRD_NAME()!=null &&  (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
+                            if(saleDetail.getNATURE()!=null && saleDetail.getPROVIDER_CODE()==null){
+                                List<EmployeeCustomer> empCustomers = getPositionCodeFromEmployeeCustomerMapping(saleDetail,null);
+                                if(empCustomers!=null && empCustomers.size()>0){
+                                    saleDetail.setPOSITION_CODE(empCustomers.get(0).getPOSITION_CODE());
+                                }
+                            }else if((sdMonthlyFinalData.getPRD_NAME()!=null &&  (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
                                     || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
                                     || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
                                     || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")))
                                     || (saleDetail.getGRP()!=null && saleDetail.getGRP().equals("Nutraceutical"))){
+
+
                                 saleDetail = setPositionCodeNotMIOFromProviderCode(saleDetail, sdMonthlyFinalData);
                             }else{
                                 //Deal Others
@@ -283,11 +292,11 @@ public class SalesDistributionCustom {
             } else {
                 List<String> taggedTo = new ArrayList<>();
                 taggedTo.add("MIO");
-                taggedTo.add("HS-CHO");
-                taggedTo.add("IPC-CHO");
-                taggedTo.add("IPC-IPCO");
-                taggedTo.add("IPC-SIA");
-                taggedTo.add("-SP-");
+                taggedTo.add("SF-SSB");
+                taggedTo.add("-SF-SFE-");
+                taggedTo.add("-SF-SFSB-");
+                taggedTo.add("-SF-QAM-");
+                taggedTo.add("-SF-AM-");
                 taggedTo.add("UNMAP");
 
                 String whereInClause = getTaggedToWhereClause(taggedTo, "POSITION_ID");
@@ -772,21 +781,17 @@ public class SalesDistributionCustom {
 
             if(sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
                 taggedTo = new ArrayList<>();
-                taggedTo.add("HS-CHO");
+                taggedTo.add("-SF-");
                 POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                if(POSITION_ID.equals("")){
-                    taggedTo = new ArrayList<>();
-                    taggedTo.add("IPC-CHO");
-                    taggedTo.add("IPC-IPCO");
-                    taggedTo.add("IPC-SIA");
-                    POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                }
+
             }
             if(POSITION_ID.equals("")){
                 taggedTo = new ArrayList<>();
-                taggedTo.add("IPC-CHO");
-                taggedTo.add("IPC-IPCO");
-                taggedTo.add("IPC-SIA");
+                taggedTo.add("SF-SSB");
+                taggedTo.add("-SF-SFE-");
+                taggedTo.add("-SF-SFSB-");
+                taggedTo.add("-SF-QAM-");
+                taggedTo.add("-SF-AM-");
                 POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
                 if(POSITION_ID.equals("")){
                     POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());
@@ -799,21 +804,18 @@ public class SalesDistributionCustom {
             List<String> taggedTo = new ArrayList<>();
 
             if(sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
-                taggedTo = new ArrayList<>();
-                taggedTo.add("IPC-CHO");
-                taggedTo.add("IPC-IPCO");
-                taggedTo.add("IPC-SIA");
+                taggedTo.add("SF-SSB");
+                taggedTo.add("-SF-SFE-");
+                taggedTo.add("-SF-SFSB-");
+                taggedTo.add("-SF-QAM-");
+                taggedTo.add("-SF-AM-");
 
                 POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                if(POSITION_ID.equals("")){
-                    taggedTo = new ArrayList<>();
-                    taggedTo.add("HS-CHO");
-                    POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                }
+
             }
             if(POSITION_ID.equals("")){
                 taggedTo = new ArrayList<>();
-                taggedTo.add("HS-CHO");
+                taggedTo.add("-SF-");
                 POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
                 if(POSITION_ID.equals("")){
                     POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());

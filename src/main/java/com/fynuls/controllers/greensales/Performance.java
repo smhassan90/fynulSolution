@@ -6,6 +6,7 @@ import com.fynuls.entity.base.EmployeeIDPositionIDMapping;
 import com.fynuls.entity.base.EmployeeReportToMapping;
 import com.fynuls.entity.base.TeamDepartment;
 import com.fynuls.entity.login.LoginStatus;
+import com.fynuls.utils.Common;
 import com.fynuls.utils.HibernateUtil;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Controller;
@@ -472,88 +473,14 @@ TYPE : MTD
     @RequestMapping(value = "/getCYPBarChartData", method = RequestMethod.GET,params={"token", "type"})
     @ResponseBody
     public String getCYPBarChartData(String token, String type){
-        List<String> backgroundColors = new ArrayList<>();
-        backgroundColors.add("#666EE8");
-        backgroundColors.add("#28D094");
-        backgroundColors.add("#FF4961");
-        backgroundColors.add("#1E9FF2");
-        backgroundColors.add("#FF9149");
-        backgroundColors.add("#F44336");
-        backgroundColors.add("#E91E63");
-        backgroundColors.add("#9C27B0");
-        backgroundColors.add("#673AB7");
-        backgroundColors.add("#3F51B5");
-        backgroundColors.add("#2196F3");
-        backgroundColors.add("#03A9F4");
-        backgroundColors.add("#00BCD4");
-        backgroundColors.add("#009688");
-        backgroundColors.add("#4CAF50");
-        backgroundColors.add("#8BC34A");
-        backgroundColors.add("#CDDC39");
-
-
+        String query = "";
         String whereClause = "";
         whereClause = getWhereClause(token);
 
-        String query = "";
-
         query = getBarChartQuery(whereClause, type);
 
-        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
-        List<String> labels = new ArrayList<>();
-        List<String> months = new ArrayList<>();
         BarChartData barChartData = new BarChartData();
-        Dataset dataset = new Dataset();
-        List<Dataset> datasets =new ArrayList<>();
-        List<Double> data = new ArrayList<>();
-        int colorLoop = 0;
-
-            if(objs!=null && objs.size()>0) {
-            for (int i = 0; i < objs.size(); i++) {
-                Object[] temp = (Object[]) objs.get(i);
-                if (!labels.contains(temp[2].toString())) {
-                    labels.add(temp[2].toString());
-                }
-
-                if (!months.contains(temp[1].toString())) {
-                    months.add(temp[1].toString());
-                }
-            }
-        }
-
-
-        if(objs!=null && objs.size()>0){
-            for (int i=0; i<months.size() ; i++) {
-
-
-                dataset = new Dataset();
-                Object[] temp = (Object[]) objs.get(i);
-
-                if(colorLoop>=backgroundColors.size())
-                    colorLoop=0;
-                dataset.setBackgroundColor(backgroundColors.get(colorLoop));
-                colorLoop++;
-                dataset.setLabel(months.get(i).toString());
-                data = new ArrayList<>();
-                for(String label : labels){
-                    double dataNum = 0;
-                    for(int j=0; j<objs.size(); j++){
-                        Object[] innerTemp = (Object[]) objs.get(j);
-
-                        if(innerTemp[2].toString().equals(label) && innerTemp[1].toString().equals(months.get(i).toString())){
-                            dataNum = Double.valueOf(innerTemp[3].toString().trim());
-                        }
-                    }
-                    data.add(dataNum);
-                }
-
-                dataset.setData(data);
-                datasets.add(dataset);
-            }
-        }
-        barChartData.setDatasets(datasets);
-        barChartData.setLabels(labels);
-
+        barChartData = Common.getBarChartData(query);
         return new Gson().toJson(barChartData);
     }
 
@@ -641,7 +568,8 @@ TYPE : MTD
                 double targetFY = 0;
                 String name = "";
                 spoProgress = new SPOProgress();
-                spoProgress.setName(getName(partner, objTargetMTD));
+                String nameFromPositionCode  = getNameFromPositionCode(partner);
+                spoProgress.setName(nameFromPositionCode);
                 spoProgress.setPosition_code(partner);
                 targetM = getNumberAgainstPartner(partner, objTargetMTD);
 
@@ -669,6 +597,20 @@ TYPE : MTD
         }
         return new Gson().toJson(spoProgressList);
     }
+
+    private String getNameFromPositionCode(String partner) {
+        ArrayList<EmployeeIDPositionIDMapping> mapping = (ArrayList<EmployeeIDPositionIDMapping>) HibernateUtil.getDBObjects("from EmployeeIDPositionIDMapping where POSITION_ID='"+partner+"'");
+
+        if(mapping!=null && mapping.size()>0){
+            EmployeeIDPositionIDMapping employeeIDPositionIDMapping = mapping.get(0);
+            ArrayList<Employee> emps = (ArrayList<Employee>) HibernateUtil.getDBObjects("from Employee where id = '"+employeeIDPositionIDMapping.getEMPLOYEE_ID()+"'");
+            if(emps!=null && emps.size()>0){
+                return emps.get(0).getNAME();
+            }
+        }
+        return "";
+    }
+
     @CrossOrigin(origins = "*" )
     @RequestMapping(value = "/getTeamProgress", method = RequestMethod.GET,params={"token"})
     @ResponseBody

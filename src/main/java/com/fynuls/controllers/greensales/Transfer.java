@@ -43,7 +43,17 @@ public class Transfer {
     public String sale(String transactionDate){
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yy");
-        List<SaleDetailTemp> saleDetailTempList = (List<SaleDetailTemp>) HibernateUtil.getDBObjects("from SaleDetailTemp where transaction_date like '%"+transactionDate+"%'");
+        String query = "";
+       String whereClause = "";
+        query = "from SaleDetailTemp";
+        if(transactionDate.equals("all")){
+            whereClause = " 1=1 ";
+        }else{
+            whereClause = " TRANSACTION_DATE like '%"+transactionDate+"%'";
+        }
+
+        HibernateUtil.executeQueryOracle("DELETE from SALE_DETAIL_TEMP where "+whereClause);
+        List<SaleDetailTemp> saleDetailTempList = (List<SaleDetailTemp>) HibernateUtil.getDBObjects(query + " where "+whereClause);
         List<SaleDetailTempIKON> saleDetailTempIKONS = new ArrayList<>();
         SaleDetailTempIKON saleDetailTempIKON = new SaleDetailTempIKON();
         for(SaleDetailTemp sdt : saleDetailTempList){
@@ -119,6 +129,7 @@ public class Transfer {
             HibernateUtil.saveOracle(saleDetailTempIKON);
         }
         HibernateUtil.executeQueryOracle("DELETE FROM BASE_TARGET");
+
         List<Target> target = (List<Target>) HibernateUtil.getDBObjects("from Target");
         HibernateUtil.saveOrUpdateListOracle(target);
 

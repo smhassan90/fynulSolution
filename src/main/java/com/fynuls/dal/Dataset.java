@@ -5,7 +5,7 @@ import java.util.List;
 public class Dataset {
     private String label;
     private String backgroundColor;
-    List<Double> data;
+    List<Long> data;
 
     public String getLabel() {
         return label;
@@ -23,11 +23,11 @@ public class Dataset {
         this.backgroundColor = backgroundColor;
     }
 
-    public List<Double> getData() {
+    public List<Long> getData() {
         return data;
     }
 
-    public void setData(List<Double> data) {
+    public void setData(List<Long> data) {
         this.data = data;
     }
 }
