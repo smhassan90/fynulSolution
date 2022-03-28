@@ -36,15 +36,21 @@ public class SalesDistributionCustom {
 
         List<SDMonthlyFinalData> sdMonthlyFinalDataList = new ArrayList<>();
         //  sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjects("from SDMonthlyFinalData where TRANSACTION_DATE like '%-JUL-21'");
-        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where  (transaction_date like '%-JUL-21%' OR \n" +
+//        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where  (" +
+//                "transaction_date like '%-JUL-21%' OR \n" +
+//                "transaction_date like '%-AUG-21%'  OR \n" +
+//                "transaction_date like '%-SEP-21%'  OR \n" +
+//                "transaction_date like '%-DEC-21%'  OR \n" +
+//                "transaction_date like '%-NOV-21%'  OR \n" +
+//                "transaction_date like '%-JAN-22%'  OR \n" +
+//                "transaction_date like '%-FEB-22%'  OR \n" +
+//                "transaction_date like '%-MAR-22%'  OR \n" +
+//                "transaction_date like '%-OCT-21%') order by transaction_date DESC");
+
+        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where  (" +
+                "transaction_date like '%-JUL-21%' OR \n" +
                 "transaction_date like '%-AUG-21%'  OR \n" +
-                "transaction_date like '%-SEP-21%'  OR \n" +
-                "transaction_date like '%-DEC-21%'  OR \n" +
-                "transaction_date like '%-NOV-21%'  OR \n" +
-                "transaction_date like '%-JAN-22%'  OR \n" +
-                "transaction_date like '%-FEB-22%'  OR \n" +
-                "transaction_date like '%-MAR-22%'  OR \n" +
-                "transaction_date like '%-OCT-21%') order by transaction_date DESC");
+                "transaction_date like '%-SEP-21%') order by transaction_date DESC");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where nature is not null and transaction_date like '%FEB-22%'");
 

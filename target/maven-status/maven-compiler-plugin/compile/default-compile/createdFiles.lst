@@ -49,6 +49,7 @@ com\fynuls\entity\base\TeamDepartment.class
 com\fynuls\entity\base\EmployeeDepot.class
 com\fynuls\dal\SyncObjectSS.class
 com\fynuls\controllers\greensales\LoginServerAttempt.class
+com\fynuls\dal\Graph.class
 com\fynuls\dal\BarChartData.class
 com\fynuls\entity\base\DistrictRegionMapping.class
 com\fynuls\dal\Dashboard.class

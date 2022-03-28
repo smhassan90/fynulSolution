@@ -21,9 +21,11 @@ public interface Codes {
     public static final int CALENDER_CURRENT_MONTH_NUMBER = Calendar.getInstance().get(Calendar.MONTH)+1;
     public static final int CURRENT_YEAR_NUMBER = Calendar.getInstance().get(Calendar.YEAR);
     public static final int FIRST_FISCAL_MONTH  = Calendar.JULY+1;
-
+    public static final String E_QTY  = "E_QTY";
+    public static final String TP_SALE_VALUE  = "TP_SALE_VALUE";
+    public static final String NET_SALE_VALUE  = "NET_SALE_VALUE";
+    public static final String DISCOUNTS  = "DISCOUNTS";
 
     public static NumberFormat nf = NumberFormat.getInstance();
     public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-
 }

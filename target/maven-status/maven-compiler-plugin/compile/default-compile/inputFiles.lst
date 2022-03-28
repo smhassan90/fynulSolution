@@ -8,6 +8,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\TownCustomer.jav
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dao\ServerLogin.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\Providers.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\CardDataYear.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\Graph.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\OrderSummary.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\TownDepot.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\Strategy.java

@@ -12,7 +12,11 @@ import java.util.List;
  */
 
 public class Common {
-    public static BarChartData getBarChartData(String query){
+    /*
+    ColumnNumber will be the column of number you want to show in the graph. By default it was 3.
+    It will start from 0.
+     */
+    public static BarChartData getBarChartData(String query, int columnNumber, ArrayList<Object> objs){
         List<String> backgroundColors = new ArrayList<>();
         backgroundColors.add("#666EE8");
         backgroundColors.add("#28D094");
@@ -32,7 +36,6 @@ public class Common {
         backgroundColors.add("#8BC34A");
         backgroundColors.add("#CDDC39");
 
-        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
         List<String> labels = new ArrayList<>();
         List<String> months = new ArrayList<>();
         BarChartData barChartData = new BarChartData();
@@ -74,7 +77,7 @@ public class Common {
                         Object[] innerTemp = (Object[]) objs.get(j);
 
                         if(innerTemp[2].toString().equals(label) && innerTemp[1].toString().equals(months.get(i).toString())){
-                            dataNum = (long) Double.parseDouble(innerTemp[3].toString().trim());
+                            dataNum = (long) Double.parseDouble(innerTemp[columnNumber].toString().trim());
                         }
                     }
                     data.add(dataNum);

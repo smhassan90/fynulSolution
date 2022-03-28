@@ -480,7 +480,8 @@ TYPE : MTD
         query = getBarChartQuery(whereClause, type);
 
         BarChartData barChartData = new BarChartData();
-        barChartData = Common.getBarChartData(query);
+        ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
+        barChartData = Common.getBarChartData(query,3, objs);
         return new Gson().toJson(barChartData);
     }
 
