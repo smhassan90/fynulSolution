@@ -411,30 +411,12 @@ TYPE : MTD
 
                 positionCode = employeeIDPositionIDMappings.get(0).getPOSITION_ID();
                 partners.add(positionCode);
+
                 List<EmployeeReportToMapping> employeeReportToMappings = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + positionCode + "'");
                 //Create Dal which has employee details with positionCode
                 if (employeeReportToMappings != null && employeeReportToMappings.size() > 0) {
                     for(EmployeeReportToMapping employeeReportToMapping : employeeReportToMappings){
                         partners.add(employeeReportToMapping.getPOSITION_ID());
-                        List<EmployeeReportToMapping> employeeReportToMappingsNested = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + employeeReportToMapping.getPOSITION_ID() + "'");
-                        if (employeeReportToMappingsNested != null && employeeReportToMappingsNested.size() > 0) {
-                            for(EmployeeReportToMapping employeeReportToMappingNested : employeeReportToMappingsNested){
-                                partners.add(employeeReportToMappingNested.getPOSITION_ID());
-                                List<EmployeeReportToMapping> employeeReportToMappingsNestedNested = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + employeeReportToMappingNested.getPOSITION_ID() + "'");
-                                if (employeeReportToMappingsNestedNested != null && employeeReportToMappingsNestedNested.size() > 0) {
-                                    for(EmployeeReportToMapping employeeReportToMappingNestedNested : employeeReportToMappingsNestedNested){
-                                        partners.add(employeeReportToMappingNestedNested.getPOSITION_ID());
-                                        List<EmployeeReportToMapping> employeeReportToMappingsNestedNestedNested = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + employeeReportToMappingNestedNested.getPOSITION_ID() + "'");
-                                        if (employeeReportToMappingsNestedNestedNested != null && employeeReportToMappingsNestedNestedNested.size() > 0) {
-                                            for(EmployeeReportToMapping employeeReportToMappingNestedNestedNested : employeeReportToMappingsNestedNestedNested){
-                                                partners.add(employeeReportToMappingNestedNestedNested.getPOSITION_ID());
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
 
@@ -481,7 +463,7 @@ TYPE : MTD
 
         BarChartData barChartData = new BarChartData();
         ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
-        barChartData = Common.getBarChartData(query,3, objs);
+        barChartData = Common.getBarChartData(query,3, objs, Codes.BARCHART);
         return new Gson().toJson(barChartData);
     }
 
@@ -620,17 +602,17 @@ TYPE : MTD
         String mtdQuery = "";
         String ytdQuery = "";
 
-        String targetMTD = "SELECT TEAM, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE', td.alias FROM base_team_dept td  INNER JOIN base_target t ON td.NAME = t.TEAM  WHERE MONTH='"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-01' group by TEAM";
-        String achMTD = "SELECT TEAM, ROUND(SUM(TP_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE  transaction_date like '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"%' group by TEAM";
+        String targetMTD = "SELECT TEAM, ROUND(SUM(TGT_NET_VALUE), 0) as 'TGT_NET_VALUE', td.alias, ROUND(SUM(ADD_BON_DISC),0) as 'DISCOUNT_TARGET' FROM base_team_dept td  INNER JOIN base_target t ON td.NAME = t.TEAM  WHERE MONTH='"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-01' group by TEAM";
+        String achMTD = "SELECT TEAM, ROUND(SUM(NET_SALE_VALUE), 0), ROUND((SUM(BONUS_VALUE)+SUM(DISCOUNTS)),0) as 'DISCOUNTS' FROM SALE_DETAIL_TEMP WHERE  transaction_date like '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"%' group by TEAM";
         ArrayList<Object> objTargetMTD= HibernateUtil.getDBObjectsFromSQLQuery(targetMTD);
         ArrayList<Object> objAchMTD= HibernateUtil.getDBObjectsFromSQLQuery(achMTD);
 
-        String targetYTD = "SELECT TEAM, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE', td.name FROM base_team_dept td INNER JOIN base_target t ON td.NAME = t.TEAM WHERE MONTH between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-31' group by TEAM";
-        String achYTD = "SELECT TEAM, ROUND(SUM(TP_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE transaction_date between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-31' group by TEAM";
+        String targetYTD = "SELECT TEAM, ROUND(SUM(TGT_NET_VALUE), 0) as 'TGT_NET_VALUE', td.name FROM base_team_dept td INNER JOIN base_target t ON td.NAME = t.TEAM WHERE MONTH between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-31' group by TEAM";
+        String achYTD = "SELECT TEAM, ROUND(SUM(NET_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE transaction_date between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-31' group by TEAM";
         ArrayList<Object> objTargetYTD= HibernateUtil.getDBObjectsFromSQLQuery(targetYTD);
         ArrayList<Object> objAchYTD= HibernateUtil.getDBObjectsFromSQLQuery(achYTD);
 
-        String FYTarget = "SELECT TEAM, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE' FROM `base_target` WHERE MONTH between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Integer.valueOf(HibernateUtil.getFiscalYearStart()+1)+"-06-30' group by TEAM";
+        String FYTarget = "SELECT TEAM, ROUND(SUM(TGT_NET_VALUE), 0) as 'TGT_NET_VALUE' FROM `base_target` WHERE MONTH between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Integer.valueOf(HibernateUtil.getFiscalYearStart()+1)+"-06-30' group by TEAM";
         ArrayList<Object> objFYTarget= HibernateUtil.getDBObjectsFromSQLQuery(FYTarget);
 
 

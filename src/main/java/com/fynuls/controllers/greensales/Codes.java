@@ -25,6 +25,8 @@ public interface Codes {
     public static final String TP_SALE_VALUE  = "TP_SALE_VALUE";
     public static final String NET_SALE_VALUE  = "NET_SALE_VALUE";
     public static final String DISCOUNTS  = "DISCOUNTS";
+    public static final int BARCHART = 1;
+    public static final int LINECHART = 2;
 
     public static NumberFormat nf = NumberFormat.getInstance();
     public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};

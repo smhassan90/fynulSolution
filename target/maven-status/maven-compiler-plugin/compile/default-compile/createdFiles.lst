@@ -17,6 +17,7 @@ com\fynuls\entity\login\LoginLog.class
 com\fynuls\entity\sale\TownStaff.class
 com\fynuls\SpringBootHelloWorldApplication.class
 com\fynuls\controllers\greensales\SectionShops.class
+com\fynuls\dal\LineChartData.class
 com\fynuls\dal\Data.class
 com\fynuls\controllers\TestIDManager.class
 com\fynuls\entity\base\TehsilMaster.class
@@ -45,6 +46,7 @@ com\fynuls\dal\SingleCard.class
 com\fynuls\entity\sale\ProductOrder.class
 com\fynuls\controllers\greensales\PerformanceExecutive.class
 com\fynuls\entity\base\EmployeeIDPositionIDMapping.class
+com\fynuls\dal\LineDataset.class
 com\fynuls\entity\base\TeamDepartment.class
 com\fynuls\entity\base\EmployeeDepot.class
 com\fynuls\dal\SyncObjectSS.class

@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Date;
+import java.util.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Properties;
 
 /**
  * @author Syed Muhammad Hassan
@@ -24,6 +22,57 @@ import java.util.Properties;
 
 @Controller
 public class Sales {
+    @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/testEmail", method = RequestMethod.GET)
+    @ResponseBody
+    public String testEmail(){
+        sendEmail("Test Email");
+        return "Done";
+    }
+    @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/allSales", method = RequestMethod.GET, params={"shortYear","fullYear"})
+    @ResponseBody
+    public String allSales(int shortYear, int fullYear){
+        long startCurrentMilis = Calendar.getInstance().getTimeInMillis();
+        List<String> mySQLDates = new ArrayList<>();
+        mySQLDates.add(fullYear+"-07");
+        mySQLDates.add(fullYear+"-08");
+        mySQLDates.add(fullYear+"-09");
+        mySQLDates.add(fullYear+"-10");
+        mySQLDates.add(fullYear+"-11");
+        mySQLDates.add(fullYear+"-12");
+        fullYear = fullYear+1;
+        mySQLDates.add(fullYear+"-01");
+        mySQLDates.add(fullYear+"-02");
+        mySQLDates.add(fullYear+"-03");
+        mySQLDates.add(fullYear+"-04");
+        mySQLDates.add(fullYear+"-05");
+        mySQLDates.add(fullYear+"-06");
+
+
+
+        List<String> oracleDates = new ArrayList<>();
+        oracleDates.add("-JUL-"+shortYear);
+        oracleDates.add("-AUG-"+shortYear);
+        oracleDates.add("-SEP-"+shortYear);
+        oracleDates.add("-OCT-"+shortYear);
+        oracleDates.add("-NOV-"+shortYear);
+        oracleDates.add("-DEC-"+shortYear);
+        shortYear= shortYear+1;
+        oracleDates.add("-JAN-"+shortYear);
+        oracleDates.add("-FEB-"+shortYear);
+        oracleDates.add("-MAR-"+shortYear);
+        oracleDates.add("-APR-"+shortYear);
+        oracleDates.add("-MAY-"+shortYear);
+        oracleDates.add("-JUN-"+shortYear);
+        String status= "";
+        for(int i=0; i<12; i++){
+            saleAgainstTransactionDate(mySQLDates.get(i));
+        }
+
+        long endCurrentMilis = Calendar.getInstance().getTimeInMillis();
+        return "All sales completed in " + (endCurrentMilis-startCurrentMilis);
+    }
 
     @CrossOrigin(origins = "*" )
     @RequestMapping(value = "/salesUpdate", method = RequestMethod.GET,params={"transaction_date","oracleDate"})
@@ -33,14 +82,11 @@ public class Sales {
         String maxVIDSALDaily = getMaxVID("SAL_DAILY_DATA_HIS_COPY WHERE transaction_date like '%"+oracleDate + "%'");
         String maxVIDSDMonthly = getMaxVID("SD_MONTHLY_FINAL_DATA WHERE transaction_date like '%"+oracleDate + "%'");
 
-        if(maxVIDSALDaily.equals(maxVIDSDMonthly)){
-            return "Already Updated";
-        }
+        String body = "";
 
         String minDate = getMinTransactionDate(maxVIDSALDaily);
         String maxDate = getMaxTransactionDate(maxVIDSALDaily);
         ArrayList<Object> rows = new ArrayList<>();
-        String strquery = "";
         String strDestID ="";
 
         rows = getDestinationRecords(minDate,maxDate);
@@ -88,8 +134,8 @@ public class Sales {
 
 
             if(transactionDate!=null && transactionDate!="") {
-                String body = "Daily Sales Data is now available till " + transactionDate.split(" ")[0] + " in HAWK and IKON.\n It is a System Generated Email.";
-                sendEmail(body);
+                body = "Daily Sales Data is now available till " + transactionDate.split(" ")[0] + " in HAWK and IKON.\n It is a System Generated Email.";
+
             }
         }
 
@@ -97,8 +143,29 @@ public class Sales {
 
 
 
-
+        sendEmail(body);
         return "Done";
+    }
+
+    public void saleAgainstTransactionDate(String transaction_date){
+        boolean isSuccessful = HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE transaction_date like '%"+transaction_date+"%'");
+        if(isSuccessful){
+            String dateForSD = "";
+
+            Date date  = null;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd").parse(transaction_date);
+                dateForSD = new SimpleDateFormat("MMM-yy").format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SalesDistribution salesDistribution = new SalesDistribution();
+            String millis = salesDistribution.distributeSales(dateForSD.toUpperCase());
+            // Copy sales on sale_detail_temp Oracle for IKON
+            HibernateUtil.executeQueryOracle("DELETE FROM SALE_DETAIL_TEMP WHERE transaction_date like '%"+dateForSD+"%'");
+            Transfer transfer = new Transfer();
+            transfer.sale(transaction_date);
+        }
     }
 
 /*
@@ -106,9 +173,9 @@ public class Sales {
         // Sender's email ID needs to be mentioned
         String from = "support.it@greenstar.org.pk";
         final String username = "support.it@greenstar.org.pk";//change accordingly
-        final String password = "Pass@word12";//change accordinglygi
+        final String password = "Pass@word12";//change accordingly
 
-        // Assuming you are sending email through relay.jangosmtp.net
+        // Assuming you are sending email
         final String host = "smtp.office365.com";
 
         Properties props = new Properties();
@@ -164,7 +231,7 @@ public class Sales {
         int ss = 9;
     }
     */
-private void sendEmail(String body){
+    private void sendEmail(String body){
 
     // Sender's email ID needs to be mentioned
 //        String from = "support.it@greenstar.org.pk";
@@ -185,7 +252,7 @@ private void sendEmail(String body){
             "javax.net.ssl.SSLSocketFactory");
     //    props.put("mail.smtp.port", "587");
     props.put("mail.smtp.port", "465");
-    InternetAddress[] ccAddress = new InternetAddress[2];
+    InternetAddress[] ccAddress = new InternetAddress[6];
 
     Session session = Session.getInstance(props,
             new javax.mail.Authenticator() {
@@ -198,6 +265,10 @@ private void sendEmail(String body){
     try {
         ccAddress[0] = new InternetAddress("hasnain.ali@greenstar.org.pk");
         ccAddress[1] = new InternetAddress("syedhassan@greenstar.org.pk");
+        ccAddress[2] = new InternetAddress("mtafseer@greenstar.org.pk");
+        ccAddress[3] = new InternetAddress("moinahmed@greenstar.org.pk");
+        ccAddress[4] = new InternetAddress("ammadkhan@greenstar.org.pk");
+        ccAddress[5] = new InternetAddress("umeriftikhar@greenstar.org.pk");
         // Create a default MimeMessage object.
         Message message = new MimeMessage(session);
 

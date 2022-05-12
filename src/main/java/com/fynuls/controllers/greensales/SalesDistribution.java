@@ -214,17 +214,41 @@ public class SalesDistribution {
                             saleDetail.setGRP_CATEGORY(prdGroupOn.getPRD_CAT());
                             saleDetail.setPRODUCTGROUP(prdGroupOn.getPRD_GRP());
                             saleDetail.setPROVIDERCODE(sdMonthlyFinalData.getPROVIDER_CODE());
-
-                            if((sdMonthlyFinalData.getPRD_NAME()!=null &&  (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
-                                    || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
-                                    || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
-                                    || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")))
-                                    || (saleDetail.getGRP()!=null && saleDetail.getGRP().equals("Nutraceutical"))){
-                                saleDetail = setPositionCodeNotMIOFromProviderCode(saleDetail, sdMonthlyFinalData);
+                            if(saleDetail.getPRD_NAME().contains("WELLMA")){
+                                List<String> wellmaTaggedTo = new ArrayList<>();
+                                wellmaTaggedTo.add("-HYST-");
+                                String positionCode = getPositionCodeFromProviderCode(saleDetail.getPROVIDER_CODE(),wellmaTaggedTo);
+                                if(positionCode==null || positionCode.equals("")){
+                                    positionCode = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(),wellmaTaggedTo,sdMonthlyFinalData.getHUID());
+                                    if(positionCode!=null && !positionCode.equals("")){
+                                        saleDetail.setPOSITION_CODE(positionCode);
+                                    }else{
+                                        positionCode = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(), "-HYST-");
+                                        saleDetail.setPOSITION_CODE(positionCode);
+                                    }
+                                }else{
+                                    saleDetail.setPOSITION_CODE(positionCode);
+                                }
                             }else{
-                                //Deal Others
-                                saleDetail = dealOthers(saleDetail, sdMonthlyFinalData, prdgrpon);
+                                if(saleDetail.getNATURE()!=null && saleDetail.getPROVIDER_CODE()==null){
+                                    List<EmployeeCustomer> empCustomers = getPositionCodeFromEmployeeCustomerMapping(saleDetail,null);
+                                    if(empCustomers!=null && empCustomers.size()>0){
+                                        saleDetail.setPOSITION_CODE(empCustomers.get(0).getPOSITION_CODE());
+                                    }
+                                }else if((sdMonthlyFinalData.getPRD_NAME()!=null &&  (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
+                                        || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
+                                        || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
+                                        || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")))
+                                        || (saleDetail.getGRP()!=null && saleDetail.getGRP().equals("Nutraceutical"))){
+
+
+                                    saleDetail = setPositionCodeNotMIOFromProviderCode(saleDetail, sdMonthlyFinalData);
+                                }else{
+                                    //Deal Others
+                                    saleDetail = dealOthers(saleDetail, sdMonthlyFinalData, prdgrpon);
+                                }
                             }
+
 
                             saleDetail = saveEmployeeDetailsFromPositionCode(saleDetail);
                             saleDetail = getManagedChannel(saleDetail);
@@ -424,6 +448,7 @@ public class SalesDistribution {
         }
         return positionCode;
     }
+
 
     private String getPOSITION_CODEFromTerritoryMapping(String territory, List<String> taggedTo, double HUID) {
         String positionCode = "";
@@ -857,3 +882,4 @@ public class SalesDistribution {
     }
 
 }
+

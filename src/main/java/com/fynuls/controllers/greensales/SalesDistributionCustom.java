@@ -1,4 +1,5 @@
 package com.fynuls.controllers.greensales;
+
 import com.fynuls.entity.SDMonthlyFinalData;
 import com.fynuls.entity.SaleDetailTemp;
 import com.fynuls.entity.base.*;
@@ -29,11 +30,33 @@ public class SalesDistributionCustom {
     int autoIncrement = 1;
     String remarks = "";
     String missingData = "";
-    @RequestMapping(value = "/SalesDistributionCustom", method = RequestMethod.GET,params={"huid"})
+    @RequestMapping(value = "/SalesDistributionCustom", method = RequestMethod.GET,params={"huid","natureNotNull", "type"})
     @ResponseBody
-    public String distributeSales(String huid){
+    public String distributeSales(String huid, boolean natureNotNull, int type){
         PRDGroupOn prdgrpon = null;
 
+/*
+nature not null
+ */
+        String condition = "";
+        String queryOracle ="";
+        if(!natureNotNull){
+            condition = " nature is null ";
+        }else{
+            condition = " nature is not null ";
+        }
+        condition +=" and ";
+
+        if(type==1){
+            //It is HUID
+            condition += " HUID = "+huid;
+        }else if (type==2){
+            // It is MTD
+            condition+=" transaction_date like '%"+huid+"' ";
+        }else{
+            condition += " 1=1 ";
+        }
+        queryOracle = "from SDMonthlyFinalData where "+condition;
         List<SDMonthlyFinalData> sdMonthlyFinalDataList = new ArrayList<>();
         //  sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjects("from SDMonthlyFinalData where TRANSACTION_DATE like '%-JUL-21'");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where  (" +
@@ -47,14 +70,18 @@ public class SalesDistributionCustom {
 //                "transaction_date like '%-MAR-22%'  OR \n" +
 //                "transaction_date like '%-OCT-21%') order by transaction_date DESC");
 
-        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where  (" +
-                "transaction_date like '%-JUL-21%' OR \n" +
-                "transaction_date like '%-AUG-21%'  OR \n" +
-                "transaction_date like '%-SEP-21%') order by transaction_date DESC");
+//        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where  (" +
+//                "transaction_date like '%-JUL-21%' OR \n" +
+//                "transaction_date like '%-AUG-21%'  OR \n" +
+//                "transaction_date like '%-SEP-21%') order by transaction_date DESC");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where transaction_date like '%"+huid+"'");
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where nature is not null and transaction_date like '%FEB-22%'");
 
 //        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle("from SDMonthlyFinalData where HUID="+huid);
+
+
+        sdMonthlyFinalDataList = (List<SDMonthlyFinalData>) HibernateUtil.getDBObjectsOracle(queryOracle);
+
         Calendar cal = Calendar.getInstance();
         String reportingMonth ="";
         long startCurrentMilis = Calendar.getInstance().getTimeInMillis();
@@ -225,23 +252,41 @@ public class SalesDistributionCustom {
                             saleDetail.setGRP_CATEGORY(prdGroupOn.getPRD_CAT());
                             saleDetail.setPRODUCTGROUP(prdGroupOn.getPRD_GRP());
                             saleDetail.setPROVIDERCODE(sdMonthlyFinalData.getPROVIDER_CODE());
-                            if(saleDetail.getNATURE()!=null && saleDetail.getPROVIDER_CODE()==null){
-                                List<EmployeeCustomer> empCustomers = getPositionCodeFromEmployeeCustomerMapping(saleDetail,null);
-                                if(empCustomers!=null && empCustomers.size()>0){
-                                    saleDetail.setPOSITION_CODE(empCustomers.get(0).getPOSITION_CODE());
+                            if(saleDetail.getPRD_NAME().contains("WELLMA")){
+                                List<String> wellmaTaggedTo = new ArrayList<>();
+                                wellmaTaggedTo.add("-HYST-");
+                                String positionCode = getPositionCodeFromProviderCode(saleDetail.getPROVIDER_CODE(),wellmaTaggedTo);
+                                if(positionCode==null || positionCode.equals("")){
+                                    positionCode = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(),wellmaTaggedTo,sdMonthlyFinalData.getHUID());
+                                    if(positionCode!=null && !positionCode.equals("")){
+                                        saleDetail.setPOSITION_CODE(positionCode);
+                                    }else{
+                                        positionCode = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(), "-HYST-");
+                                        saleDetail.setPOSITION_CODE(positionCode);
+                                    }
+                                }else{
+                                    saleDetail.setPOSITION_CODE(positionCode);
                                 }
-                            }else if((sdMonthlyFinalData.getPRD_NAME()!=null &&  (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
-                                    || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
-                                    || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
-                                    || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")))
-                                    || (saleDetail.getGRP()!=null && saleDetail.getGRP().equals("Nutraceutical"))){
-
-
-                                saleDetail = setPositionCodeNotMIOFromProviderCode(saleDetail, sdMonthlyFinalData);
                             }else{
-                                //Deal Others
-                                saleDetail = dealOthers(saleDetail, sdMonthlyFinalData, prdgrpon);
+                                if(saleDetail.getNATURE()!=null && saleDetail.getPROVIDER_CODE()==null){
+                                    List<EmployeeCustomer> empCustomers = getPositionCodeFromEmployeeCustomerMapping(saleDetail,null);
+                                    if(empCustomers!=null && empCustomers.size()>0){
+                                        saleDetail.setPOSITION_CODE(empCustomers.get(0).getPOSITION_CODE());
+                                    }
+                                }else if((sdMonthlyFinalData.getPRD_NAME()!=null &&  (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
+                                        || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
+                                        || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
+                                        || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")))
+                                        || (saleDetail.getGRP()!=null && saleDetail.getGRP().equals("Nutraceutical"))){
+
+
+                                    saleDetail = setPositionCodeNotMIOFromProviderCode(saleDetail, sdMonthlyFinalData);
+                                }else{
+                                    //Deal Others
+                                    saleDetail = dealOthers(saleDetail, sdMonthlyFinalData, prdgrpon);
+                                }
                             }
+
 
                             saleDetail = saveEmployeeDetailsFromPositionCode(saleDetail);
                             saleDetail = getManagedChannel(saleDetail);
@@ -441,6 +486,7 @@ public class SalesDistributionCustom {
         }
         return positionCode;
     }
+
 
     private String getPOSITION_CODEFromTerritoryMapping(String territory, List<String> taggedTo, double HUID) {
         String positionCode = "";

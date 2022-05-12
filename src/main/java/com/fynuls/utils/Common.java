@@ -1,5 +1,6 @@
 package com.fynuls.utils;
 
+import com.fynuls.controllers.greensales.Codes;
 import com.fynuls.dal.BarChartData;
 import com.fynuls.dal.Dataset;
 
@@ -16,7 +17,7 @@ public class Common {
     ColumnNumber will be the column of number you want to show in the graph. By default it was 3.
     It will start from 0.
      */
-    public static BarChartData getBarChartData(String query, int columnNumber, ArrayList<Object> objs){
+    public static BarChartData getBarChartData(String query, int columnNumber, ArrayList<Object> objs, int chartType){
         List<String> backgroundColors = new ArrayList<>();
         backgroundColors.add("#666EE8");
         backgroundColors.add("#28D094");
@@ -82,8 +83,13 @@ public class Common {
                     }
                     data.add(dataNum);
                 }
+                dataset.setBorderColor(backgroundColors.get(colorLoop));
+                if(chartType==Codes.LINECHART){
 
+                    dataset.setBackgroundColor("rgba(0,0,0,0)");
+                }
                 dataset.setData(data);
+
                 datasets.add(dataset);
             }
         }

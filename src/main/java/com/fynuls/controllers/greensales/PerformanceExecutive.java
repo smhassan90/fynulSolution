@@ -3,6 +3,7 @@ package com.fynuls.controllers.greensales;
 import com.fynuls.dal.BarChartData;
 import com.fynuls.dal.Dataset;
 import com.fynuls.dal.Graph;
+import com.fynuls.dal.LineChartData;
 import com.fynuls.utils.Common;
 import com.fynuls.utils.HibernateUtil;
 import com.google.gson.Gson;
@@ -36,13 +37,14 @@ public class PerformanceExecutive {
                     "INNER JOIN base_monthly_team_ach ta on ta.TEAM = tt.TEAM\n" +
                     "INNER JOIN base_team_dept td on td.NAME = tt.TEAM\n" +
                     "WHERE tt.MONTH = '2022-03-01' and ta.REPORTINGMONTH = 'March,2022'";
-            barChartData = getBarChart(query);
+            barChartData = getBarChart(query,14, 4, 10 );
         }else if(type.equals("yearlyBarChart")){
-            query = "SELECT * FROM base_monthly_team_target tt\n" +
-                    "INNER JOIN base_monthly_team_ach ta on ta.TEAM = tt.TEAM\n" +
-                    "INNER JOIN base_team_dept td on td.NAME = tt.TEAM\n" +
-                    "WHERE tt.MONTH = '2022-03-01' and ta.REPORTINGMONTH = 'March,2022'";
-            barChartData = getBarChart(query);
+            query = "SELECT * FROM (SELECT `base_target`.`TEAM` AS `TEAM`, sum(`base_target`.`TARGET`) AS `target`, sum(`base_target`.`TGT_TP_VALUE`) AS `TGT_TP_VALUE`, sum(`base_target`.`TGT_NET_VALUE`) AS `TGT_NET_VALUE`, sum(`base_target`.`TGT_DIST_COMM`) AS `TGT_DIST_COMM` FROM `base_target` where month BETWEEN '2021-07-01' and '2022-03-31' GROUP BY `base_target`.`TEAM`)  yearly_target \n" +
+                    "INNER JOIN (SELECT `sale_detail_temp`.`TEAM` AS `TEAM`, ROUND(sum(`sale_detail_temp`.`E_QTY`),0) AS `E_QTY`, ROUND(sum(`sale_detail_temp`.`TP_SALE_VALUE`),0) AS `TP_SALE_VALUE`, ROUND(sum(`sale_detail_temp`.`NET_SALE_VALUE`),0) AS `NET_SALE_VALUE`, ROUND(sum(`sale_detail_temp`.`MNP_COMMISSION`),0) AS `MNP_COMMISSION` FROM `sale_detail_temp` \n" +
+                    "WHERE TRANSACTION_DATE BETWEEN '2021-07-01' and '2022-06-30'\n" +
+                    "GROUP BY `sale_detail_temp`.`TEAM` )  yearly_ach on yearly_ach.TEAM = yearly_target.TEAM\n" +
+                    "INNER JOIN base_team_dept td on td.NAME = yearly_ach.TEAM";
+            barChartData = getBarChart(query, 12, 3, 8);
         }else if(type.equals("GSM")){
             barChartData = getGSMBarChart();
         }
@@ -64,12 +66,12 @@ public class PerformanceExecutive {
 
         List<Dataset> datasetList = new ArrayList<>();
         Dataset datasetTarget = new Dataset();
-        datasetTarget.setBackgroundColor("#cccccc");
+        datasetTarget.setBackgroundColor("#FF4961");
         datasetTarget.setLabel("Target");
         datasetTarget.setData(dataTarget);
 
         Dataset datasetAchievement = new Dataset();
-        datasetAchievement.setBackgroundColor("#ff4444");
+        datasetAchievement.setBackgroundColor("#00BCD4");
         datasetAchievement.setLabel("Achievement");
         datasetAchievement.setData(dataAchievement);
 
@@ -82,7 +84,7 @@ public class PerformanceExecutive {
         return  barChartData;
     }
 
-    private BarChartData getBarChart(String query) {
+    private BarChartData getBarChart(String query, int aliasColumn, int targetColumn, int achColumn) {
         ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
         List<String> labels = new ArrayList<>();
         List<Long> ach = new ArrayList<>();
@@ -94,7 +96,7 @@ public class PerformanceExecutive {
             for(Object obj : objs){
                 if(obj!=null){
                     Object[] objArray = (Object[]) obj;
-                    labels.add(objArray[14].toString());
+                    labels.add(objArray[aliasColumn].toString());
                 }
             }
         }
@@ -104,8 +106,8 @@ public class PerformanceExecutive {
                 datasetAch = new Dataset();
                 if(obj!=null){
                     Object[] arr = (Object[]) obj;
-                    target.add(new BigDecimal(arr[4].toString()).longValue());
-                    ach.add(new BigDecimal(arr[10].toString()).longValue());
+                    target.add(new BigDecimal(arr[targetColumn].toString()).longValue());
+                    ach.add(new BigDecimal(arr[achColumn].toString()).longValue());
                 }
 
             }
@@ -136,22 +138,22 @@ public class PerformanceExecutive {
         Graph graph = null;
         List<Graph> graphs = new ArrayList<>();
         BarChartData barChartData = null;
-                String query = "SELECT DATE_FORMAT(TRANSACTION_DATE, '%M-%y'),td.ALIAS as 'TEAM', reportingmonth, ROUND(SUM(E_QTY),0) AS 'E_QTY', ROUND(SUM(TP_SALE_VALUE),0) AS 'TP_SALE_VALUE', ROUND(SUM(NET_SALE_VALUE),0) AS 'NET_SALE_VALUE' FROM `sale_detail_temp` sdt INNER JOIN base_team_dept td on td.NAME = sdt.TEAM WHERE TRANSACTION_DATE between '2021-07-01' and '2022-06-30' group by reportingmonth, TEAM, td.ALIAS order by TRANSACTION_DATE desc";
+                String query = "SELECT DATE_FORMAT(TRANSACTION_DATE, '%M-%y'),td.ALIAS as 'TEAM', reportingmonth, ROUND(SUM(E_QTY),0) AS 'E_QTY', ROUND(SUM(TP_SALE_VALUE),0) AS 'TP_SALE_VALUE', ROUND(SUM(NET_SALE_VALUE),0) AS 'NET_SALE_VALUE' FROM `sale_detail_temp` sdt INNER JOIN base_team_dept td on td.NAME = sdt.TEAM WHERE TRANSACTION_DATE between '2021-07-01' and '2022-06-30' group by reportingmonth, TEAM, td.ALIAS order by TRANSACTION_DATE asc";
         ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
                 // E_QTY is at the 4 column so we are giving columnNumber 3.
-        barChartData = Common.getBarChartData(query,3, objs);
+        barChartData = Common.getBarChartData(query,3, objs, Codes.LINECHART);
         graph=new Graph();
         graph.setUnitType(Codes.E_QTY);
         graph.setBarChartData(barChartData);
         graphs.add(graph);
 
-        barChartData = Common.getBarChartData(query,4, objs);
+        barChartData = Common.getBarChartData(query,4, objs, Codes.LINECHART);
         graph=new Graph();
         graph.setUnitType(Codes.TP_SALE_VALUE);
         graph.setBarChartData(barChartData);
         graphs.add(graph);
 
-        barChartData = Common.getBarChartData(query,5, objs);
+        barChartData = Common.getBarChartData(query,5, objs, Codes.LINECHART);
         graph=new Graph();
         graph.setUnitType(Codes.NET_SALE_VALUE);
         graph.setBarChartData(barChartData);

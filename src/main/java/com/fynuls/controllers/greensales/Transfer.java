@@ -128,12 +128,20 @@ public class Transfer {
             saleDetailTempIKON.setZONE(sdt.getZONE());
             HibernateUtil.saveOracle(saleDetailTempIKON);
         }
+
+
+        transferTarget();
+        return "Transfer was true";
+    }
+    @CrossOrigin(origins = "*" )
+    @RequestMapping(value = "/transferTarget", method = RequestMethod.GET)
+    @ResponseBody
+    public String transferTarget(){
+
         HibernateUtil.executeQueryOracle("DELETE FROM BASE_TARGET");
 
         List<Target> target = (List<Target>) HibernateUtil.getDBObjects("from Target");
-        HibernateUtil.saveOrUpdateListOracle(target);
-
-
-        return "Transfer was true";
+        boolean transfer = HibernateUtil.saveOrUpdateListOracle(target);
+        return "Transfer was "+transfer;
     }
 }
