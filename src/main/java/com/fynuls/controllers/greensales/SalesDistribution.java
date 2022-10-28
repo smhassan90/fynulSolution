@@ -237,7 +237,6 @@ public class SalesDistribution {
                                     }
                                 }else if((sdMonthlyFinalData.getPRD_NAME()!=null &&  (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
                                         || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
-                                        || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
                                         || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")))
                                         || (saleDetail.getGRP()!=null && saleDetail.getGRP().equals("Nutraceutical"))){
 
@@ -253,6 +252,11 @@ public class SalesDistribution {
                             saleDetail = saveEmployeeDetailsFromPositionCode(saleDetail);
                             saleDetail = getManagedChannel(saleDetail);
                             saleDetail.setGSM_REMARKS(remarks);
+                            if(sdMonthlyFinalData.getPROVIDER_CODE()!=null){
+                                saleDetail.setUCC_COLUMN(sdMonthlyFinalData.getPROVIDER_CODE());
+                            }else{
+                                saleDetail.setUCC_COLUMN(sdMonthlyFinalData.getCUST_NUMBER().trim()+sdMonthlyFinalData.getCUST_NAME().trim());
+                            }
 
                             HibernateUtil.save(saleDetail);
 
@@ -292,8 +296,9 @@ public class SalesDistribution {
                     || prdgrpon.getPRD_GRP().contains("Femi Ject")
                     || prdgrpon.getPRD_GRP().contains("Enofer"))) {
 
+
                 List<String> taggedTo = new ArrayList<>();
-                taggedTo.add("MIO");
+                taggedTo.add("-PHR-MIO-");
                 saleDetail = setPositionCodeFromProviderCode(saleDetail, sdMonthlyFinalData, taggedTo);
                 if (saleDetail.getPOSITION_CODE()!=null && !saleDetail.getPOSITION_CODE().contains("MIO")) {
                     String territory = sdMonthlyFinalData.getTERRITORY();
@@ -318,7 +323,12 @@ public class SalesDistribution {
 
                 if (count > 1) {
                     taggedTo = new ArrayList<>();
-                    taggedTo.add("MIO");
+                    taggedTo.add("SF-SSB");
+                    taggedTo.add("-SF-SFE-");
+                    taggedTo.add("-SF-SFSB-");
+                    taggedTo.add("-SF-QAM-");
+                    taggedTo.add("-SF-AM-");
+                    taggedTo.add("UNMAP");
 
                 } else if (count == 0) {
                     missingData += "BASE_EMP_TAGGING is null: HUID=" + sdMonthlyFinalData.getHUID() + "Table : BASE_EMP_TAGGING " + "SELECT count(*) FROM BASE_EMP_TAGGING where " + whereInClause + " tagged_to = '" + sdMonthlyFinalData.getPROVIDER_CODE() + "'"+"\n";
@@ -789,7 +799,6 @@ public class SalesDistribution {
         String POSITION_ID = "";
         if(sdMonthlyFinalData.getPRD_NAME().contains("OEM")
                 || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
-                || sdMonthlyFinalData.getPRD_NAME().contains("DEPO QUEEN")
                 || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")){
             List<String> taggedTo = new ArrayList<>();
 
@@ -882,4 +891,3 @@ public class SalesDistribution {
     }
 
 }
-

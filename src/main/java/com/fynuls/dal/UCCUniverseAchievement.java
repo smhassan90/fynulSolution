@@ -12,6 +12,8 @@ public class UCCUniverseAchievement {
     String ucc;
     String coverage;
     String quarterUCC;
+    private String empId;
+    private String password;
 
     public String getName() {
         return name;
@@ -59,5 +61,21 @@ public class UCCUniverseAchievement {
 
     public void setQuarterUCC(String quarterUCC) {
         this.quarterUCC = quarterUCC;
+    }
+
+    public String getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

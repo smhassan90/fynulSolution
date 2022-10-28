@@ -9,6 +9,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\dao\ServerLogin.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\Providers.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\CardDataYear.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\Graph.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\crb\User.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\LineDataset.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\OrderSummary.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\TownDepot.java
@@ -40,6 +41,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\SKUGroup.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\EmployeePositionTeam.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\BarChartData.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dao\IStaffVerificationDAO.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\mecwheel\ManageUser.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\LoginOnly.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\Employee.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\Dashboard.java
@@ -112,9 +114,11 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\Codes
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dao\SyncDAO.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\utils\Common.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\SaleDetailTemp.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\SaleDetailWorking.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\EmployeeIDPositionIDMapping.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\SalesReport.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\ActualSaleData.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\Town.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\Response.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\Customer.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\Status.java

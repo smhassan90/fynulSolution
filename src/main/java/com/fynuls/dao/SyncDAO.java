@@ -85,7 +85,7 @@ public class SyncDAO {
     public List<Universe> getUniverse(String token){
         List<Universe> universeArrayList = new ArrayList<Universe>();
         Performance performance = new Performance();
-        String where = performance.getWhereClause(token);
+        String where = performance.getWhereClause(token,true);
         universeArrayList = (List<Universe>) HibernateUtil.getDBObjects("From Universe where "+where);
         return universeArrayList;
     }
@@ -166,7 +166,7 @@ public class SyncDAO {
     public List<WorkWith> getWorkWiths(String token){
         List<WorkWith> workWiths = new ArrayList<WorkWith>();
         WorkWith workWith = new WorkWith();
-        List<String> partners = new Performance().getPartnersArray(token);
+        List<String> partners = new Performance().getPartnersArray(token, true);
         if(partners!=null){
             for(int i=0; i<partners.size(); i++){
                 workWith = new WorkWith();

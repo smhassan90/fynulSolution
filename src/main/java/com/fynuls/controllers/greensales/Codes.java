@@ -30,4 +30,5 @@ public interface Codes {
 
     public static NumberFormat nf = NumberFormat.getInstance();
     public static final String[] monthNames = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    public static String ALREADY_EXISTS = "409";
 }

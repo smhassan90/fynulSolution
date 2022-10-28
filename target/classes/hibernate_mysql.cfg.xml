@@ -95,6 +95,7 @@
         <mapping class="com.fynuls.entity.base.Universe" />
         <mapping class="com.fynuls.entity.base.Target" />
         <mapping class="com.fynuls.entity.login.LoginLog" />
+        <mapping class="com.fynuls.entity.SaleDetailWorking" />
     </session-factory>
 
 

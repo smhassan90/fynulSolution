@@ -15,8 +15,8 @@
         <!-- Assume test is the database name -->
 
         <property name = "hibernate.connection.url">
-           jdbc:oracle:thin:@//192.168.0.27:1521/orcl1
-           <!-- jdbc:oracle:thin:@//203.101.170.211:1521/orcl1 -->
+            jdbc:oracle:thin:@//192.168.0.27:1521/orcl1
+          <!--  jdbc:oracle:thin:@//203.101.170.211:1521/orcl1 -->
           <!--  jdbc:oracle:thin:@//203.101.170.211:1521/orcl1 -->
         </property>
 
@@ -40,6 +40,7 @@
         <mapping class="com.fynuls.entity.base.Employee" />
         <mapping class="com.fynuls.entity.SaleDetailTempIKON" />
         <mapping class="com.fynuls.entity.base.Target" />
+        <mapping class="com.fynuls.entity.crb.User" />
         <!--
         Base tables
         -->

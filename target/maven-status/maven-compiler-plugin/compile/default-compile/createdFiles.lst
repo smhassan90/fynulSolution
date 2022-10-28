@@ -35,6 +35,7 @@ com\fynuls\dal\LoginResponse.class
 com\fynuls\entity\base\ProvinceMaster.class
 com\fynuls\entity\SaleDetailTemp.class
 com\fynuls\controllers\greensales\MissingData.class
+com\fynuls\controllers\mecwheel\ManageUser.class
 com\fynuls\entity\SaleDetailTempIKON.class
 com\fynuls\controllers\TestController.class
 com\fynuls\entity\base\Channel.class
@@ -45,6 +46,7 @@ com\fynuls\dal\AverageMonthly.class
 com\fynuls\dal\SingleCard.class
 com\fynuls\entity\sale\ProductOrder.class
 com\fynuls\controllers\greensales\PerformanceExecutive.class
+com\fynuls\dal\Response.class
 com\fynuls\entity\base\EmployeeIDPositionIDMapping.class
 com\fynuls\dal\LineDataset.class
 com\fynuls\entity\base\TeamDepartment.class
@@ -55,6 +57,7 @@ com\fynuls\dal\Graph.class
 com\fynuls\dal\BarChartData.class
 com\fynuls\entity\base\DistrictRegionMapping.class
 com\fynuls\dal\Dashboard.class
+com\fynuls\entity\SaleDetailWorking.class
 com\fynuls\dal\ResponseBtnAdd.class
 com\fynuls\entity\SaleDetail.class
 com\fynuls\entity\sale\Depot.class
@@ -84,6 +87,7 @@ com\fynuls\entity\base\TeamRegion.class
 com\fynuls\controllers\DBCheck.class
 com\fynuls\controllers\greensales\SalesDistributionCustom.class
 com\fynuls\dal\GeneralResponse.class
+com\fynuls\entity\crb\User.class
 com\fynuls\entity\base\ProviderTehsil.class
 com\fynuls\entity\base\TehsilSNDPOP.class
 com\fynuls\dal\UCCUniverseAchievement.class

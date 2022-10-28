@@ -16,6 +16,8 @@ public class SPOProgress {
     private String balance;
     private String CMA;
     private String RMA;
+    private String designation;
+    private String zone;
 
     public String getName() {
         return name;
@@ -119,5 +121,21 @@ public class SPOProgress {
 
     public void setPersonName(String personName) {
         this.personName = personName;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
     }
 }

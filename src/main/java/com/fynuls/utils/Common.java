@@ -5,6 +5,7 @@ import com.fynuls.dal.BarChartData;
 import com.fynuls.dal.Dataset;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -96,5 +97,18 @@ public class Common {
         barChartData.setDatasets(datasets);
         barChartData.setLabels(labels);
         return barChartData;
+    }
+
+    public static int getCurrentFiscalMonth(){
+        if((Calendar.getInstance().get(Calendar.MONTH)+1)<7){
+            return Calendar.getInstance().get(Calendar.MONTH)+1+6;
+        }else{
+            return (Calendar.getInstance().get(Calendar.MONTH)+1)-6;
+        }
+    }
+
+    public static String getDesignationFromPositionCode(String positionCode){
+        String designation = HibernateUtil.getSingleString("SELECT d.NAME FROM BASE_EMPLOYEE E INNER JOIN base_designation d on d.ID = E.DESIGNATION_ID INNER JOIN base_empid_positionid_mapping ep on ep.EMPLOYEE_ID = e.ID WHERE ep.POSITION_ID = '"+positionCode+"'");
+        return designation;
     }
 }

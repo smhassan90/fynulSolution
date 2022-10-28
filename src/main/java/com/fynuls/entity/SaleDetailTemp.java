@@ -155,6 +155,9 @@ public class SaleDetailTemp implements Cloneable{
     @Column(name="REPORTINGMONTH")
     private String REPORTINGMONTH;
 
+    @Column(name="UCC_COLUMN")
+    private String UCC_COLUMN;
+
     public int getId() {
         return id;
     }
@@ -693,5 +696,13 @@ public class SaleDetailTemp implements Cloneable{
 
     public void setREPORTINGMONTH(String REPORTINGMONTH) {
         this.REPORTINGMONTH = REPORTINGMONTH;
+    }
+
+    public String getUCC_COLUMN() {
+        return UCC_COLUMN;
+    }
+
+    public void setUCC_COLUMN(String UCC_COLUMN) {
+        this.UCC_COLUMN = UCC_COLUMN;
     }
 }

@@ -1,10 +1,7 @@
 package com.fynuls.controllers.greensales;
 
 import com.fynuls.dal.*;
-import com.fynuls.entity.base.Employee;
-import com.fynuls.entity.base.EmployeeIDPositionIDMapping;
-import com.fynuls.entity.base.EmployeeReportToMapping;
-import com.fynuls.entity.base.TeamDepartment;
+import com.fynuls.entity.base.*;
 import com.fynuls.entity.login.LoginStatus;
 import com.fynuls.utils.Common;
 import com.fynuls.utils.HibernateUtil;
@@ -30,16 +27,17 @@ public class Performance {
     private LoginStatus getLoginStatus(String token){
         LoginStatus loginStatus = new LoginStatus();
        // String query = "from LoginStatus where token='" + token + "'";
-        String query = "SELECT * FROM LOGINSTATUS WHERE TOKEN='" + token + "'";
+        String query = "SELECT * FROM LOGINSTATUS WHERE TOKEN='" + token + "' order by id desc";
         ArrayList<Object> loginStatusList =  HibernateUtil.getDBObjectsFromSQLQuery(query);
 
         if (loginStatusList != null && loginStatusList.size() > 0) {
             for(Object obj : loginStatusList){
                 Object[] objArray = (Object[]) obj;
                 if(objArray!=null){
-                    loginStatus.setUsername(objArray[0].toString());
-                    loginStatus.setToken(objArray[1].toString());
-                    loginStatus.setPOSITION_CODE(objArray[5].toString());
+                    loginStatus.setUsername(objArray[1].toString());
+                    loginStatus.setToken(objArray[2].toString());
+                    loginStatus.setPOSITION_CODE(objArray[6].toString());
+                    break;
                 }
             }
         }
@@ -131,7 +129,7 @@ public class Performance {
             if(!whereClause.equals("")){
                 whereClause +=" and ";
             }
-            whereClause += getWhereClause(token);
+            whereClause += getWhereClause(token, true);
         }
         if(!products.equals("")){
             if(!whereClause.equals("")){
@@ -203,7 +201,8 @@ public class Performance {
                 }
                 innerQuery += ")";
             }
-            String query = "SELECT distinct productGroup FROM SALE_DETAIL_TEMP  "+innerQuery + " ORDER BY groupOn ASC";
+            String whereClause = getWhereClause(token,true);
+            String query = "SELECT distinct productGroup FROM SALE_DETAIL_TEMP  WHERE "+whereClause + " ORDER BY groupOn ASC";
             dropDownResponse = getStringDropdownData(query);
 
         }
@@ -218,9 +217,6 @@ public class Performance {
         try {
             ArrayList<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
             if(objs!=null && objs.size()>0){
-//                KeyValue keyValueTemp = new KeyValue();
-//                keyValueTemp.setKey("");
-//                keyValueList.add(keyValueTemp);
                 for (Object obj : objs) {
                     keyValue = new KeyValue();
                     keyValue.setKey(obj.toString());
@@ -242,7 +238,7 @@ public class Performance {
     @ResponseBody
     private String getAverageAndRequiredMonthly(String token, String type){
         String status = "";
-        String whereClause = getWhereClause(token);
+        String whereClause = getWhereClause(token,true);
         String query = "select SUM(Current_month_average), SUM(required_month_average) FROM performance WHERE " + whereClause;
 
         ArrayList<Object> objs = null;//HibernateUtil.getDBObjectsFromSQLQuery(query);
@@ -272,7 +268,7 @@ public class Performance {
     @ResponseBody
     private String getUCC(String token, String type){
         String status = "";
-        String whereClause = getWhereClause(token);
+        String whereClause = getWhereClause(token, true);
         String whereMonth = getWhereMonthClause(type);
         String query = "";
         if(type.equals("YTD")){
@@ -330,7 +326,7 @@ TYPE : MTD
             condition = " like '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-%' ";
         }
 
-        String whereClause = getWhereClause(token);
+        String whereClause = getWhereClause(token, true);
       //  String whereMonth = getWhereMonthClause(type);
         String query = "SELECT SUM(E_QTY) AS E_QTY, "+
                 "SUM(`TP_SALE_VALUE`) as TP_SALE_VALUE FROM `SALE_DETAIL_TEMP` " +
@@ -367,6 +363,7 @@ TYPE : MTD
                 if(objects!= null && objects.length>0){
                     E_QTY = Double.valueOf(objects[0]==null?"0":objects[0].toString());
                     TP_SALE_VALUE = Double.valueOf(objects[1]==null?"0":objects[1].toString());
+                    TP_SALE_VALUE = Double.valueOf(objects[1]==null?"0":objects[1].toString());
                     status=Codes.ALL_OK;
 
                 }
@@ -399,7 +396,7 @@ TYPE : MTD
         return Codes.nf.format(n);
     }
 
-    public ArrayList<String> getPartnersArray(String token){
+    public ArrayList<String> getPartnersArray(String token, boolean isDownTheLine){
         ArrayList<String> partners = new ArrayList<>();
         LoginStatus loginStatus = getLoginStatus(token);
         String username = "";
@@ -410,30 +407,168 @@ TYPE : MTD
                 String positionCode = "";
 
                 positionCode = employeeIDPositionIDMappings.get(0).getPOSITION_ID();
-                partners.add(positionCode);
+                partners = getPartnersFromPositionCode(positionCode,isDownTheLine);
 
-                List<EmployeeReportToMapping> employeeReportToMappings = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + positionCode + "'");
-                //Create Dal which has employee details with positionCode
-                if (employeeReportToMappings != null && employeeReportToMappings.size() > 0) {
-                    for(EmployeeReportToMapping employeeReportToMapping : employeeReportToMappings){
-                        partners.add(employeeReportToMapping.getPOSITION_ID());
-                    }
-                }
 
             }
         }
         return partners;
     }
 
+    private ArrayList<String> getPartnersFromPositionCode(String positionCode, boolean isDownTheLine) {
+        ArrayList<String> partners = new ArrayList<>();
+        partners.add(positionCode);
+        String queryLevel = "SELECT LEVEL FROM BASE_EMPLOYEE WHERE ID in (SELECT EMPLOYEE_ID FROM `base_empid_positionid_mapping` WHERE POSITION_ID='"+positionCode+"')";
+        String levelStr = HibernateUtil.getSingleString(queryLevel);
+        if(levelStr.equals("")){
+            levelStr = "0";
+        }
+        int level = Integer.valueOf(levelStr);
+        String query = "";
+        if(isDownTheLine && level>1){
+            query = getQueryWithLevel(level, positionCode);
+            ArrayList<Object> part = HibernateUtil.getDBObjectsFromSQLQuery(query);
+            for(Object partner:part){
+                if(partner!=null){
+                    partners.add(partner.toString());
+                }
+            }
+        }else{
+            List<EmployeeReportToMapping> employeeReportToMappings = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + positionCode + "'");
+            //Create Dal which has employee details with positionCode
+            if (employeeReportToMappings != null && employeeReportToMappings.size() > 0) {
+                for(EmployeeReportToMapping employeeReportToMapping : employeeReportToMappings){
+                    partners.add(employeeReportToMapping.getPOSITION_ID());
+                }
+            }
+        }
+        return partners;
+    }
+
+    private String getQueryWithLevel(int level, String positionCode){
+        String query = "";
+        if(positionCode.equals("STH-FMCG-DGM-01")){
+            int i=9;
+            i=0;
+        }
+        if(level==2){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id ='"+positionCode+"'";
+        }
+        else if(level==3){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR reportto_id='"+positionCode+"' OR reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"')";
+        }
+        else if(level==4){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where  reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "( SELECT POSITION_ID FROM base_emp_reportto_mapping where  reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where  reportto_id='"+positionCode+"'));";
+        }
+        else if(level==5){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR reportto_id in " +
+                    "( SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id='"+positionCode+"')));";
+        }else if(level==6){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR reportto_id in " +
+                    "( SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id='"+positionCode+"'))));";
+        }else if(level==7){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR reportto_id in " +
+                    "( SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id='"+positionCode+"')))));";
+        }else if(level==8){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR reportto_id in " +
+                    "( SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id='"+positionCode+"'))))));";
+        }else if(level==9){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR reportto_id in " +
+                    "( SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id='"+positionCode+"')))))));";
+        }else if(level==10){
+            query = "SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR reportto_id in " +
+                    "( SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id in " +
+                    "(SELECT POSITION_ID FROM base_emp_reportto_mapping where reportto_id='"+positionCode+"' OR  reportto_id='"+positionCode+"'))))))));";
+        }
+
+        return query;
+    }
+/*
+    private ArrayList<String> getPartnersFromPositionCode(String positionCode, boolean isDownTheLine) {
+        ArrayList<String> partners = new ArrayList<>();
+        partners.add(positionCode);
+        if(isDownTheLine) {
+            List<EmployeeReportToMapping> employeeReportToMappingsNested = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + positionCode + "'");
+            if (employeeReportToMappingsNested != null && employeeReportToMappingsNested.size() > 0) {
+                for (EmployeeReportToMapping employeeReportToMappingNested : employeeReportToMappingsNested) {
+                    partners.add(employeeReportToMappingNested.getPOSITION_ID());
+                    List<EmployeeReportToMapping> employeeReportToMappingsNestedNested = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + employeeReportToMappingNested.getPOSITION_ID() + "'");
+                    if (employeeReportToMappingsNestedNested != null && employeeReportToMappingsNestedNested.size() > 0) {
+                        for (EmployeeReportToMapping employeeReportToMappingNestedNested : employeeReportToMappingsNestedNested) {
+                            partners.add(employeeReportToMappingNestedNested.getPOSITION_ID());
+                            List<EmployeeReportToMapping> employeeReportToMappingsNestedNestedNested = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + employeeReportToMappingNestedNested.getPOSITION_ID() + "'");
+                            if (employeeReportToMappingsNestedNestedNested != null && employeeReportToMappingsNestedNestedNested.size() > 0) {
+                                for (EmployeeReportToMapping employeeReportToMappingNestedNestedNested : employeeReportToMappingsNestedNestedNested) {
+                                    partners.add(employeeReportToMappingNestedNestedNested.getPOSITION_ID());
+                                    List<EmployeeReportToMapping> employeeReportToMappingsNestedNestedNestedNested = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + employeeReportToMappingNestedNested.getPOSITION_ID() + "'");
+                                    if (employeeReportToMappingsNestedNestedNestedNested != null && employeeReportToMappingsNestedNestedNestedNested.size() > 0) {
+                                        for (EmployeeReportToMapping employeeReportToMappingNestedNestedNestedNested : employeeReportToMappingsNestedNestedNestedNested) {
+                                            partners.add(employeeReportToMappingNestedNestedNestedNested.getPOSITION_ID());
+                                            List<EmployeeReportToMapping> employeeReportToMappingsNestedNestedNestedNestedNested = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + employeeReportToMappingNestedNested.getPOSITION_ID() + "'");
+                                            if (employeeReportToMappingsNestedNestedNestedNestedNested != null && employeeReportToMappingsNestedNestedNestedNestedNested.size() > 0) {
+                                                for (EmployeeReportToMapping employeeReportToMappingNestedNestedNestedNestedNested : employeeReportToMappingsNestedNestedNestedNestedNested) {
+                                                    partners.add(employeeReportToMappingNestedNestedNestedNestedNested.getPOSITION_ID());
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            List<EmployeeReportToMapping> employeeReportToMappings = (List<EmployeeReportToMapping>) HibernateUtil.getDBObjects("from EmployeeReportToMapping where REPORTTO_ID ='" + positionCode + "'");
+            //Create Dal which has employee details with positionCode
+            if (employeeReportToMappings != null && employeeReportToMappings.size() > 0) {
+                for(EmployeeReportToMapping employeeReportToMapping : employeeReportToMappings){
+                    partners.add(employeeReportToMapping.getPOSITION_ID());
+                }
+            }
+        }
+        return partners;
+    }
+    */
 
 
     /*
     This will return the where clause with position code of partners
      */
-    public String getWhereClause(String token){
+    public String getWhereClause(String token, boolean isDownTheLine){
         String whereClause = "";
         List<String> partners = new ArrayList<>();
-        partners = getPartnersArray(token);
+        partners = getPartnersArray(token, isDownTheLine);
         if(partners!=null && partners.size()>0){
             boolean isFirst = true;
             whereClause = "  POSITION_CODE IN ( ";
@@ -457,7 +592,7 @@ TYPE : MTD
     public String getCYPBarChartData(String token, String type){
         String query = "";
         String whereClause = "";
-        whereClause = getWhereClause(token);
+        whereClause = getWhereClause(token, true);
 
         query = getBarChartQuery(whereClause, type);
 
@@ -518,7 +653,7 @@ TYPE : MTD
     @RequestMapping(value = "/getSPOProgress", method = RequestMethod.GET,params={"token"})
     @ResponseBody
     private String getSPOProgress(String token){
-        String where = getWhereClause(token);
+        String where = getWhereClause(token, true);
 
         String mtdQuery = "";
         String ytdQuery = "";
@@ -537,7 +672,7 @@ TYPE : MTD
         ArrayList<Object> objFYTarget= HibernateUtil.getDBObjectsFromSQLQuery(FYTarget);
 
 
-        List<String> partners = getPartnersArray(token);
+        List<String> partners = getPartnersArray(token, false);
         SPOProgress spoProgress = new SPOProgress();
         List<SPOProgress> spoProgressList = new ArrayList<>();
 
@@ -563,22 +698,52 @@ TYPE : MTD
 
                 targetFY = getNumberAgainstPartner(partner, objFYTarget);
 
+                double targetMD = 0;
+                double targetYD = 0;
 
+                if(targetM!=0){
+                    targetMD = (achM/targetM)*100;
+                }
+                if(targetY!=0){
+                    targetYD = (achY/targetY)*100;
+                }
+
+                spoProgress.setDesignation(Common.getDesignationFromPositionCode(partner));
                 spoProgress.setMtdTarget(Codes.nonDecimal.format(targetM));
                 spoProgress.setMtdAch(Codes.nonDecimal.format(achM));
                 spoProgress.setYtdTarget(Codes.nonDecimal.format(targetY));
                 spoProgress.setYtdAch(Codes.nonDecimal.format(achY));
-                spoProgress.setMtdPerc(String.valueOf(Codes.df.format((achM/(targetM==0?1:targetM))*100)));
-                spoProgress.setYtdPerc(String.valueOf(Codes.df.format((achY/(targetY==0?1:targetY)*100))));
+                spoProgress.setMtdPerc(String.valueOf(Codes.df.format(targetMD)));
+                spoProgress.setYtdPerc(String.valueOf(Codes.df.format(targetYD)));
                 spoProgress.setFYTarget(String.valueOf(Codes.nonDecimal.format(targetFY)));
                 spoProgress.setBalance(String.valueOf(Codes.nonDecimal.format(targetFY-achY)));
-                spoProgress.setRMA(String.valueOf(Codes.nonDecimal.format((targetFY-achY)/6)));
-                spoProgress.setCMA(String.valueOf(Codes.nonDecimal.format((achY)/6)));
-
+                spoProgress.setRMA(String.valueOf(Codes.nonDecimal.format((targetFY-achY)/Common.getCurrentFiscalMonth())));
+                spoProgress.setCMA(String.valueOf(Codes.nonDecimal.format((achY)/Common.getCurrentFiscalMonth())));
+                String zone = getZoneFromPositionCode(partner);
+                spoProgress.setZone(zone);
                 spoProgressList.add(spoProgress);
             }
         }
         return new Gson().toJson(spoProgressList);
+    }
+
+    private String getZoneFromPositionCode(String partner) {
+        String zone = "";
+
+        String query = "from EmployeeZoneMapping where POSITION_ID ='"+partner+"'";
+        List<EmployeeZoneMapping> employeeZoneMappings = (List<EmployeeZoneMapping>) HibernateUtil.getDBObjects(query);
+
+        if(employeeZoneMappings!=null && employeeZoneMappings.size()>0){
+            String zoneID = employeeZoneMappings.get(0).getZONE_ID();
+            if(zoneID!=null && !zoneID.equals("")){
+                List<Zone> zones = (List<Zone>) HibernateUtil.getDBObjects("from Zone where id = '"+zoneID+"'");
+                if(zones!=null && zones.size()>0){
+                    zone = zones.get(0).getZONE_ALIAS();
+                }
+            }
+        }
+
+        return zone;
     }
 
     private String getNameFromPositionCode(String partner) {
@@ -676,22 +841,22 @@ TYPE : MTD
     @RequestMapping(value = "/getSPOProgressProductWise", method = RequestMethod.GET,params={"token", "position_code"})
     @ResponseBody
     private String getSPOProgressProductWise(String token, String position_code){
-        String where = getWhereClause(token);
+        String where = getWhereClause(token,true);
 
         String mtdQuery = "";
         String ytdQuery = "";
 
-        String targetMTD = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE', e.name FROM `base_target` t INNER JOIN base_empid_positionid_mapping ep ON ep.POSITION_ID = t.POSITION_CODE INNER JOIN base_employee e on e.ID = ep.EMPLOYEE_ID  WHERE position_code='"+position_code+"' and MONTH='"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-01' group by GROUP_ON_ID";
-        String achMTD = "SELECT GROUPON, ROUND(SUM(TP_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE position_code='"+position_code+"' and transaction_date like '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"%' group by GROUPON";
+        String targetMTD = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE' FROM `base_target` t INNER JOIN base_empid_positionid_mapping ep ON ep.POSITION_ID = t.POSITION_CODE INNER JOIN base_employee e on e.ID = ep.EMPLOYEE_ID  WHERE "+where+" and MONTH='"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-01' group by GROUP_ON_ID";
+        String achMTD = "SELECT GROUPON, ROUND(SUM(TP_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE "+where+" and transaction_date like '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"%' group by GROUPON";
         ArrayList<Object> objTargetMTD= HibernateUtil.getDBObjectsFromSQLQuery(targetMTD);
         ArrayList<Object> objAchMTD= HibernateUtil.getDBObjectsFromSQLQuery(achMTD);
 
-        String targetYTD = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE' FROM `base_target` WHERE position_code='"+position_code+"' and MONTH between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-01' group by GROUP_ON_ID";
-        String achYTD = "SELECT GROUPON, ROUND(SUM(TP_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE position_code='"+position_code+"' and transaction_date between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-31' group by GROUPON";
+        String targetYTD = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE' FROM `base_target` WHERE "+where+" and MONTH between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-01' group by GROUP_ON_ID";
+        String achYTD = "SELECT GROUPON, ROUND(SUM(TP_SALE_VALUE), 0) FROM SALE_DETAIL_TEMP WHERE "+where+" and transaction_date between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Codes.CURRENT_YEAR_NUMBER+"-"+Codes.CURRENT_MONTH_NUMBER+"-31' group by GROUPON";
         ArrayList<Object> objTargetYTD= HibernateUtil.getDBObjectsFromSQLQuery(targetYTD);
         ArrayList<Object> objAchYTD= HibernateUtil.getDBObjectsFromSQLQuery(achYTD);
 
-        String FYTarget = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE' FROM `base_target` WHERE position_code='"+position_code+"' and MONTH between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Integer.valueOf(HibernateUtil.getFiscalYearStart()+1)+"-06-30' group by GROUP_ON_ID";
+        String FYTarget = "SELECT GROUP_ON_ID, ROUND(SUM(TGT_TP_VALUE), 0) as 'TARGET_TP_VALUE' FROM `base_target` WHERE "+where+" and MONTH between '"+HibernateUtil.getFiscalYearStart()+"-07-01' and '"+Integer.valueOf(HibernateUtil.getFiscalYearStart()+1)+"-06-30' group by GROUP_ON_ID";
         ArrayList<Object> objFYTarget= HibernateUtil.getDBObjectsFromSQLQuery(FYTarget);
 
 
@@ -715,7 +880,7 @@ TYPE : MTD
                 spoProgress.setPosition_code(groupon);
                 targetM = getNumberAgainstPartner(groupon, objTargetMTD);
                 achM = getNumberAgainstPartner(groupon, objAchMTD);
-                spoProgress.setPersonName(getPersonName(groupon, objTargetMTD));
+                spoProgress.setPersonName(groupon);
                 targetY = getNumberAgainstPartner(groupon, objTargetYTD);
                 achY = getNumberAgainstPartner(groupon, objAchYTD);
 
@@ -752,7 +917,7 @@ TYPE : MTD
                     if(!groupon.equals(mtdArray[0].toString())){
                         continue;
                     }else{
-                        name = mtdArray[1]==null?"0":mtdArray[2].toString();
+                        name = mtdArray[1]==null?"0":mtdArray[1].toString();
                         break;
                     }
                 }
@@ -796,19 +961,23 @@ TYPE : MTD
 
     private double getNumberAgainstPartner(String partner, ArrayList<Object> objTargetMTD) {
         double number = 0;
-        if(objTargetMTD!=null){
-            for (Object mtd : objTargetMTD){
-                Object[] mtdArray = (Object[]) mtd;
-                if(mtdArray!=null){
-                    if(!partner.equals(mtdArray[0]==null?"":mtdArray[0].toString())){
-                        continue;
-                    }else{
-                        number = Double.valueOf(mtdArray[1]==null?"0":mtdArray[1].toString());
-                        break;
+        List<String> partners = new ArrayList<>();
+        partners = getPartnersFromPositionCode(partner,true);
+        if(objTargetMTD!=null && partners!=null && partners.size()>0){
+            for(String positionCode : partners){
+                for (Object mtd : objTargetMTD){
+                    Object[] mtdArray = (Object[]) mtd;
+                    if(mtdArray!=null){
+                        if(!positionCode.equals(mtdArray[0]==null?"":mtdArray[0].toString())){
+                            continue;
+                        }else{
+                            number += Double.valueOf(mtdArray[1]==null?"0":mtdArray[1].toString());
+                        }
                     }
-                }
 
+                }
             }
+
         }
         return number;
     }
@@ -817,18 +986,13 @@ TYPE : MTD
     @RequestMapping(value = "/getUCCTable", method = RequestMethod.GET,params={"token", "positionCode", "productGroup", "reportingMonth"})
     @ResponseBody
     private String getUCCTable(String token, String positionCode, String productGroup, String reportingMonth){
-        String whereClause = getWhereClause(token);
+        String whereClause = getWhereClause(token, true);
         ArrayList<UCCDetail> uccDetails = new ArrayList<>();
 
         String queryPositionCode = "";
         String queryProductGroup = "";
         String queryReportingMonth = "";
 
-        if(positionCode!=null && !"".equals(positionCode)){
-            queryPositionCode = " POSITION_CODE = '"+positionCode + "' ";
-        }else{
-            queryPositionCode = " 1=1 ";
-        }
 
         if(productGroup!=null && !"".equals(productGroup)){
             queryProductGroup = " productGroup = '"+productGroup + "' ";
@@ -842,7 +1006,7 @@ TYPE : MTD
             queryReportingMonth = " 1=1 ";
         }
 
-        String query = "SELECT cust_number, cust_name, section_code, section_name, TP_SALE_VALUE from UCC_POSITION_PRODUCT_WISE where "+queryPositionCode + " and "+ queryProductGroup +" and " + queryReportingMonth +" and IS_UCC>0 order by TP_SALE_VALUE desc";
+        String query = "SELECT cust_number, cust_name, section_code, section_name, TP_SALE_VALUE from UCC_POSITION_PRODUCT_WISE where "+whereClause + " and "+ queryProductGroup +" and " + queryReportingMonth +" and IS_UCC>0 order by TP_SALE_VALUE desc";
         List<Object> objs = HibernateUtil.getDBObjectsFromSQLQuery(query);
         UCCDetail uccDetail = null;
         if(objs!=null && objs.size()>0){
@@ -877,7 +1041,7 @@ TYPE : MTD
     @ResponseBody
     private String UCCUniverseAchievement(String token){
 
-        String where = getWhereClause(token);
+        String where = getWhereClause(token, true);
 
 
         String achievedUCCQuery = "SELECT POSITION_CODE, SUM(IS_UCC), name FROM `ucc_position_wise` WHERE "+where+" and REPORTINGMONTH ='"+Codes.monthNames[Codes.CALENDER_CURRENT_MONTH_NUMBER-1]+","+Codes.CURRENT_YEAR_NUMBER+"' group by POSITION_CODE order by POSITION_CODE ASC";
@@ -887,7 +1051,7 @@ TYPE : MTD
         ArrayList<Object> targetUCCResult= HibernateUtil.getDBObjectsFromSQLQuery(targetUCC);
 
 
-        List<String> partners = getPartnersArray(token);
+        List<String> partners = getPartnersArray(token, false);
         UCCUniverseAchievement universeAchievement = new UCCUniverseAchievement();
         List<UCCUniverseAchievement> uccUniverseAchievements = new ArrayList<>();
 
@@ -898,15 +1062,28 @@ TYPE : MTD
             for (String partner : partners){
                 String name = "";
                 universeAchievement = new UCCUniverseAchievement();
-                universeAchievement.setName(getName(partner, achievedUCCResult));
+                universeAchievement.setName(getNameFromPositionCode(partner));
                 universeAchievement.setPosition_code(partner);
                 targetUniverse = getNumberAgainstPartner(partner, targetUCCResult);
                 achievedUCC = getNumberAgainstPartner(partner, achievedUCCResult);
 
                 universeAchievement.setUcc(Codes.nonDecimal.format(achievedUCC));
                 universeAchievement.setTotalCustomers(Codes.nonDecimal.format(targetUniverse));
-                universeAchievement.setCoverage(String.valueOf(Codes.df.format((achievedUCC/(targetUniverse==0?1:targetUniverse))*100)));
 
+                String coverage = "";
+
+                if(targetUniverse==0){
+                    coverage = "0";
+                }else{
+                    coverage=Codes.df.format((achievedUCC/(targetUniverse==0?1:targetUniverse))*100);
+                }
+
+                universeAchievement.setCoverage(coverage);
+                String queryEmpId = "SELECT ID FROM BASE_EMPLOYEE WHERE ID in (SELECT EMPLOYEE_ID FROM `base_empid_positionid_mapping` WHERE POSITION_ID='"+partner+"')";
+                String empId = HibernateUtil.getSingleString(queryEmpId);
+                Employee employee = getEmployee(empId);
+                universeAchievement.setEmpId(employee.getID());
+                universeAchievement.setPassword(employee.getPWD());
 
                 uccUniverseAchievements.add(universeAchievement);
             }
