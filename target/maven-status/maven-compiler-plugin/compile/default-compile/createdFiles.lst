@@ -45,6 +45,7 @@ com\fynuls\dao\IStaffDatabaseDAO.class
 com\fynuls\dal\AverageMonthly.class
 com\fynuls\dal\SingleCard.class
 com\fynuls\entity\sale\ProductOrder.class
+com\fynuls\dal\SalesSerialization.class
 com\fynuls\controllers\greensales\PerformanceExecutive.class
 com\fynuls\dal\Response.class
 com\fynuls\entity\base\EmployeeIDPositionIDMapping.class
@@ -117,6 +118,7 @@ com\fynuls\dal\ProductPerformance.class
 com\fynuls\entity\base\DepotTerritoryToPosition.class
 com\fynuls\utils\Common.class
 com\fynuls\entity\base\Universe.class
+com\fynuls\dal\Test.class
 com\fynuls\dal\InfoActionPlanDAL.class
 com\fynuls\dal\CompleteEmployee.class
 com\fynuls\controllers\greensales\Sync.class

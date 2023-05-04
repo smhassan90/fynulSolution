@@ -35,58 +35,66 @@ public class SalesDistributionCustom {
     @ResponseBody
     public String automateSale(){
         long startCurrentMilis = Calendar.getInstance().getTimeInMillis();
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'July,2021'");
-        distributeSales("JUL-21",true, 2);
-        distributeSales("JUL-21",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'July,2022'");
+        distributeSales("JUL-22",true, 2);
+        distributeSales("JUL-22",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'August,2021'");
-        distributeSales("AUG-21",true, 2);
-        distributeSales("AUG-21",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'August,2022'");
+        distributeSales("AUG-22",true, 2);
+        distributeSales("AUG-22",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'September,2021'");
-        distributeSales("SEP-21",true, 2);
-        distributeSales("SEP-21",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'September,2022'");
+        distributeSales("SEP-22",true, 2);
+        distributeSales("SEP-22",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'October,2021'");
-        distributeSales("OCT-21",true, 2);
-        distributeSales("OCT-21",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'October,2022'");
+        distributeSales("OCT-22",true, 2);
+        distributeSales("OCT-22",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'November,2021'");
-        distributeSales("NOV-21",true, 2);
-        distributeSales("NOV-21",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'November,2022'");
+        distributeSales("NOV-22",true, 2);
+        distributeSales("NOV-22",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'December,2021'");
-        distributeSales("DEC-21",true, 2);
-        distributeSales("DEC-21",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'December,2022'");
+        distributeSales("DEC-22",true, 2);
+        distributeSales("DEC-22",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'January,2022'");
-        distributeSales("JAN-22",true, 2);
-        distributeSales("JAN-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'January,2023'");
+        distributeSales("JAN-23",true, 2);
+        distributeSales("JAN-23",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'February,2022'");
-        distributeSales("FEB-22",true, 2);
-        distributeSales("FEB-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'February,2023'");
+        distributeSales("FEB-23",true, 2);
+        distributeSales("FEB-23",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'March,2022'");
-        distributeSales("MAR-22",true, 2);
-        distributeSales("MAR-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'March,2023'");
+        distributeSales("MAR-23",true, 2);
+        distributeSales("MAR-23",false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_TEMP WHERE reportingMonth = 'April,2022'");
-        distributeSales("APR-22",true, 2);
-        distributeSales("APR-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'April,2023'");
+        distributeSales("APR-23",true, 2);
+        distributeSales("APR-23",false, 2);
+
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'May,2023'");
+        distributeSales("MAY-23",true, 2);
+        distributeSales("MAY-23",false, 2);
+
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'June,2023'");
+        distributeSales("JUN-23",true, 2);
+        distributeSales("JUN-23",false, 2);
 
         long endCurrentMilis = Calendar.getInstance().getTimeInMillis();
-        long totalMilis = (endCurrentMilis-startCurrentMilis)/60000;
-        return "Chul gai or total time laga "+totalMilis+" seconds" ;
+        long totalMilis = ((endCurrentMilis-startCurrentMilis)/60000)/60;
+        return "Chul gai or total time laga "+totalMilis+" hours" ;
     }
     @RequestMapping(value = "/SalesDistributionCustom", method = RequestMethod.GET,params={"huid","isMNPSale", "type"})
     @ResponseBody
     public String distributeSales(String huid, boolean isMNPSale, int type){
         PRDGroupOn prdgrpon = null;
 
-/*
-nature not null
- */
+        /*
+            nature not null
+        */
         String condition = "";
         String queryOracle ="";
         if(isMNPSale){
@@ -115,6 +123,7 @@ nature not null
         long startCurrentMilis = Calendar.getInstance().getTimeInMillis();
         int i =0;
         String specialCharactersString = "!@#$%&*()'+,-./:;<=>?[]^_`{|}";
+        String batchNumber = HibernateUtil.getNextSaleBatchNumber();
         if(sdMonthlyFinalDataList!=null && sdMonthlyFinalDataList.size()>0) {
             for (SDMonthlyFinalData sdMonthlyFinalData : sdMonthlyFinalDataList) {
                 cal.setTime(sdMonthlyFinalData.getTRANSACTION_DATE());
@@ -279,21 +288,36 @@ nature not null
                             saleDetail.setGRP(prdGroupOn.getGRP());
                             saleDetail.setGRP_CATEGORY(prdGroupOn.getPRD_CAT());
                             saleDetail.setPRODUCTGROUP(prdGroupOn.getPRD_GRP());
-                            saleDetail.setPROVIDERCODE(sdMonthlyFinalData.getPROVIDER_CODE());
+                            saleDetail.setPROVIDERCODE(batchNumber);
+                            String positionCode = "";
                             if(saleDetail.getPRD_NAME().contains("WELLMA")){
                                 List<String> wellmaTaggedTo = new ArrayList<>();
                                 wellmaTaggedTo.add("-HYST-");
-                                String positionCode = getPositionCodeFromProviderCode(saleDetail.getPROVIDER_CODE(),wellmaTaggedTo);
-                                if(positionCode==null || positionCode.equals("")){
-                                    positionCode = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(),wellmaTaggedTo,sdMonthlyFinalData.getHUID());
-                                    if(positionCode!=null && !positionCode.equals("")){
-                                        saleDetail.setPOSITION_CODE(positionCode);
-                                    }else{
-                                        positionCode = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(), "-HYST-");
-                                        saleDetail.setPOSITION_CODE(positionCode);
+
+
+                                List<EmployeeCustomer> employeeCustomers = new ArrayList<>();
+                                if (saleDetail.getNATURE() != null && saleDetail.getPROVIDER_CODE() == null) {
+                                    employeeCustomers = getPositionCodeFromEmployeeCustomerMapping(saleDetail, wellmaTaggedTo);
+                                    if (employeeCustomers != null && employeeCustomers.size() > 0) {
+                                        for (EmployeeCustomer employeeCustomer : employeeCustomers) {
+                                            positionCode = employeeCustomer.getPOSITION_CODE();
+                                        }
                                     }
-                                }else{
-                                    saleDetail.setPOSITION_CODE(positionCode);
+                                }
+                                if (positionCode.equals("")) {
+
+                                    positionCode = getPositionCodeFromProviderCode(saleDetail.getPROVIDER_CODE(), wellmaTaggedTo);
+                                    if (positionCode == null || positionCode.equals("")) {
+                                        if (saleDetail.getPROVIDER_CODE() != null) {
+                                            positionCode = getPOSITION_CODEFromDepot(saleDetail.getDEPOT(), wellmaTaggedTo);
+                                            saleDetail.setPOSITION_CODE(positionCode);
+                                        } else {
+                                            positionCode = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), wellmaTaggedTo, sdMonthlyFinalData.getHUID());
+                                            if (positionCode != null && !positionCode.equals("")) {
+                                                saleDetail.setPOSITION_CODE(positionCode);
+                                            }
+                                        }
+                                    }
                                 }
                             }else{
                                 if(saleDetail.getNATURE()!=null && saleDetail.getPROVIDER_CODE()==null){
@@ -314,7 +338,9 @@ nature not null
                                 }
                             }
 
-
+                            if(!positionCode.equals("")){
+                                saleDetail.setPOSITION_CODE(positionCode);
+                            }
                             saleDetail = saveEmployeeDetailsFromPositionCode(saleDetail);
                             saleDetail = getManagedChannel(saleDetail);
                             saleDetail.setGSM_REMARKS(remarks);
@@ -361,18 +387,22 @@ nature not null
                     String territory = sdMonthlyFinalData.getTERRITORY();
                     remarks += "Forcefully sales belongs to MIO";
                     //Fetching Employee information
-                    saleDetail = getSaleDetailObject(saleDetail, "MIO", territory);
+                    saleDetail = getSaleDetailObject(saleDetail, "PHR-MIO", territory);
                 }
 
             } else {
                 List<String> taggedTo = new ArrayList<>();
-                taggedTo.add("MIO");
+                taggedTo.add("PHR-MIO");
+                taggedTo.add("SF-MIO");
+                taggedTo.add("GCC");
+
                 taggedTo.add("SF-SSB");
                 taggedTo.add("-SF-SFE-");
                 taggedTo.add("-SF-SFSB-");
                 taggedTo.add("-SF-QAM-");
                 taggedTo.add("-SF-AM-");
                 taggedTo.add("UNMAP");
+
 
                 String whereInClause = getTaggedToWhereClause(taggedTo, "POSITION_ID");
 
@@ -397,7 +427,7 @@ nature not null
                 //  Depends on tagging
                 remarks += "Depends on tagging";
                 if (saleDetail.getPOSITION_CODE()!=null && saleDetail.getPOSITION_CODE().equals("")) {
-                    saleDetail = getSaleDetailObject(saleDetail, "MIO", sdMonthlyFinalData.getTERRITORY());
+                    saleDetail = getSaleDetailObject(saleDetail, "PHR-MIO", sdMonthlyFinalData.getTERRITORY());
                     //  Depends on tagging
                     remarks += "Left over products if provider code available. Tagged from Territory Mapping";
                 }
@@ -436,50 +466,90 @@ nature not null
 
             } else if (sdMonthlyFinalData.getSGP() > 830 && prdgrpon.getGRP()!=null
                     && prdgrpon.getGRP().equals("CONDOM")) {
-                String POSITION_CODE = "";
                 if (sdMonthlyFinalData.getPRD_NAME()!=null && (sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("do ") ||
                         sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("sathi"))) {
-                    if(sdMonthlyFinalData.getSECTION_NAME()!=null){
-                        POSITION_CODE = getSingleString("SELECT POSITIONCODE FROM BASE_DEPOT_SECTION_TO_POSITION WHERE (POSITIONCODE LIKE '%FMCG-%' OR POSITIONCODE LIKE '%FMCG01%') AND NewSectionCode = '" + saleDetail.getDEPOT() + saleDetail.getSECTION_NAME().trim().replaceAll("\\s", "") + "'");
-                    }else{
-                        remarks += "HUID: "+sdMonthlyFinalData.getHUID()+" Section Name is null";
-                    }
-                    if (POSITION_CODE.equals("")) {
-                        remarks += "BASE_DEPOT_SECTION_TO_POSITION Mapping required";
+                    //Iss condition me kaam kerna hay.
+                    /*
+                    SELECT * FROM EMPLOYEECUSTOMER WHERE
+                     */
+                    List<EmployeeCustomer> employeeCustomers = new ArrayList<>();
+                    String query = "from EmployeeCustomer where (POSITION_CODE LIKE '%FMCG-%' OR POSITION_CODE LIKE '%FMCG01%') and LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().replaceAll("\\s+","").toLowerCase()+"'";
+
+                     employeeCustomers = (List<EmployeeCustomer>) HibernateUtil.getDBObjects(query);
+
+                     if(employeeCustomers!=null){
+                         if(employeeCustomers.size()>0){
+                             POSITION_ID = employeeCustomers.get(0).getPOSITION_CODE();
+                         }
+                     }
+
+                    if(POSITION_ID.equals("")) {
+                        if (sdMonthlyFinalData.getSECTION_NAME() != null) {
+                            POSITION_ID = getSingleString("SELECT POSITIONCODE FROM BASE_DEPOT_SECTION_TO_POSITION WHERE (POSITIONCODE LIKE '%FMCG-%' OR POSITIONCODE LIKE '%FMCG01%') AND NewSectionCode = '" + saleDetail.getDEPOT() + saleDetail.getSECTION_NAME().trim().replaceAll("\\s", "") + "'");
+                        } else {
+                            remarks += "HUID: " + sdMonthlyFinalData.getHUID() + " Section Name is null";
+                        }
+                        if (POSITION_ID.equals("")) {
+                            remarks += "BASE_DEPOT_SECTION_TO_POSITION Mapping required";
+                        }
                     }
                 } else if (sdMonthlyFinalData.getPRD_NAME() !=null && sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("touch")) {
-                    if(sdMonthlyFinalData.getSECTION_NAME()!=null){
-                        POSITION_CODE = getSingleString("SELECT POSITIONCODE FROM BASE_DEPOT_SECTION_TO_POSITION WHERE (POSITIONCODE LIKE '%FMCG-%' OR POSITIONCODE LIKE '%FMCG02%') AND NewSectionCode = '" + saleDetail.getDEPOT() + saleDetail.getSECTION_NAME().trim().replaceAll("\\s", "") + "'");
+                    List<EmployeeCustomer> employeeCustomers = new ArrayList<>();
+                    String query = "from EmployeeCustomer where (POSITION_CODE LIKE '%FMCG-%' OR POSITION_CODE LIKE '%FMCG02%') and LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().replaceAll("\\s+","").toLowerCase()+"'";
 
-                    }else{
-                        remarks += "HUID: "+sdMonthlyFinalData.getHUID()+" Section Name is null";
+                    employeeCustomers = (List<EmployeeCustomer>) HibernateUtil.getDBObjects(query);
+
+                    if(employeeCustomers!=null){
+                        if(employeeCustomers.size()>0){
+                            POSITION_ID = employeeCustomers.get(0).getPOSITION_CODE();
+                        }
                     }
-                    if (POSITION_CODE.equals("")) {
-                        remarks += "BASE_DEPOT_SECTION_TO_POSITION Mapping required";
+                    if(POSITION_ID.equals("")) {
+                        if (sdMonthlyFinalData.getSECTION_NAME() != null) {
+                            POSITION_ID = getSingleString("SELECT POSITIONCODE FROM BASE_DEPOT_SECTION_TO_POSITION WHERE (POSITIONCODE LIKE '%FMCG-%' OR POSITIONCODE LIKE '%FMCG02%') AND NewSectionCode = '" + saleDetail.getDEPOT() + saleDetail.getSECTION_NAME().trim().replaceAll("\\s", "") + "'");
+
+                        } else {
+                            remarks += "HUID: " + sdMonthlyFinalData.getHUID() + " Section Name is null";
+                        }
+                        if (POSITION_ID.equals("")) {
+                            remarks += "BASE_DEPOT_SECTION_TO_POSITION Mapping required";
+                        }
                     }
                 }
-                saleDetail.setPOSITION_CODE(POSITION_CODE);
+                saleDetail.setPOSITION_CODE(POSITION_ID);
                 remarks += "Tagging from new Section Mapping with concatenation";
             } else if (sdMonthlyFinalData.getSGP() < 830) {
-                String POSITION_CODE = "";
                 if (prdgrpon.getGRP() !=null && prdgrpon.getGRP().equals("CONDOM")) {
                     if (sdMonthlyFinalData.getPRD_NAME()!=null && sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("do ") ||
                             sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("sathi")) {
-                        POSITION_CODE = getSingleString("SELECT position_code FROM base_depot_territory_to_position WHERE (position_code LIKE '%-FMCG-%' OR position_code LIKE '%-FMCG01-%') AND depot_territory = '" + saleDetail.getDEPOT() + "" + saleDetail.getTERRITORY() + "'");
+                        List<EmployeeCustomer> employeeCustomers = new ArrayList<>();
+                        String query = "from EmployeeCustomer where (POSITION_CODE LIKE '%FMCG-%' OR POSITION_CODE LIKE '%FMCG01%') and LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().replaceAll("\\s+","").toLowerCase()+"'";
 
-                        saleDetail.setPOSITION_CODE(POSITION_CODE);
-                        if (saleDetail.getPOSITION_CODE().equals("")) {
-                            POSITION_CODE = getSingleString("SELECT position_code FROM base_depot_territory_to_position WHERE position_code LIKE '%ASM%' AND depot_territory = '" + saleDetail.getDEPOT() + "" + saleDetail.getTERRITORY() + "'");
-                            saleDetail.setPOSITION_CODE(POSITION_CODE);
+                        employeeCustomers = (List<EmployeeCustomer>) HibernateUtil.getDBObjects(query);
+
+                        if(employeeCustomers!=null){
+                            if(employeeCustomers.size()>0){
+                                POSITION_ID = employeeCustomers.get(0).getPOSITION_CODE();
+                            }
+                        }
+
+                        if(POSITION_ID.equals("")) {
+                            POSITION_ID = getSingleString("SELECT position_code FROM base_depot_territory_to_position WHERE (position_code LIKE '%-FMCG-%' OR position_code LIKE '%-FMCG01-%') AND depot_territory = '" + saleDetail.getDEPOT() + "" + saleDetail.getTERRITORY() + "'");
+
+                            saleDetail.setPOSITION_CODE(POSITION_ID);
                             if (saleDetail.getPOSITION_CODE().equals("")) {
-                                remarks += "Territory mapping required with ASM or SPO";
+                                POSITION_ID = getSingleString("SELECT position_code FROM base_depot_territory_to_position WHERE position_code LIKE '%ASM%' AND depot_territory = '" + saleDetail.getDEPOT() + "" + saleDetail.getTERRITORY() + "'");
+                                saleDetail.setPOSITION_CODE(POSITION_ID);
+                                if (saleDetail.getPOSITION_CODE().equals("")) {
+                                    remarks += "Territory mapping required with ASM or SPO";
+                                }
                             }
                         }
                     } else {
-                        saleDetail = getSaleDetailObject(saleDetail, "MIO", saleDetail.getTERRITORY());
+                        saleDetail = getSaleDetailObject(saleDetail, "PHR-MIO", saleDetail.getTERRITORY());
                     }
                 } else {
-                    saleDetail = getSaleDetailObject(saleDetail, "MIO", saleDetail.getTERRITORY());
+                    saleDetail = getSaleDetailObject(saleDetail, "PHR-MIO", saleDetail.getTERRITORY());
                     remarks += "Town mapping for MIO";
 
                 }
@@ -801,7 +871,7 @@ nature not null
             if(!POSITION_ID.equals("")) {
                 remarks+="Provider tagging not found, territory mapping used for position code";
             }else{
-                POSITION_ID = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(),"MIO");
+                POSITION_ID = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(),"PHR-MIO");
                 remarks+="Provider tagging not found, territory mapping not found, depot mapping used for position code";
             }
         }
@@ -854,53 +924,62 @@ nature not null
 
     private SaleDetailWorking setPositionCodeNotMIOFromProviderCode(SaleDetailWorking saleDetail, SDMonthlyFinalData sdMonthlyFinalData){
         String POSITION_ID = "";
-        if(sdMonthlyFinalData.getPRD_NAME().contains("OEM")
-                || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
-                || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")){
-            List<String> taggedTo = new ArrayList<>();
+        List<String> taggedTo = new ArrayList<>();
+        if(sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
+            taggedTo = new ArrayList<>();
+            taggedTo.add("-GCC-");
+            POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
 
-            if(sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
-                taggedTo = new ArrayList<>();
-                taggedTo.add("-SF-");
-                POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
+        }
+        if(POSITION_ID.equals("")) {
+            if (sdMonthlyFinalData.getPRD_NAME().contains("OEM")
+                    || sdMonthlyFinalData.getPRD_NAME().contains("ZINKUP")
+                    || sdMonthlyFinalData.getPRD_NAME().contains("FERAVI INJECTION")) {
 
-            }
-            if(POSITION_ID.equals("")){
-                taggedTo = new ArrayList<>();
-                taggedTo.add("SF-SSB");
-                taggedTo.add("-SF-SFE-");
-                taggedTo.add("-SF-SFSB-");
-                taggedTo.add("-SF-QAM-");
-                taggedTo.add("-SF-AM-");
-                POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                if(POSITION_ID.equals("")){
-                    POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());
-                    if(POSITION_ID.equals("")){
-                        POSITION_ID = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(), taggedTo);
+
+                if (sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
+                    taggedTo = new ArrayList<>();
+                    taggedTo.add("-SF-");
+                    POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
+
+                }
+                if (POSITION_ID.equals("")) {
+                    taggedTo = new ArrayList<>();
+                    taggedTo.add("SF-SSB");
+                    taggedTo.add("-SF-SFE-");
+                    taggedTo.add("-SF-SFSB-");
+                    taggedTo.add("-SF-QAM-");
+                    taggedTo.add("-SF-AM-");
+                    POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
+                    if (POSITION_ID.equals("")) {
+                        POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());
+                        if (POSITION_ID.equals("")) {
+                            POSITION_ID = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(), taggedTo);
+                        }
                     }
                 }
-            }
-        }else if (saleDetail.getGRP()!=null && saleDetail.getGRP().equals("Nutraceutical")) {
-            List<String> taggedTo = new ArrayList<>();
-
-            if(sdMonthlyFinalData.getPROVIDER_CODE() !=null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
-                taggedTo.add("SF-SSB");
-                taggedTo.add("-SF-SFE-");
-                taggedTo.add("-SF-SFSB-");
-                taggedTo.add("-SF-QAM-");
-                taggedTo.add("-SF-AM-");
-
-                POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-
-            }
-            if(POSITION_ID.equals("")){
+            } else if (saleDetail.getGRP() != null && saleDetail.getGRP().equals("Nutraceutical")) {
                 taggedTo = new ArrayList<>();
-                taggedTo.add("-SF-");
-                POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
-                if(POSITION_ID.equals("")){
-                    POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());
-                    if(POSITION_ID.equals("")){
-                        POSITION_ID = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(), taggedTo);
+
+                if (sdMonthlyFinalData.getPROVIDER_CODE() != null && !sdMonthlyFinalData.getPROVIDER_CODE().equals("")) {
+                    taggedTo.add("SF-SSB");
+                    taggedTo.add("-SF-SFE-");
+                    taggedTo.add("-SF-SFSB-");
+                    taggedTo.add("-SF-QAM-");
+                    taggedTo.add("-SF-AM-");
+
+                    POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
+
+                }
+                if (POSITION_ID.equals("")) {
+                    taggedTo = new ArrayList<>();
+                    taggedTo.add("-SF-");
+                    POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
+                    if (POSITION_ID.equals("")) {
+                        POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());
+                        if (POSITION_ID.equals("")) {
+                            POSITION_ID = getPOSITION_CODEFromDepot(sdMonthlyFinalData.getDEPOT(), taggedTo);
+                        }
                     }
                 }
             }

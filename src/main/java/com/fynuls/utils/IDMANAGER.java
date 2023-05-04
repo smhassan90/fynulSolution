@@ -20,6 +20,9 @@ public class IDMANAGER {
     @Column(name="LAST_ID")
     private long lastID;
 
+    @Column(name="SALE_BATCH")
+    private long saleBatch;
+
 
     public int getId() {
         return id;
@@ -35,5 +38,13 @@ public class IDMANAGER {
 
     public void setLastID(long lastID) {
         this.lastID = lastID;
+    }
+
+    public long getSaleBatch() {
+        return saleBatch;
+    }
+
+    public void setSaleBatch(long saleBatch) {
+        this.saleBatch = saleBatch;
     }
 }

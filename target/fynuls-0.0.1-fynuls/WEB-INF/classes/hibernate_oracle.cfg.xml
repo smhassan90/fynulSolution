@@ -41,6 +41,7 @@
         <mapping class="com.fynuls.entity.SaleDetailTempIKON" />
         <mapping class="com.fynuls.entity.base.Target" />
         <mapping class="com.fynuls.entity.crb.User" />
+        <mapping class="com.fynuls.utils.IDMANAGER" />
         <!--
         Base tables
         -->

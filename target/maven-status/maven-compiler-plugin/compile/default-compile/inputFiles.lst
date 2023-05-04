@@ -74,6 +74,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\login\User.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\utils\IDMANAGER.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\AddBtnControllers.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\DataPart.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\SalesSerialization.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\login\LoginStatus.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\PRDGroupOn.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\PerformanceExecutive.java
@@ -97,6 +98,7 @@ D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\Sales
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\login\LoginLog.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\AdminPanelRequests.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\controllers\greensales\Performance.java
+D:\workspace\fynulSolution\src\main\java\com\fynuls\dal\Test.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\Depot.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\base\EmployeeZoneMapping.java
 D:\workspace\fynulSolution\src\main\java\com\fynuls\entity\sale\WorkWith.java

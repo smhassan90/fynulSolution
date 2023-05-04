@@ -1,6 +1,15 @@
 package com.fynuls.controllers.greensales;
 
+import com.fynuls.dal.SalesSerialization;
+import com.fynuls.dal.Test;
+import com.fynuls.entity.SaleDetailTemp;
+import com.fynuls.entity.base.Employee;
 import com.fynuls.utils.HibernateUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.json.CDL;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -139,10 +152,6 @@ public class Sales {
             }
         }
 
-
-
-
-
         sendEmail(body);
         return "Done";
     }
@@ -168,38 +177,107 @@ public class Sales {
         }
     }
 
-/*
-    private void sendEmail(String body){
-        // Sender's email ID needs to be mentioned
-        String from = "support.it@greenstar.org.pk";
-        final String username = "support.it@greenstar.org.pk";//change accordingly
-        final String password = "Pass@word12";//change accordingly
+    /*
+        private void sendEmail(String body){
+            // Sender's email ID needs to be mentioned
+            String from = "support.it@greenstar.org.pk";
+            final String username = "support.it@greenstar.org.pk";//change accordingly
+            final String password = "Pass@word12";//change accordingly
 
-        // Assuming you are sending email
-        final String host = "smtp.office365.com";
+            // Assuming you are sending email
+            final String host = "smtp.office365.com";
+
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", "587");
+            InternetAddress[] ccAddress = new InternetAddress[6];
+
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            PasswordAuthentication pswAuth = new PasswordAuthentication(username, password);
+                            return pswAuth;
+                        }
+                    });
+
+            try {
+                ccAddress[0] = new InternetAddress("sajidali@greenstar.org.pk");
+                ccAddress[1] = new InternetAddress("umeriftikhar@greenstar.org.pk");
+                ccAddress[2] = new InternetAddress("masif@greenstar.org.pk");
+                ccAddress[3] = new InternetAddress("hasnain.ali@greenstar.org.pk");
+                ccAddress[4] = new InternetAddress("mtafseer@greenstar.org.pk");
+                ccAddress[5] = new InternetAddress("syedhassan@greenstar.org.pk");
+                // Create a default MimeMessage object.
+                Message message = new MimeMessage(session);
+
+                // Set From: header field of the header.
+                message.setFrom(new InternetAddress(from));
+
+                // Set To: header field of the header.
+
+                String toAddress = "shahzaibsattar@greenstar.org.pk";
+                message.setRecipients(Message.RecipientType.TO,
+                        InternetAddress.parse(toAddress));
+
+                message.setRecipients(Message.RecipientType.CC, ccAddress);
+                // Set Subject: header field
+                message.setSubject("Daily Sales Data");
+
+                // put everything together
+                message.setText(body);
+
+                // Send message
+                // TO-DO: Uncomment this
+                Transport.send(message);
+
+            } catch (MessagingException e) {
+                int i = 0;
+            }catch(Exception ex){
+                int i =0;
+            }
+            int ss = 9;
+        }
+        */
+    private void sendEmail(String body){
+
+        // Sender's email ID needs to be mentioned
+//        String from = "support.it@greenstar.org.pk";
+//        final String username = "support.it@greenstar.org.pk";//change accordingly
+        String from = "greenstarsocial.1@gmail.com";
+        final String password = "greenstarsocial123@";//change accordingly
+
+        // Assuming you are sending email through relay.jangosmtp.net
+        //final String host = "smtp.office365.com";
+        String host = "smtp.gmail.com";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        //    props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.port", "465");
         InternetAddress[] ccAddress = new InternetAddress[6];
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        PasswordAuthentication pswAuth = new PasswordAuthentication(username, password);
+                        PasswordAuthentication pswAuth = new PasswordAuthentication(from, password);
                         return pswAuth;
                     }
                 });
 
         try {
-            ccAddress[0] = new InternetAddress("sajidali@greenstar.org.pk");
-            ccAddress[1] = new InternetAddress("umeriftikhar@greenstar.org.pk");
-            ccAddress[2] = new InternetAddress("masif@greenstar.org.pk");
-            ccAddress[3] = new InternetAddress("hasnain.ali@greenstar.org.pk");
-            ccAddress[4] = new InternetAddress("mtafseer@greenstar.org.pk");
-            ccAddress[5] = new InternetAddress("syedhassan@greenstar.org.pk");
+            ccAddress[0] = new InternetAddress("hasnain.ali@greenstar.org.pk");
+            ccAddress[1] = new InternetAddress("syedhassan@greenstar.org.pk");
+            ccAddress[2] = new InternetAddress("mtafseer@greenstar.org.pk");
+            ccAddress[3] = new InternetAddress("moinahmed@greenstar.org.pk");
+            ccAddress[4] = new InternetAddress("ammadkhan@greenstar.org.pk");
+            ccAddress[5] = new InternetAddress("umeriftikhar@greenstar.org.pk");
             // Create a default MimeMessage object.
             Message message = new MimeMessage(session);
 
@@ -214,11 +292,12 @@ public class Sales {
 
             message.setRecipients(Message.RecipientType.CC, ccAddress);
             // Set Subject: header field
-            message.setSubject("Daily Sales Data");
+            message.setSubject("Monthly Sales Report");
 
             // put everything together
-            message.setText(body);
-
+//            message.setText(body);
+            message.setContent(body
+                    , "text/html; charset=utf-8");
             // Send message
             // TO-DO: Uncomment this
             Transport.send(message);
@@ -230,76 +309,6 @@ public class Sales {
         }
         int ss = 9;
     }
-    */
-    private void sendEmail(String body){
-
-    // Sender's email ID needs to be mentioned
-//        String from = "support.it@greenstar.org.pk";
-//        final String username = "support.it@greenstar.org.pk";//change accordingly
-    String from = "greenstarsocial.1@gmail.com";
-    final String password = "greenstarsocial123@";//change accordingly
-
-    // Assuming you are sending email through relay.jangosmtp.net
-    //final String host = "smtp.office365.com";
-    String host = "smtp.gmail.com";
-
-    Properties props = new Properties();
-    props.put("mail.smtp.auth", "true");
-    props.put("mail.smtp.starttls.enable", "true");
-    props.put("mail.smtp.host", host);
-    props.put("mail.smtp.socketFactory.port", "465");
-    props.put("mail.smtp.socketFactory.class",
-            "javax.net.ssl.SSLSocketFactory");
-    //    props.put("mail.smtp.port", "587");
-    props.put("mail.smtp.port", "465");
-    InternetAddress[] ccAddress = new InternetAddress[6];
-
-    Session session = Session.getInstance(props,
-            new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    PasswordAuthentication pswAuth = new PasswordAuthentication(from, password);
-                    return pswAuth;
-                }
-            });
-
-    try {
-        ccAddress[0] = new InternetAddress("hasnain.ali@greenstar.org.pk");
-        ccAddress[1] = new InternetAddress("syedhassan@greenstar.org.pk");
-        ccAddress[2] = new InternetAddress("mtafseer@greenstar.org.pk");
-        ccAddress[3] = new InternetAddress("moinahmed@greenstar.org.pk");
-        ccAddress[4] = new InternetAddress("ammadkhan@greenstar.org.pk");
-        ccAddress[5] = new InternetAddress("umeriftikhar@greenstar.org.pk");
-        // Create a default MimeMessage object.
-        Message message = new MimeMessage(session);
-
-        // Set From: header field of the header.
-        message.setFrom(new InternetAddress(from));
-
-        // Set To: header field of the header.
-
-        String toAddress = "shahzaibsattar@greenstar.org.pk";
-        message.setRecipients(Message.RecipientType.TO,
-                InternetAddress.parse(toAddress));
-
-        message.setRecipients(Message.RecipientType.CC, ccAddress);
-        // Set Subject: header field
-        message.setSubject("Monthly Sales Report");
-
-        // put everything together
-//            message.setText(body);
-        message.setContent(body
-                , "text/html; charset=utf-8");
-        // Send message
-        // TO-DO: Uncomment this
-        Transport.send(message);
-
-    } catch (MessagingException e) {
-        int i = 0;
-    }catch(Exception ex){
-        int i =0;
-    }
-    int ss = 9;
-}
 
     private String getDestinationVID(String minDate, String maxDate){
 
@@ -352,5 +361,70 @@ public class Sales {
         date = HibernateUtil.getSingleStringOracle(query);
 
         return date;
+    }
+    @RequestMapping(value = "/downloadSales", method = RequestMethod.GET, params={"reportingMonth"})
+    @ResponseBody
+    public String downloadSales(String reportingMonth){
+        String path = "C:\\xampp\\htdocs\\salesFiles\\";
+//        String path = "D:\\files\\";
+        String fullPath = path+reportingMonth+"sales.csv";
+        String relativePath = "http://external.greenstar.org.pk:81/salesFiles/"+reportingMonth.replace(",","")+"sales.csv";
+        fullPath = fullPath.replace(",", "");
+        SaleDetailTemp saleDetailTemp = new SaleDetailTemp();
+        String message = "";
+//        ArrayList<SaleDetailTemp> saleDetailTemps =
+//                (ArrayList<SaleDetailTemp>) HibernateUtil.getDBObjects("from SaleDetailTemp where reportingMonth like '" + reportingMonth + "'");
+//
+//            Gson gson = new Gson();
+
+//            Test test = new Test();
+//            test.setSaleDetailTemps(saleDetailTemps);
+//            String json = gson.toJson(test);
+//            return json;
+
+        if(reportingMonth!=null && !reportingMonth.equals("")) {
+            // List<SaleDetailTemp> saleDetailTempList = (List<SaleDetailTemp>) HibernateUtil.getDBObjects("from SaleDetailTemp where ID='144983'");
+            ArrayList<SaleDetailTemp> saleDetailTemps =
+                    (ArrayList<SaleDetailTemp>) HibernateUtil.getDBObjects("from SaleDetailTemp where reportingMonth like '" + reportingMonth + "'");
+            if (saleDetailTemps != null && saleDetailTemps.size() > 0) {
+                Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(SaleDetailTemp.class, new SalesSerialization()).create();
+
+                Test test = new Test();
+                test.setSaleDetailTemps(saleDetailTemps);
+                String json = gson.toJson(test);
+                long count = json.length();
+
+
+                // Step 3: Fetching the JSON Array test
+                // from the JSON Object
+                JSONObject jsonObject = new JSONObject(json);
+                try {
+
+                    JSONArray docs = jsonObject.getJSONArray("saleDetailTemps");
+                    String csvString = CDL.toString(docs);
+                    FileWriter fWriter = null;
+                    File file = new File(fullPath);
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    file.createNewFile();
+                    fWriter = new FileWriter(
+                            fullPath);
+                    fWriter.write(csvString);
+                    fWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                message = "<a href='"+relativePath+"'> CSV file is ready. Click here to download </a>";
+            } else {
+                message = "No data found for the requested reporting month.";
+            }
+        }else{
+            message = "Reporting month cannot be empty";
+        }
+        return message;
+
     }
 }

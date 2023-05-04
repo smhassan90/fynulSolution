@@ -1,7 +1,6 @@
 package com.fynuls.utils;
 
 import com.fynuls.controllers.greensales.Codes;
-import com.fynuls.entity.SaleDetail;
 import com.fynuls.entity.SaleDetailTemp;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -71,6 +70,28 @@ public class HibernateUtil {
         }
         return isSuccessful;
     }
+
+    public static boolean saveOrUpdateOracle(Object obj){
+        Session session = null;
+        Transaction tx =null;
+        boolean isSuccessful = false;
+        try {
+            session = getSessionFactoryNew().openSession();
+
+            tx = session.beginTransaction();
+
+            session.saveOrUpdate(obj);
+            tx.commit();
+            isSuccessful = true;
+        }catch(Exception e){
+            LOG.error(e);
+        }finally {
+            session.clear();session.close();
+        }
+        return isSuccessful;
+    }
+
+
 
     public static boolean save(Object obj){
         Session session = null;
@@ -493,5 +514,16 @@ public class HibernateUtil {
             session.close();
         }
         return isSuccessful;
+    }
+
+    public static String getNextSaleBatchNumber() {
+        ArrayList<IDMANAGER> idManagers = (ArrayList<IDMANAGER>) getDBObjectsOracle("from IDMANAGER");
+        IDMANAGER idManager = idManagers.get(0);
+        long lastID = 0;
+        lastID = idManager.getSaleBatch()+1;
+        idManager.setSaleBatch(lastID);
+        idManager.setId(1);
+        HibernateUtil.saveOrUpdateOracle(idManager);
+        return String.valueOf(lastID);
     }
 }

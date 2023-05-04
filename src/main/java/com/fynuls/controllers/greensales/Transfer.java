@@ -2,13 +2,10 @@ package com.fynuls.controllers.greensales;
 
 
 import com.fynuls.entity.SDMonthlyFinalData;
-import com.fynuls.entity.SaleDetail;
 import com.fynuls.entity.SaleDetailTemp;
 import com.fynuls.entity.SaleDetailTempIKON;
-import com.fynuls.entity.base.Employee;
 import com.fynuls.entity.base.Target;
 import com.fynuls.utils.HibernateUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.springframework.beans.BeanUtils.copyProperties;
 
 /**
  * @author Syed Muhammad Hassan
