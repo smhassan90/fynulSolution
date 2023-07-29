@@ -31,57 +31,59 @@ public class SalesDistributionCustom {
     int autoIncrement = 1;
     String remarks = "";
     String missingData = "";
-    @RequestMapping(value = "/automate", method = RequestMethod.GET)
+    @RequestMapping(value = "/automate", method = RequestMethod.GET, params={"startingYear"})
     @ResponseBody
-    public String automateSale(){
+    public String automateSale(int startingYear){
         long startCurrentMilis = Calendar.getInstance().getTimeInMillis();
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'July,2022'");
-        distributeSales("JUL-22",true, 2);
-        distributeSales("JUL-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'July,20"+startingYear+"'");
+        distributeSales("JUL-"+startingYear,true, 2);
+        distributeSales("JUL-"+startingYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'August,2022'");
-        distributeSales("AUG-22",true, 2);
-        distributeSales("AUG-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'August,20"+startingYear+"'");
+        distributeSales("AUG-"+startingYear,true, 2);
+        distributeSales("AUG-"+startingYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'September,2022'");
-        distributeSales("SEP-22",true, 2);
-        distributeSales("SEP-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'September,20"+startingYear+"'");
+        distributeSales("SEP-"+startingYear,true, 2);
+        distributeSales("SEP-"+startingYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'October,2022'");
-        distributeSales("OCT-22",true, 2);
-        distributeSales("OCT-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'October,20"+startingYear+"'");
+        distributeSales("OCT-"+startingYear,true, 2);
+        distributeSales("OCT-"+startingYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'November,2022'");
-        distributeSales("NOV-22",true, 2);
-        distributeSales("NOV-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'November,20"+startingYear+"'");
+        distributeSales("NOV-"+startingYear,true, 2);
+        distributeSales("NOV-"+startingYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'December,2022'");
-        distributeSales("DEC-22",true, 2);
-        distributeSales("DEC-22",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'December,20"+startingYear+"'");
+        distributeSales("DEC-"+startingYear,true, 2);
+        distributeSales("DEC-"+startingYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'January,2023'");
-        distributeSales("JAN-23",true, 2);
-        distributeSales("JAN-23",false, 2);
+        int nextYear = startingYear++;
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'February,2023'");
-        distributeSales("FEB-23",true, 2);
-        distributeSales("FEB-23",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'January,20"+nextYear+"'");
+        distributeSales("JAN-"+nextYear,true, 2);
+        distributeSales("JAN-"+nextYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'March,2023'");
-        distributeSales("MAR-23",true, 2);
-        distributeSales("MAR-23",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'February,20"+nextYear+"'");
+        distributeSales("FEB-"+nextYear,true, 2);
+        distributeSales("FEB-"+nextYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'April,2023'");
-        distributeSales("APR-23",true, 2);
-        distributeSales("APR-23",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'March,20"+nextYear+"'");
+        distributeSales("MAR-"+nextYear,true, 2);
+        distributeSales("MAR-"+nextYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'May,2023'");
-        distributeSales("MAY-23",true, 2);
-        distributeSales("MAY-23",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'April,20"+nextYear+"'");
+        distributeSales("APR-"+nextYear,true, 2);
+        distributeSales("APR-"+nextYear,false, 2);
 
-        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'June,2023'");
-        distributeSales("JUN-23",true, 2);
-        distributeSales("JUN-23",false, 2);
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'May,20"+nextYear+"'");
+        distributeSales("MAY-"+nextYear,true, 2);
+        distributeSales("MAY-"+nextYear,false, 2);
+
+        HibernateUtil.executeQueryMySQL("DELETE FROM SALE_DETAIL_WORKING WHERE reportingMonth = 'June,20"+nextYear+"'");
+        distributeSales("JUN-"+nextYear,true, 2);
+        distributeSales("JUN-"+nextYear,false, 2);
 
         long endCurrentMilis = Calendar.getInstance().getTimeInMillis();
         long totalMilis = ((endCurrentMilis-startCurrentMilis)/60000)/60;
@@ -243,7 +245,7 @@ public class SalesDistributionCustom {
                         saleDetail.setREMARKS(sdMonthlyFinalData.getREMARKS());
                         saleDetail.setVID(sdMonthlyFinalData.getVID());
                         //saleDetail.setSYSTEM_DATE(sdMonthlyFinalData.getSYSTEM_DATE());
-                        saleDetail.setBONUS_DISCOUNT(discounts + bonus);
+                        saleDetail.setBONUS_DISCOUNT(discounts + sdMonthlyFinalData.getBONUS_VALUE());
                         saleDetail.setFOC_DISCOUNT(sdMonthlyFinalData.getFOC_DISCOUNT());
                         saleDetail.setBOOKED_BY(sdMonthlyFinalData.getBOOKED_BY());
                         saleDetail.setSECTION_CODE(sdMonthlyFinalData.getSECTION_CODE());
@@ -293,6 +295,7 @@ public class SalesDistributionCustom {
                             if(saleDetail.getPRD_NAME().contains("WELLMA")){
                                 List<String> wellmaTaggedTo = new ArrayList<>();
                                 wellmaTaggedTo.add("-HYST-");
+                                wellmaTaggedTo.add("-GCC-");
 
 
                                 List<EmployeeCustomer> employeeCustomers = new ArrayList<>();
@@ -332,6 +335,11 @@ public class SalesDistributionCustom {
 
 
                                     saleDetail = setPositionCodeNotMIOFromProviderCode(saleDetail, sdMonthlyFinalData);
+                                }else if(saleDetail.getPRODUCTGROUP().toLowerCase().contains("sathi") ||
+                                        saleDetail.getPRODUCTGROUP().toLowerCase().contains("do")) {
+
+                                    positionCode = "NATL-UNMAP-HOD-01";
+
                                 }else{
                                     //Deal Others
                                     saleDetail = dealOthers(saleDetail, sdMonthlyFinalData, prdgrpon);
@@ -377,17 +385,19 @@ public class SalesDistributionCustom {
             //When provider code is not null
             if (prdgrpon.getPRD_GRP() !=null && (prdgrpon.getPRD_GRP().contains("Novaject")
                     || prdgrpon.getPRD_GRP().contains("Femi Ject")
-                    || prdgrpon.getPRD_GRP().contains("Enofer"))) {
+                    || prdgrpon.getPRD_GRP().contains("Enofer")
+                    || prdgrpon.getPRD_GRP().contains("Enoject"))) {
 
 
                 List<String> taggedTo = new ArrayList<>();
                 taggedTo.add("-PHR-MIO-");
+                taggedTo.add("PS-PHR-");
                 saleDetail = setPositionCodeFromProviderCode(saleDetail, sdMonthlyFinalData, taggedTo);
                 if (saleDetail.getPOSITION_CODE()!=null && !saleDetail.getPOSITION_CODE().contains("MIO")) {
                     String territory = sdMonthlyFinalData.getTERRITORY();
                     remarks += "Forcefully sales belongs to MIO";
                     //Fetching Employee information
-                    saleDetail = getSaleDetailObject(saleDetail, "PHR-MIO", territory);
+                    saleDetail = getSaleDetailObject(saleDetail, taggedTo, territory);
                 }
 
             } else {
@@ -427,7 +437,9 @@ public class SalesDistributionCustom {
                 //  Depends on tagging
                 remarks += "Depends on tagging";
                 if (saleDetail.getPOSITION_CODE()!=null && saleDetail.getPOSITION_CODE().equals("")) {
-                    saleDetail = getSaleDetailObject(saleDetail, "PHR-MIO", sdMonthlyFinalData.getTERRITORY());
+                    taggedTo = new ArrayList<>();
+                    taggedTo.add("PHR-MIO");
+                    saleDetail = getSaleDetailObject(saleDetail, taggedTo, sdMonthlyFinalData.getTERRITORY());
                     //  Depends on tagging
                     remarks += "Left over products if provider code available. Tagged from Territory Mapping";
                 }
@@ -468,31 +480,45 @@ public class SalesDistributionCustom {
                     && prdgrpon.getGRP().equals("CONDOM")) {
                 if (sdMonthlyFinalData.getPRD_NAME()!=null && (sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("do ") ||
                         sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("sathi"))) {
-                    //Iss condition me kaam kerna hay.
                     /*
+                    1.	Sathi 2s, 7s, 8s, of M&P True will be tagged with “NATL-FMCG-HOD-01” by default.
+                     */
+                    if(sdMonthlyFinalData.getPROVIDER_CODE()==null && sdMonthlyFinalData.getNATURE()==null &&
+                            (prdgrpon.getGROUP_ON().equals("Sathi 7s") ||
+                                    prdgrpon.getGROUP_ON().equals("Sathi 8s") ||
+                                    prdgrpon.getGROUP_ON().equals("Sathi 2s")) ){
+                        POSITION_ID = "NATL-FMCG-HOD-01";
+                    }else{
+                        /*
                     SELECT * FROM EMPLOYEECUSTOMER WHERE
                      */
-                    List<EmployeeCustomer> employeeCustomers = new ArrayList<>();
-                    String query = "from EmployeeCustomer where (POSITION_CODE LIKE '%FMCG-%' OR POSITION_CODE LIKE '%FMCG01%') and LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().replaceAll("\\s+","").toLowerCase()+"'";
+                        List<EmployeeCustomer> employeeCustomers = new ArrayList<>();
+                        String query = "from EmployeeCustomer where (POSITION_CODE LIKE '%FMCG-%' OR POSITION_CODE LIKE '%FMCG01%') and LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().replaceAll("\\s+","").toLowerCase()+"'";
 
-                     employeeCustomers = (List<EmployeeCustomer>) HibernateUtil.getDBObjects(query);
+                        employeeCustomers = (List<EmployeeCustomer>) HibernateUtil.getDBObjects(query);
 
-                     if(employeeCustomers!=null){
-                         if(employeeCustomers.size()>0){
-                             POSITION_ID = employeeCustomers.get(0).getPOSITION_CODE();
-                         }
-                     }
-
-                    if(POSITION_ID.equals("")) {
-                        if (sdMonthlyFinalData.getSECTION_NAME() != null) {
-                            POSITION_ID = getSingleString("SELECT POSITIONCODE FROM BASE_DEPOT_SECTION_TO_POSITION WHERE (POSITIONCODE LIKE '%FMCG-%' OR POSITIONCODE LIKE '%FMCG01%') AND NewSectionCode = '" + saleDetail.getDEPOT() + saleDetail.getSECTION_NAME().trim().replaceAll("\\s", "") + "'");
-                        } else {
-                            remarks += "HUID: " + sdMonthlyFinalData.getHUID() + " Section Name is null";
+                        if(employeeCustomers!=null){
+                            if(employeeCustomers.size()>0){
+                                POSITION_ID = employeeCustomers.get(0).getPOSITION_CODE();
+                            }
                         }
-                        if (POSITION_ID.equals("")) {
-                            remarks += "BASE_DEPOT_SECTION_TO_POSITION Mapping required";
+
+                        if(POSITION_ID.equals("")) {
+                            if (sdMonthlyFinalData.getSECTION_NAME() != null) {
+                                POSITION_ID = getSingleString("SELECT POSITIONCODE FROM BASE_DEPOT_SECTION_TO_POSITION WHERE (POSITIONCODE LIKE '%FMCG-%' OR POSITIONCODE LIKE '%FMCG01%') AND NewSectionCode = '" + saleDetail.getDEPOT() + saleDetail.getSECTION_NAME().trim().replaceAll("\\s", "") + "'");
+                            } else {
+                                remarks += "HUID: " + sdMonthlyFinalData.getHUID() + " Section Name is null";
+                            }
+                            if (POSITION_ID.equals("")) {
+                                remarks += "BASE_DEPOT_SECTION_TO_POSITION Mapping required";
+                            }
                         }
                     }
+
+
+
+
+
                 } else if (sdMonthlyFinalData.getPRD_NAME() !=null && sdMonthlyFinalData.getPRD_NAME().toLowerCase().contains("touch")) {
                     List<EmployeeCustomer> employeeCustomers = new ArrayList<>();
                     String query = "from EmployeeCustomer where (POSITION_CODE LIKE '%FMCG-%' OR POSITION_CODE LIKE '%FMCG02%') and LOWER(CUSTOMER_CODE)='"+saleDetail.getCUST_NUMBER()+saleDetail.getCUST_NAME().replaceAll("\\s+","").toLowerCase()+"'";
@@ -546,10 +572,14 @@ public class SalesDistributionCustom {
                             }
                         }
                     } else {
-                        saleDetail = getSaleDetailObject(saleDetail, "PHR-MIO", saleDetail.getTERRITORY());
+                        ArrayList<String> taggedTo = new ArrayList<>();
+                        taggedTo.add("PHR-MIO");
+                        saleDetail = getSaleDetailObject(saleDetail, taggedTo, saleDetail.getTERRITORY());
                     }
                 } else {
-                    saleDetail = getSaleDetailObject(saleDetail, "PHR-MIO", saleDetail.getTERRITORY());
+                    ArrayList<String> taggedTo = new ArrayList<>();
+                    taggedTo.add("PHR-MIO");
+                    saleDetail = getSaleDetailObject(saleDetail, taggedTo, saleDetail.getTERRITORY());
                     remarks += "Town mapping for MIO";
 
                 }
@@ -737,21 +767,22 @@ public class SalesDistributionCustom {
         return saleDetail;
     }
 
-    private SaleDetailWorking getSaleDetailObject(SaleDetailWorking saleDetail, String saleTo, String territory){
+    private SaleDetailWorking getSaleDetailObject(SaleDetailWorking saleDetail, List<String> saleTo, String territory){
         String employeePositionId = "";
         //Fetching Employee information
+        String where = getTaggedToWhereClause(saleTo,"emp_id");
 
-        String countSharing =  getSingleString("SELECT COUNT(*) FROM BASE_TERRITORY_EMP_MAPPING where emp_id like '%"+saleTo+"%' and territory_code='"+territory+"'");
+        String countSharing =  getSingleString("SELECT COUNT(*) FROM BASE_TERRITORY_EMP_MAPPING where "+where+" territory_code='"+territory+"'");
         if(Integer.valueOf(countSharing)==0){
             employeePositionId = getPOSITION_CODEFromDepot(saleDetail.getDEPOT(), saleTo);
             saleDetail = setLocationInSales(employeePositionId, saleDetail);
         }else if(Integer.valueOf(countSharing)==1){
-            employeePositionId = getSingleString("SELECT EMP_ID FROM BASE_TERRITORY_EMP_MAPPING where emp_id like '%"+saleTo+"%' and territory_code='"+territory+"'");
+            employeePositionId = getSingleString("SELECT EMP_ID FROM BASE_TERRITORY_EMP_MAPPING where "+where+" territory_code='"+territory+"'");
             saleDetail = setLocationInSales(employeePositionId, saleDetail);
         }else{
             boolean isFirstTime = true;
             double id = 0;
-            ArrayList<TerritoryEmployeeMapping> territoryEmployeeMappings = (ArrayList<TerritoryEmployeeMapping>) HibernateUtil.getDBObjects("from TerritoryEmployeeMapping where EMP_ID like '%"+saleTo+"%' and TERRITORY_CODE='"+territory+"'");
+            ArrayList<TerritoryEmployeeMapping> territoryEmployeeMappings = (ArrayList<TerritoryEmployeeMapping>) HibernateUtil.getDBObjects("from TerritoryEmployeeMapping where "+where+" TERRITORY_CODE='"+territory+"'");
             for(int i =0 ; i<territoryEmployeeMappings.size();i++){
                 SaleDetailWorking copySale = new SaleDetailWorking();
                 try {
