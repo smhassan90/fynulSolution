@@ -218,7 +218,7 @@ public class SalesDistribution {
                             saleDetail.setPRODUCTGROUP(prdGroupOn.getPRD_GRP());
                             saleDetail.setPROVIDERCODE(batchNumber);
                             String positionCode = "";
-                            if(saleDetail.getPRD_NAME().contains("WELLMA")){
+                            if(saleDetail.getPRD_NAME().contains("WELLMA@123")){
                                 List<String> wellmaTaggedTo = new ArrayList<>();
                                 wellmaTaggedTo.add("-HYST-");
 
