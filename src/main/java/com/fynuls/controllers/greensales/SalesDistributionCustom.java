@@ -296,7 +296,7 @@ public class SalesDistributionCustom {
                             saleDetail.setPRODUCTGROUP(prdGroupOn.getPRD_GRP());
                             saleDetail.setPROVIDERCODE(batchNumber);
                             String positionCode = "";
-                            if(saleDetail.getPRD_NAME().contains("WELLMA@123")){
+                            if(saleDetail.getPRD_NAME().contains("WE123LLMA@123")){
                                 List<String> wellmaTaggedTo = new ArrayList<>();
                                 wellmaTaggedTo.add("-HYST-");
                                 wellmaTaggedTo.add("-GCC-");
@@ -391,6 +391,7 @@ public class SalesDistributionCustom {
             if (prdgrpon.getPRD_GRP() !=null && (prdgrpon.getPRD_GRP().contains("Novaject")
                     || prdgrpon.getPRD_GRP().contains("Femi Ject")
                     || prdgrpon.getPRD_GRP().contains("Enofer")
+                    || prdgrpon.getPRD_GRP().contains("Noresel")
                     || prdgrpon.getPRD_GRP().contains("Enoject"))) {
 
 
@@ -418,6 +419,7 @@ public class SalesDistributionCustom {
                 taggedTo.add("-SF-SFSB-");
                 taggedTo.add("-SF-QAM-");
                 taggedTo.add("-SF-AM-");
+                taggedTo.add("-SF-CHO-");
                 taggedTo.add("UNMAP");
 
 
@@ -432,6 +434,7 @@ public class SalesDistributionCustom {
                     taggedTo.add("-SF-SFSB-");
                     taggedTo.add("-SF-QAM-");
                     taggedTo.add("-SF-AM-");
+                    taggedTo.add("-SF-CHO-");
                     taggedTo.add("UNMAP");
 
                 } else if (count == 0) {
@@ -995,6 +998,7 @@ public class SalesDistributionCustom {
                     taggedTo.add("-SF-SFSB-");
                     taggedTo.add("-SF-QAM-");
                     taggedTo.add("-SF-AM-");
+                    taggedTo.add("-SF-CHO-");
                     POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
                     if (POSITION_ID.equals("")) {
                         POSITION_ID = getPOSITION_CODEFromTerritoryMapping(sdMonthlyFinalData.getTERRITORY(), taggedTo, sdMonthlyFinalData.getHUID());
@@ -1012,6 +1016,7 @@ public class SalesDistributionCustom {
                     taggedTo.add("-SF-SFSB-");
                     taggedTo.add("-SF-QAM-");
                     taggedTo.add("-SF-AM-");
+                    taggedTo.add("-SF-CHO-");
 
                     POSITION_ID = getPositionCodeFromProviderCode(sdMonthlyFinalData.getPROVIDER_CODE(), taggedTo);
 
