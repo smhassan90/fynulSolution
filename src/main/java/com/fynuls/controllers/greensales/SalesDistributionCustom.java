@@ -391,6 +391,7 @@ public class SalesDistributionCustom {
             if (prdgrpon.getPRD_GRP() !=null && (prdgrpon.getPRD_GRP().contains("Novaject")
                     || prdgrpon.getPRD_GRP().contains("Femi Ject")
                     || prdgrpon.getPRD_GRP().contains("Enofer")
+                    || prdgrpon.getPRD_GRP().contains("SARSET")
                     || prdgrpon.getPRD_GRP().contains("Noresel")
                     || prdgrpon.getPRD_GRP().contains("Enoject"))) {
 
